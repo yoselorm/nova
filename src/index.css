@@ -1,13 +1,77 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: 'proxima-nova';
+    src: url('assets/font/ProximaNovaRegular.ttf') format('truetype');
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+
+.fade-in {
+  animation: fadeIn 1.2s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); } /* Move half the total width */
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 40s linear infinite; /* Adjust 40s to make it faster or slower */
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused; /* Pause when user wants to read a specific card */
+}
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 10s linear infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(-8deg); }
+  50% { transform: translateY(-20px) rotate(-6deg); }
+}
+
+@keyframes mesh-gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.mesh-bg {
+  background: linear-gradient(-45deg, #ffffff, #f0f7ff, #ffffff, #e6fff9);
+  background-size: 400% 400%;
+  animation: mesh-gradient 15s ease infinite;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+@layer utilities {
+  /* Architectural Dot Grid */
+  .bg-dot-pattern {
+    background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+    background-size: 30px 30px;
+  }
+
+  /* Abstract Topographic Curve */
+  .bg-wall-curve {
+    background: radial-gradient(circle at 100% 0%, rgba(0,74,173,0.03) 0%, transparent 50%),
+                radial-gradient(circle at 0% 100%, rgba(0,151,116,0.03) 0%, transparent 50%);
+  }
 }
