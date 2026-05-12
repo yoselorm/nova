@@ -7,6 +7,7 @@ import InfiniteTestimonials from '../components/home/Testimonials'
 import ClinicalExcellence from '../components/home/Whychooseus'
 import CTABanner from '../components/CtaBanner'
 import PureImageBanner from '../components/home/ImageBanner'
+import AppointmentSection from '../components/AppointmentSection'
 
 const Home = () => {
   return (
@@ -19,6 +20,7 @@ const Home = () => {
         <ClinicalExcellence />
         <CTABanner />
         <InfiniteTestimonials />
+        <AppointmentSection />
 
         
     </div>

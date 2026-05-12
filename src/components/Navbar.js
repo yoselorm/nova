@@ -35,12 +35,12 @@ const Navbar = ({ variant = 'default' }) => {
     { name: 'Pharmacy', slug: 'pharmacy', color: 'text-pharmacy-main' },
   ];
 
-  const mainLinks = ['Home', 'About', 'Team', 'Services', 'Contact'];
+  const mainLinks = ['Home', 'About', 'Team', 'Services', 'Contact', 'Blog', 'Donate'];
 
   return (
     <nav className="fixed w-full z-50 bg-white border-b border-slate-100 font-nova">
-      <div className="max-w-7xl mx-auto px-6 h-24 flex items-center justify-between">
-        
+      <div className="max-w-[1440px] mx-auto px-6 h-24 flex items-center justify-between">
+
         {/* LOGO SECTION */}
         <Link to="/" className="flex items-center gap-3">
           <div className={`w-11 h-11 ${activeTheme.btnBg} rounded-full flex items-center justify-center text-white font-bold text-xl transition-colors duration-500`}>
@@ -59,7 +59,7 @@ const Navbar = ({ variant = 'default' }) => {
           ))}
 
           {/* SUBSIDIARIES DROPDOWN (DESKTOP) */}
-          <div 
+          <div
             className="relative h-24 flex items-center cursor-pointer"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
@@ -70,16 +70,16 @@ const Navbar = ({ variant = 'default' }) => {
 
             <AnimatePresence>
               {isHovered && (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 10 }}
                   className="absolute top-20 left-0 w-64 bg-white shadow-2xl rounded-2xl border border-slate-50 p-4"
                 >
                   {subsidiaries.map((item) => (
-                    <Link 
-                      key={item.name} 
-                      to={`/${item.slug}`} 
+                    <Link
+                      key={item.name}
+                      to={`/${item.slug}`}
                       className={`block p-4 rounded-xl hover:bg-slate-50 transition-all font-bold text-sm ${item.color}`}
                     >
                       {item.name}
@@ -90,14 +90,31 @@ const Navbar = ({ variant = 'default' }) => {
             </AnimatePresence>
           </div>
 
-          <button className={`${activeTheme.btnBg} text-white px-8 py-3 rounded-full text-sm font-bold shadow-lg transition-colors`}>
+          {/* <button className={`${activeTheme.btnBg} text-white px-8 py-3 rounded-full text-sm font-bold shadow-lg transition-colors`}>
             Book Appointment
-          </button>
+          </button> */}
+
+          <div className="flex gap-3">
+            {/* Book Appointment Button */}
+            <button
+              className={`${activeTheme.btnBg} text-white px-8 py-3 rounded-full text-sm font-bold shadow-lg hover:shadow-xl transition-shadow duration-300`}
+            >
+              Book Appointment
+            </button>
+
+            {/* Donate Button */}
+            <button
+              className="border-cyan-600 px-8 hover:bg-cyan-50 py-3 rounded-full text-sm font-bold shadow-lg hover:shadow-xl transition-shadow duration-300 border-2"
+
+            >
+              Donate
+            </button>
+          </div>
         </div>
 
         {/* MOBILE MENU TOGGLE */}
-        <button 
-          className="lg:hidden text-slate-600" 
+        <button
+          className="lg:hidden text-slate-600"
           onClick={() => setIsOpen(!isOpen)}
         >
           {isOpen ? <X size={28} /> : <Menu size={28} />}
@@ -116,11 +133,11 @@ const Navbar = ({ variant = 'default' }) => {
           >
             <div className="flex flex-col gap-6">
               {mainLinks.map((link) => (
-                <Link 
-                  key={link} 
+                <Link
+                  key={link}
                   to={link === 'Home' ? '/' : `/${link.toLowerCase()}`}
                   onClick={() => setIsOpen(false)}
-                  className="text-2xl font-bold text-nova-blue uppercase tracking-tight"
+                  className="text-sm font-bold text-nova-blue uppercase tracking-tight"
                 >
                   {link}
                 </Link>
@@ -128,16 +145,16 @@ const Navbar = ({ variant = 'default' }) => {
 
               {/* MOBILE SUBSIDIARIES ACCORDION */}
               <div>
-                <button 
+                <button
                   onClick={() => setMobileSubsOpen(!mobileSubsOpen)}
-                  className="flex items-center justify-between w-full text-2xl font-bold text-nova-blue uppercase tracking-tight"
+                  className="flex items-center justify-between w-full text-sm font-bold text-nova-blue uppercase tracking-tight"
                 >
                   Subsidiaries <ChevronDown className={mobileSubsOpen ? 'rotate-180 transition-transform' : ''} />
                 </button>
-                
+
                 <AnimatePresence>
                   {mobileSubsOpen && (
-                    <motion.div 
+                    <motion.div
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
@@ -158,9 +175,22 @@ const Navbar = ({ variant = 'default' }) => {
                 </AnimatePresence>
               </div>
 
-              <button className={`${activeTheme.btnBg} text-white w-full py-4 rounded-xl font-bold text-lg shadow-lg mt-4`}>
-                Book Appointment
-              </button>
+              <div className="flex gap-3 pt-4">
+                {/* Book Appointment Button */}
+                <button
+                  className={`flex-1 ${activeTheme.btnBg} text-white px-6 py-3 rounded-lg text-sm font-bold transition-shadow hover:shadow-lg duration-300`}
+                >
+                  Book Appointment
+                </button>
+
+                {/* Donate Button */}
+                <button
+                  className="border-cyan-800 flex-1 px-6 py-3 rounded-lg text-sm font-bold border-2 transition-shadow hover:shadow-lg duration-300"
+
+                >
+                  Donate
+                </button>
+              </div>
             </div>
           </motion.div>
         )}
@@ -170,8 +200,8 @@ const Navbar = ({ variant = 'default' }) => {
 };
 
 const NavLink = ({ label, theme }) => (
-  <Link 
-    to={label === 'Home' ? '/' : `/${label.toLowerCase()}`} 
+  <Link
+    to={label === 'Home' ? '/' : `/${label.toLowerCase()}`}
     className={`text-sm font-bold uppercase tracking-wide text-slate-600 ${theme.hoverText} transition-colors`}
   >
     {label}
