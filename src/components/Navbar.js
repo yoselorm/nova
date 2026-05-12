@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, Menu, X } from 'lucide-react';
-import { Link } from 'react-router-dom'; // Using Link for smoother transitions
+import { Link } from 'react-router-dom';
+import surgerylogo from '../assets/images/Surgerylogo.png';
+import fertilitylogo from '../assets/images/Fertilitylogo.png';
+import pharmacylogo from '../assets/images/Pharmacylogo.png';
 
 const Navbar = ({ variant = 'default' }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -35,7 +38,7 @@ const Navbar = ({ variant = 'default' }) => {
     { name: 'Pharmacy', slug: 'pharmacy', color: 'text-pharmacy-main' },
   ];
 
-  const mainLinks = ['Home', 'About', 'Team', 'Services', 'Contact', 'Blog', 'Donate'];
+  const mainLinks = ['Home', 'About', 'Services', 'Contact', 'Blog'];
 
   return (
     <nav className="fixed w-full z-50 bg-white border-b border-slate-100 font-nova">
@@ -103,12 +106,15 @@ const Navbar = ({ variant = 'default' }) => {
             </button>
 
             {/* Donate Button */}
+          <Link to="/donate">
             <button
+            
               className="border-cyan-600 px-8 hover:bg-cyan-50 py-3 rounded-full text-sm font-bold shadow-lg hover:shadow-xl transition-shadow duration-300 border-2"
 
             >
               Donate
             </button>
+            </Link>
           </div>
         </div>
 
@@ -184,12 +190,16 @@ const Navbar = ({ variant = 'default' }) => {
                 </button>
 
                 {/* Donate Button */}
+               <Link to="/donate">
                 <button
+                                  onClick={() => setIsOpen(false)}
+
                   className="border-cyan-800 flex-1 px-6 py-3 rounded-lg text-sm font-bold border-2 transition-shadow hover:shadow-lg duration-300"
 
                 >
                   Donate
                 </button>
+                </Link>
               </div>
             </div>
           </motion.div>

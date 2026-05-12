@@ -2,6 +2,9 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import surgerylogo from '../../assets/images/Surgerylogo.png';
+import fertilitylogo from '../../assets/images/Fertilitylogo.png';
+import pharmacylogo from '../../assets/images/Pharmacylogo.png';
 
 const CentresOfExcellence = () => {
   const centres = [
@@ -13,7 +16,7 @@ const CentresOfExcellence = () => {
       // Light Burgundy / Wine Pastel
       bgClass: "bg-[#fdf2f2]", 
       accentColor: "text-surgery-main",
-      image: "/assets/images/surgery-doc.png", // Use a PNG with transparent background if possible
+      image: surgerylogo, // Use a PNG with transparent background if possible
       pattern: "radial-gradient(circle, rgba(128,0,32,0.05) 0%, transparent 70%)"
     },
     {
@@ -24,7 +27,7 @@ const CentresOfExcellence = () => {
       // Light Teal / Sky Pastel
       bgClass: "bg-[#f0f9f9]", 
       accentColor: "text-fertility-main",
-      image: "/assets/images/fertility-doc.png",
+      image: fertilitylogo, // Use a PNG with transparent background if possible
       pattern: "radial-gradient(circle, rgba(0,128,128,0.05) 0%, transparent 70%)"
     },
     {
@@ -35,7 +38,7 @@ const CentresOfExcellence = () => {
       // Light Medical Blue Pastel
       bgClass: "bg-[#f0f4ff]", 
       accentColor: "text-nova-blue",
-      image: "/assets/images/pharmacy-doc.png",
+      image: pharmacylogo, // Use a PNG with transparent background if possible
       pattern: "radial-gradient(circle, rgba(0,74,173,0.05) 0%, transparent 70%)"
     }
   ];
@@ -77,7 +80,7 @@ const CentresOfExcellence = () => {
               </div>
 
               {/* Image Side - Positioned like the screenshot */}
-              <div className="absolute bottom-0 right-0 w-1/2 h-[90%] pointer-events-none">
+              <div className="absolute bottom-3 right-3 w-1/2 h-[90%] pointer-events-none">
                 <img 
                   src={item.image} 
                   alt={item.title} 

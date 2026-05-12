@@ -8,8 +8,8 @@ const Footer = () => {
   const footerLinks = {
     company: [
       { name: 'About Us', path: '/about' },
-      { name: 'Our Team', path: '/team' },
-      { name: 'Careers', path: '/careers' },
+      { name: 'Services', path: '/services' },
+      { name: 'Blogs', path: '/blogs' },
       { name: 'Contact', path: '/contact' },
     ],
     subsidiaries: [
