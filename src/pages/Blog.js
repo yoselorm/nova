@@ -15,7 +15,7 @@ const BlogShowcase = () => {
       setLoading(true);
       try {
         // Build path dynamically if filtering by specific medical wing category parameters
-        let url = 'http://localhost:4000/api/blogs';
+        let url = `${process.env.REACT_APP_SERVICE_API}/api/blogs`;
         if (selectedCategory !== 'all') {
           url += `?category=${selectedCategory}`;
         }
