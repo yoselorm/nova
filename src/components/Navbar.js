@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, Menu, X } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom'; 
+import mainlogo from '../assets/images/novalogo.png';
 import surgerylogo from '../assets/images/Surgerylogo.png';
 import fertilitylogo from '../assets/images/Fertilitylogo.png';
 import pharmacylogo from '../assets/images/Pharmacylogo.png';
@@ -10,27 +11,33 @@ const Navbar = ({ variant = 'default' }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [mobileSubsOpen, setMobileSubsOpen] = useState(false);
+  
+  const location = useLocation(); // Snag the active path string
 
   const themes = {
     default: {
-      logo: "N", name: "NOVA", subtext: "HEALTHCARE",
-      activeText: "text-nova-blue", btnBg: "bg-nova-blue", hoverText: "hover:text-nova-sky"
+      logo: mainlogo, activeText: "text-nova-blue", btnBg: "bg-nova-blue", hoverText: "hover:text-nova-sky"
     },
     surgery: {
-      logo: "S", name: "NOVA", subtext: "SURGERY CENTRE",
-      activeText: "text-surgery-main", btnBg: "bg-surgery-main", hoverText: "hover:text-surgery-gold"
+      logo: surgerylogo, activeText: "text-surgery-main", btnBg: "bg-surgery-main", hoverText: "hover:text-surgery-gold"
     },
     fertility: {
-      logo: "F", name: "NOVA", subtext: "FERTILITY CENTRE",
-      activeText: "text-fertility-main", btnBg: "bg-fertility-main", hoverText: "hover:text-nova-blue"
+      logo: fertilitylogo, activeText: "text-fertility-main", btnBg: "bg-fertility-main", hoverText: "hover:text-nova-blue"
     },
     pharmacy: {
-      logo: "P", name: "NOVA", subtext: "PHARMACY",
-      activeText: "text-pharmacy-main", btnBg: "bg-pharmacy-main", hoverText: "hover:text-nova-blue"
+      logo: pharmacylogo, activeText: "text-pharmacy-main", btnBg: "bg-pharmacy-main", hoverText: "hover:text-nova-blue"
     }
   };
 
-  const activeTheme = themes[variant];
+  // Determine dynamic variant key based on the current path name
+  const getDynamicVariant = () => {
+    if (location.pathname.includes('surgery-center')) return 'surgery';
+    if (location.pathname.includes('fertility-center')) return 'fertility';
+    if (location.pathname.includes('pharmacy')) return 'pharmacy';
+    return variant; // Graceful fallback back to variant prop
+  };
+
+  const activeTheme = themes[getDynamicVariant()];
 
   const subsidiaries = [
     { name: 'Surgery Centre', slug: 'surgery-center', color: 'text-surgery-main' },
@@ -44,15 +51,13 @@ const Navbar = ({ variant = 'default' }) => {
     <nav className="fixed w-full z-50 bg-white border-b border-slate-100 font-nova">
       <div className="max-w-[1440px] mx-auto px-6 h-24 flex items-center justify-between">
 
-        {/* LOGO SECTION */}
-        <Link to="/" className="flex items-center gap-3">
-          <div className={`w-11 h-11 ${activeTheme.btnBg} rounded-full flex items-center justify-center text-white font-bold text-xl transition-colors duration-500`}>
-            {activeTheme.logo}
-          </div>
-          <div className="flex flex-col">
-            <span className={`text-xl font-bold leading-none tracking-tight ${activeTheme.activeText}`}>{activeTheme.name}</span>
-            <span className="text-[10px] text-slate-400 font-bold tracking-[0.15em] uppercase">{activeTheme.subtext}</span>
-          </div>
+        {/* LOGO SECTION - ONLY THE LOGO IMAGE NOW */}
+        <Link to="/" className="flex items-center h-14">
+          <img 
+            src={activeTheme.logo} 
+            alt="Nova Healthcare Group Logo" 
+            className="w-[150px] object-contain transition-all duration-500"
+          />
         </Link>
 
         {/* DESKTOP NAVIGATION */}
@@ -93,27 +98,23 @@ const Navbar = ({ variant = 'default' }) => {
             </AnimatePresence>
           </div>
 
-          {/* <button className={`${activeTheme.btnBg} text-white px-8 py-3 rounded-full text-sm font-bold shadow-lg transition-colors`}>
-            Book Appointment
-          </button> */}
-
           <div className="flex gap-3">
             {/* Book Appointment Button */}
+          <Link to="/book-appointment">
             <button
-              className={`${activeTheme.btnBg} text-white px-8 py-3 rounded-full text-sm font-bold shadow-lg hover:shadow-xl transition-shadow duration-300`}
+              className={`${activeTheme.btnBg} text-white px-8 py-3 rounded-full text-sm font-bold shadow-lg hover:shadow-xl transition-all duration-300`}
             >
               Book Appointment
             </button>
+            </Link>
 
             {/* Donate Button */}
-          <Link to="/donate">
-            <button
-            
-              className="border-cyan-600 px-8 hover:bg-cyan-50 py-3 rounded-full text-sm font-bold shadow-lg hover:shadow-xl transition-shadow duration-300 border-2"
-
-            >
-              Donate
-            </button>
+            <Link to="/donate">
+              <button
+                className="border-cyan-600 px-8 hover:bg-cyan-50 py-3 rounded-full text-sm font-bold shadow-lg hover:shadow-xl transition-all duration-300 border-2"
+              >
+                Donate
+              </button>
             </Link>
           </div>
         </div>
@@ -143,7 +144,7 @@ const Navbar = ({ variant = 'default' }) => {
                   key={link}
                   to={link === 'Home' ? '/' : `/${link.toLowerCase()}`}
                   onClick={() => setIsOpen(false)}
-                  className="text-sm font-bold text-nova-blue uppercase tracking-tight"
+                  className={`text-sm font-bold uppercase tracking-tight ${activeTheme.activeText}`}
                 >
                   {link}
                 </Link>
@@ -153,7 +154,7 @@ const Navbar = ({ variant = 'default' }) => {
               <div>
                 <button
                   onClick={() => setMobileSubsOpen(!mobileSubsOpen)}
-                  className="flex items-center justify-between w-full text-sm font-bold text-nova-blue uppercase tracking-tight"
+                  className={`flex items-center justify-between w-full text-sm font-bold uppercase tracking-tight ${activeTheme.activeText}`}
                 >
                   Subsidiaries <ChevronDown className={mobileSubsOpen ? 'rotate-180 transition-transform' : ''} />
                 </button>
@@ -183,22 +184,22 @@ const Navbar = ({ variant = 'default' }) => {
 
               <div className="flex gap-3 pt-4">
                 {/* Book Appointment Button */}
-                <button
-                  className={`flex-1 ${activeTheme.btnBg} text-white px-6 py-3 rounded-lg text-sm font-bold transition-shadow hover:shadow-lg duration-300`}
-                >
-                  Book Appointment
-                </button>
+                <Link to="/book-appointment">
+                  <button
+                    className={`flex-1 ${activeTheme.btnBg} text-white px-6 py-3 rounded-lg text-sm font-bold transition-shadow hover:shadow-lg duration-300`}
+                  >
+                    Book Appointment
+                  </button>
+                </Link>
 
                 {/* Donate Button */}
-               <Link to="/donate">
-                <button
-                                  onClick={() => setIsOpen(false)}
-
-                  className="border-cyan-800 flex-1 px-6 py-3 rounded-lg text-sm font-bold border-2 transition-shadow hover:shadow-lg duration-300"
-
-                >
-                  Donate
-                </button>
+                <Link to="/donate">
+                  <button
+                    onClick={() => setIsOpen(false)}
+                    className="border-cyan-800 flex-1 px-6 py-3 rounded-lg text-sm font-bold border-2 transition-shadow hover:shadow-lg duration-300"
+                  >
+                    Donate
+                  </button>
                 </Link>
               </div>
             </div>

@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Play } from 'lucide-react';
 import aboutHeroBg from '../../assets/images/AboutHero.jpg';
+import { Link } from 'react-router-dom';
 
 const CinematicHero = () => {
   const mainText = "NOVA HEALTHCARE";
@@ -107,12 +108,14 @@ const CinematicHero = () => {
 
             <div className="flex flex-wrap gap-5">
               {/* Primary Action */}
+             <Link to="/services">
               <button className="group relative px-8 py-4 bg-nova-blue overflow-hidden rounded-xl transition-all shadow-2xl shadow-blue-900/40">
                 <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
                 <span className="relative z-10 text-white font-black uppercase tracking-widest text-xs flex items-center gap-3">
                   Explore Our Services <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
                 </span>
               </button>
+              </Link>
 
               {/* Video/Secondary Action */}
               <button className="flex items-center gap-4 text-white group">

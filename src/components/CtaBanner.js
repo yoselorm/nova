@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Phone, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const CTABanner = () => {
   return (
@@ -52,7 +53,7 @@ const CTABanner = () => {
               <div className="bg-nova-blue text-white p-3 rounded-full group-hover:rotate-12 transition-transform">
                 <Phone size={20} fill="currentColor" />
               </div>
-              <span className="text-nova-blue font-bold text-lg">+233 (0) XXX XXX XXX</span>
+              <span className="text-nova-blue font-bold text-xs sm:text-lg">+233 (0) XXX XXX XXX</span>
             </motion.a>
 
             {/* Book Now Button */}
@@ -61,7 +62,9 @@ const CTABanner = () => {
               whileTap={{ scale: 0.95 }}
               className="bg-nova-sky text-nova-blue font-bold rounded-full pl-8 pr-2 py-2 flex items-center gap-4 shadow-xl group"
             >
-              <span className="uppercase tracking-widest text-sm">Book Consultation Now</span>
+              <Link to="/book-appointment" >
+              <span className="uppercase tracking-widest text-xs sm:text-sm">Book Consultation Now</span>
+              </Link>
               <div className="bg-nova-blue/10 text-nova-blue p-3 rounded-full group-hover:translate-x-1 transition-transform">
                 <ArrowRight size={20} />
               </div>

@@ -34,7 +34,7 @@ const PureImageBanner = ({ imagePath }) => {
             transition={{ duration: 2 }}
             src={imageBanner} 
             alt="Nova Healthcare Facility" 
-            className="w-full h-full object-cover"
+            className="w-full h-full object-contain sm:object-cover"
           />
 
           {/* GRADIENT OVERLAY - Subtle dark fade to match the Hero section depth */}

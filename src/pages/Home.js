@@ -12,17 +12,16 @@ import AppointmentSection from '../components/AppointmentSection'
 const Home = () => {
   return (
     <div className='bg-white'>
-        <Hero />
-        <ListAccess />
-        <PureImageBanner />
-        <IntroSection/>
-        <CentresOfExcellence />
-        <ClinicalExcellence />
-        <CTABanner />
-        <InfiniteTestimonials />
-        <AppointmentSection />
+      <Hero />
+      <ListAccess />
+      <PureImageBanner />
+      <IntroSection />
+      <CentresOfExcellence />
+      <ClinicalExcellence />
+      <CTABanner />
+      <InfiniteTestimonials />
+      <AppointmentSection />
 
-        
     </div>
   )
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, ShieldCheck, Target } from 'lucide-react';
 import IntroImage from '../../assets/images/IntroImage.jpg';
+import { Link } from 'react-router-dom';
 
 const IntroSection = () => {
   // Smooth, slow easing for that premium feel
@@ -101,6 +102,7 @@ const IntroSection = () => {
             </div>
 
             {/* CTA BUTTON */}
+         <Link to="/about">
             <button className="flex items-center gap-6 group">
                <div className="w-16 h-16 rounded-full bg-nova-blue flex items-center justify-center text-white group-hover:bg-nova-sky transition-all duration-700 shadow-xl shadow-blue-900/10">
                   <ArrowRight size={24} className="group-hover:translate-x-1 transition-transform" />
@@ -110,6 +112,7 @@ const IntroSection = () => {
                   <span className="text-nova-sky text-[10px] font-bold">About Nova Healthcare</span>
                </div>
             </button>
+            </Link>
           </motion.div>
 
         </div>

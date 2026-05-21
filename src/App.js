@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
-// Components
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
+// Components & Layouts
+import PublicLayout from './components/PublicLayout';
 import Preloader from './components/Preloader';
 
-// Pages
+// Public Pages
 import Home from './pages/Home';
 import About from './pages/About';
 import Team from './pages/Team';
@@ -17,14 +16,23 @@ import FertilityCenter from './pages/subsidiaries/FertilityCenter';
 import Pharmacy from './pages/subsidiaries/Pharmacy';
 import DonatePage from './pages/Donate';
 
-// This simple component handles scrolling to top and the layout structure
+// Admin System Pages
+import AdminLayout from './admin/pages/AdminLayout';
+import AdminLogin from './admin/pages/Login';
+import BookAppointment from './pages/BookAppointement';
+import AdminDashboard from './admin/pages/Dashboard';
+import ManageAppointments from './admin/pages/ManageAppointments';
+import ManageBlogs from './admin/pages/ManageBlogs';
+import BlogDetailView from './pages/BlogDetailView';
+import BlogShowcase from './pages/Blog';
+import ScrollReset from './components/ScrollReset';
+// Note: Import your OverviewBoard, ManageAppointments, and ManageBlogs here when ready!
+
 const ScrollToTop = () => {
-  const { pathname } = useLocation();
-  
+  const { pathname } = window.location;
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
-
   return null;
 };
 
@@ -32,9 +40,7 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const handleLoad = () => {
-      setLoading(false);
-    };
+    const handleLoad = () => setLoading(false);
 
     if (document.readyState === 'complete') {
       handleLoad();
@@ -51,32 +57,53 @@ function App() {
   return (
     <Router>
       <ScrollToTop />
+      <ScrollReset/>
       
-      {/* 1. FIXED NAVBAR: Always at the outmost beginning */}
-      <header style={{ position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 1000 }}>
-        <Navbar />
-      </header>
-
-      {/* 2. MAIN CONTENT: Simple spacer to prevent overlap */}
-      <main style={{ paddingTop: '90px', minHeight: '100vh' }}>
-        <Routes>
+      <Routes>
+        {/* ==========================================================
+            1. PUBLIC WEBSITE CLIENT PORTAL (Has Public Navbar/Footer)
+           ========================================================== */}
+        <Route element={<PublicLayout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/home" element={<Home />} />
+          <Route path="/home" element={<Navigate to="/" replace />} /> {/* Clean redirect to root */}
           <Route path="/about" element={<About />} />
           <Route path="/team" element={<Team />} />
           <Route path="/services" element={<Services />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/donate" element={<DonatePage />} />
+          {/* <Route path='/book-appointment' element={<Navigate to="/#book" replace />} />  */}
+          <Route path="/blog" element={<BlogShowcase />} />
+          <Route path="/blogs/:slug" element={<BlogDetailView isAdmin={false} />} />
+          <Route path='/book-appointment' element={<BookAppointment />} />
           
-          {/* Subsidiary Routes */}
+          {/* Subsidiary Focus Pages */}
           <Route path="/surgery-center" element={<SurgeryCenter />} />
           <Route path="/fertility-center" element={<FertilityCenter />} />
           <Route path="/pharmacy" element={<Pharmacy />} />
-        </Routes>
-      </main>
+        </Route>
 
-      {/* 3. FOOTER */}
-      <Footer />
+        {/* ==========================================================
+            2. RESTRICTED ADMIN PORTAL ENTRY (Zero Public UI Elements)
+           ========================================================== */}
+        <Route path="/admin/login" element={<AdminLogin />} />
+
+        {/* ==========================================================
+            3. INTERNAL DASHBOARD SYSTEM (Uses Dedicated Admin Layout)
+           ========================================================== */}
+        <Route path="/admin" element={<AdminLayout />}>
+          {/* Automatically forward a bare "/admin" hit directly to dashboard */}
+          <Route index element={<Navigate to="dashboard" replace />} />
+          
+          {/* Un-comment these sub-views as we construct them! */}
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="appointments" element={<ManageAppointments />} />
+          <Route path="blogs" element={<ManageBlogs />} />
+          <Route path="blogs/:slug" element={<BlogDetailView isAdmin={true} />} />
+        </Route>
+
+        {/* CATCH-ALL REDIRECT FOR BROKEN LINKS */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
       
     </Router>
   );

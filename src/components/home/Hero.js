@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Phone, Calendar, ArrowRight, MousePointer2 } from 'lucide-react';
 import homeherobg from '../../assets/images/herobg.jpg';
+import { Link } from 'react-router-dom';
 
 const Hero = () => {
   // Ultra-Premium Easing (The "Apple" Feel)
@@ -88,6 +89,7 @@ const Hero = () => {
             </p>
 
             <div className="flex flex-wrap gap-8 items-center">
+            <Link to="/book-appointment">
               <motion.button 
                 whileHover={{ scale: 1.05, backgroundColor: "#00E5FF" }}
                 whileTap={{ scale: 0.95 }}
@@ -95,12 +97,17 @@ const Hero = () => {
               >
                 Inquire Now
                 <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
-              </motion.button>
+              </motion.button></Link>
 
-              <button className="text-white/40 hover:text-white font-black text-[10px] uppercase tracking-[0.4em] transition-all flex items-center gap-4 group">
-                <span className="w-10 h-[1px] bg-white/20 group-hover:w-16 group-hover:bg-nova-sky transition-all" />
-                View Units
-              </button>
+              <Link to="/contact">
+              <motion.button 
+                whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,0.1)" }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-white/10 text-white px-12 py-6 rounded-2xl font-bold uppercase tracking-widest text-[10px] shadow-sm hover:shadow-md transition-all flex items-center gap-4 group"
+              >
+                Contact Us
+                <MousePointer2 size={18} className="group-hover:translate-x-2 transition-transform" />
+              </motion.button></Link>
             </div>
           </motion.div>
         </div>

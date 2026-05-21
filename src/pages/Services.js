@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Activity, ShieldCheck, Microscope, Plus } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Services = () => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
@@ -108,9 +109,11 @@ const Services = () => {
             <h4 className="text-3xl font-black tracking-tight mb-2">Need a Specialized Consultation?</h4>
             <p className="text-white/60 font-medium">Our clinical experts are available for detailed sessions.</p>
           </div>
+        <Link to="/book-appointment">     
           <button className="bg-nova-sky text-nova-blue px-12 py-5 rounded-2xl font-black uppercase tracking-widest text-xs whitespace-nowrap hover:scale-105 transition-transform">
             Book Appointment
           </button>
+          </Link>
         </motion.div>
 
       </div>
