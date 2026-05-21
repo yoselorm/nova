@@ -14,7 +14,7 @@ const ManageAppointments = () => {
   const fetchAppointments = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:4000/api/appointments', { withCredentials: true });
+      const response = await axios.get(`${process.env.REACT_APP_SERVICE_API}/api/appointments`, { withCredentials: true });
       if (response.data.success) {
         setAppointments(response.data.data);
         setFilteredData(response.data.data);
@@ -44,7 +44,7 @@ const ManageAppointments = () => {
     setActionLoadingId(id);
     try {
       const response = await axios.put(
-        `http://localhost:4000/api/appointments/${id}`, 
+        `${process.env.REACT_APP_SERVICE_API}/api/appointments/${id}`, 
         { status: targetStatus },
         { withCredentials: true }
       );

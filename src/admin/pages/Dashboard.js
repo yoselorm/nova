@@ -11,7 +11,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchDashboardTelemetry = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/appointments', { withCredentials: true });
+        const response = await axios.get(`${process.env.REACT_APP_SERVICE_API}/api/appointments`, { withCredentials: true });
         if (response.data.success) {
           const data = response.data.data;
           

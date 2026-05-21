@@ -16,7 +16,7 @@ const BlogDetailView = ({ isAdmin = false }) => {
       setLoading(true);
       try {
         // Public reads rely on standard routes, admin can bypass check states if needed
-        const endpoint = `http://localhost:4000/api/blogs/${slug}`;
+        const endpoint = `${process.env.REACT_APP_SERVICE_API}/api/blogs/${slug}`;
         const response = await axios.get(endpoint, { withCredentials: true });
         
         if (response.data.success) {
@@ -35,7 +35,7 @@ const BlogDetailView = ({ isAdmin = false }) => {
   const handleDeleteFromView = async () => {
     if (!window.confirm('CRITICAL: Clear this literary log completely from database registries?')) return;
     try {
-      await axios.delete(`http://localhost:4000/api/blogs/${blog._id}`, { withCredentials: true });
+      await axios.delete(`${process.env.REACT_APP_SERVICE_API}/api/blogs/${blog._id}`, { withCredentials: true });
       navigate('/admin/blogs'); // Send admin back to their main management board panel
     } catch (err) {
       alert('Error clearing data vector arrays.');

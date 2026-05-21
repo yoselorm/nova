@@ -55,7 +55,7 @@ const BookAppointment = () => {
 
     try {
       const response = await axios.post(
-        'http://localhost:4000/api/appointments', // Points straight to your core backend controller router
+        `${process.env.REACT_APP_SERVICE_API}/api/appointments`, // Points straight to your core backend controller router
         {
           fullName: bookingData.fullName,
           email: bookingData.email,

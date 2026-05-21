@@ -27,7 +27,7 @@ const ManageBlogs = () => {
     setLoading(true);
     try {
       // Hit backend route (requires credentials because get hooks verify status parameters later)
-      const response = await axios.get('http://localhost:4000/api/blogs', { withCredentials: true });
+      const response = await axios.get(`${process.env.REACT_APP_SERVICE_API}/api/blogs`, { withCredentials: true });
       if (response.data.success) {
         setBlogs(response.data.data);
       }
@@ -72,7 +72,7 @@ const ManageBlogs = () => {
 
     try {
       const response = await axios.post(
-        'http://localhost:4000/api/blogs',
+        `${process.env.REACT_APP_SERVICE_API}/api/blogs`,
         formData,
         { withCredentials: true, headers: { 'Content-Type': 'application/json' } }
       );
@@ -95,7 +95,7 @@ const ManageBlogs = () => {
     if (!window.confirm('Are you absolutely certain you want to purge this clinical literature asset log?')) return;
     
     try {
-      const response = await axios.delete(`http://localhost:4000/api/blogs/${id}`, { withCredentials: true });
+      const response = await axios.delete(`${process.env.REACT_APP_SERVICE_API}/api/blogs/${id}`, { withCredentials: true });
       if (response.data.success) {
         setBlogs(prev => prev.filter(b => b._id !== id));
       }
