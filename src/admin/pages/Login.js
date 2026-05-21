@@ -8,41 +8,47 @@ import toast from '../../components/Toast';
 const AdminLogin = () => {
   const navigate = useNavigate();
   const masterEase = [0.16, 1, 0.3, 1];
-  
+
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  
+
   // New State: Capture backend pipeline error arrays cleanly
   const [error, setError] = useState('');
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setLoading(false);
     setError('');
     setLoading(true);
-    
+
     try {
-      // Execute the verification flight to your backend server running on port 4000
+      // Execute the verification flight to your backend server running on your live domain mapping
       const response = await axios.post(
-        `${process.env.REACT_APP_SERVICE_API}/api/auth/login`, 
+        `${process.env.REACT_APP_SERVICE_API}/api/auth/login`,
         { email, password },
-        { 
-          withCredentials: true, // CRITICAL: This allows HTTP-Only cookies to be injected into the browser storage
+        {
           headers: { 'Content-Type': 'application/json' }
         }
       );
 
       if (response.data.success) {
+        // 1. Extract the plaintext JWT payload directly from the successful response body
+        const { token } = response.data;
+
+        if (token) {
+          // 2. Drop the signature array securely into the browser's isolated tab session storage matrix
+          sessionStorage.setItem('admin_token', token);
+        }
+
         setLoading(false);
-        // Clear inputs and route the system directly to your secure dashboard layout workspace
+        // Route the system directly to your secure dashboard layout workspace
         navigate('/admin/dashboard');
-        toast.success('Authentication successful. Redirecting to dashboard...'); // Friendly toast for UX feedback
+        toast.success('Authentication successful. Redirecting to dashboard...');
       }
     } catch (err) {
       setLoading(false);
-      toast.error('Authentication failed. Please check your credentials and try again.'); // Friendly toast for UX feedback
+      toast.error('Authentication failed. Please check your credentials and try again.');
       // Grab error parameter messages sent straight out of your authController catch blocks
       const errorMessage = err.response?.data?.message || 'Connection failure to the auth engine.';
       setError(errorMessage);
@@ -51,10 +57,10 @@ const AdminLogin = () => {
 
   return (
     <div className="min-h-screen w-full bg-[#FAF9FF] flex font-nova overflow-hidden">
-      
+
       {/* LEFT SIDE: ULTRA-CLEAN SEAMLESS AUTH FORM */}
       <div className="w-full lg:w-[45%] bg-white flex flex-col justify-between p-8 md:p-16 relative z-10 border-r border-slate-100">
-        
+
         {/* Top Header Log */}
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 bg-nova-blue rounded-xl flex items-center justify-center text-white font-black text-lg shadow-lg shadow-blue-900/20">
@@ -98,12 +104,12 @@ const AdminLogin = () => {
                 <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300">
                   <Mail size={18} />
                 </span>
-                <input 
-                  type="email" 
+                <input
+                  type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="name@novahealthcare.com" 
+                  placeholder="name@novahealthcare.com"
                   className="w-full h-14 bg-slate-50 border border-slate-100 rounded-xl pl-12 pr-4 text-sm font-medium text-slate-900 placeholder:text-slate-300 focus:outline-none focus:border-nova-blue focus:bg-white transition-all duration-300"
                 />
               </div>
@@ -119,15 +125,15 @@ const AdminLogin = () => {
                 <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300">
                   <Lock size={18} />
                 </span>
-                <input 
-                  type={showPassword ? "text" : "password"} 
+                <input
+                  type={showPassword ? "text" : "password"}
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••••••" 
+                  placeholder="••••••••••••"
                   className="w-full h-14 bg-slate-50 border border-slate-100 rounded-xl pl-12 pr-12 text-sm font-medium text-slate-900 placeholder:text-slate-300 focus:outline-none focus:border-nova-blue focus:bg-white transition-all duration-300"
                 />
-                <button 
+                <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
@@ -147,7 +153,7 @@ const AdminLogin = () => {
                 <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               ) : (
                 <>
-                  Establish Connection 
+                  Establish Connection
                   <ArrowRight size={16} className="transform group-hover:translate-x-1 transition-transform" />
                 </>
               )}
@@ -164,9 +170,9 @@ const AdminLogin = () => {
       {/* RIGHT SIDE: CINEMATIC MEDICAL GRID DESIGN */}
       <div className="hidden lg:flex lg:w-[55%] bg-slate-950 relative items-center px-16 justify-start overflow-hidden">
         {/* Fine Architectural Grid Texture */}
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" 
-             style={{ backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
-        
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
+          style={{ backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+
         {/* Soft Ambient Core Light Blob */}
         <div className="absolute -top-40 -right-40 w-[600px] h-[600px] bg-nova-blue/10 rounded-full blur-[120px] pointer-events-none" />
         <div className="absolute -bottom-40 left-0 w-[500px] h-[500px] bg-nova-sky/5 rounded-full blur-[100px] pointer-events-none" />
@@ -177,9 +183,9 @@ const AdminLogin = () => {
 
         <div className="relative z-10 max-w-lg">
           <span className="text-[10px] font-black text-nova-sky uppercase tracking-[0.4em] block mb-6">// Global Core Operations Control</span>
-          
+
           <div className="overflow-hidden mb-6">
-            <motion.h3 
+            <motion.h3
               initial={{ y: "100%" }} animate={{ y: 0 }} transition={{ duration: 1, ease: masterEase }}
               className="text-white text-4xl md:text-5xl font-black tracking-tighter leading-[1.05] uppercase"
             >

@@ -11,10 +11,19 @@ const ManageAppointments = () => {
   const [error, setError] = useState('');
   const [actionLoadingId, setActionLoadingId] = useState(null);
 
-  const fetchAppointments = async () => {
+ const fetchAppointments = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${process.env.REACT_APP_SERVICE_API}/api/appointments`, { withCredentials: true });
+      // 1. Manually capture the current session token signature
+      const token = sessionStorage.getItem('admin_token');
+
+      // 2. Map the token parameters directly onto the config header matrix
+      const response = await axios.get(`${process.env.REACT_APP_SERVICE_API}/api/appointments`, {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : ''
+        }
+      });
+      
       if (response.data.success) {
         setAppointments(response.data.data);
         setFilteredData(response.data.data);
@@ -25,7 +34,6 @@ const ManageAppointments = () => {
       setLoading(false);
     }
   };
-
   useEffect(() => {
     fetchAppointments();
   }, []);
@@ -42,11 +50,17 @@ const ManageAppointments = () => {
   // Execute transmission update step
   const updateStatus = async (id, targetStatus) => {
     setActionLoadingId(id);
+          const token = sessionStorage.getItem('admin_token');
+
     try {
       const response = await axios.put(
         `${process.env.REACT_APP_SERVICE_API}/api/appointments/${id}`, 
         { status: targetStatus },
-        { withCredentials: true }
+        {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : ''
+          }
+        }
       );
       if (response.data.success) {
         // Optimistically parse and cycle updated objects inside hook state arrays

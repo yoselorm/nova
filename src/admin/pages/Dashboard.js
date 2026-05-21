@@ -9,34 +9,43 @@ const AdminDashboard = () => {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const fetchDashboardTelemetry = async () => {
-      try {
-        const response = await axios.get(`${process.env.REACT_APP_SERVICE_API}/api/appointments`, { withCredentials: true });
-        if (response.data.success) {
-          const data = response.data.data;
-          
-          // Compute systemic metrics out of data vector array
-          const stats = data.reduce((acc, curr) => {
-            acc.total++;
-            if (curr.status === 'pending') acc.pending++;
-            if (curr.status === 'confirmed') acc.confirmed++;
-            if (curr.subsidiary === 'surgery') acc.surgery++;
-            if (curr.subsidiary === 'fertility') acc.fertility++;
-            if (curr.subsidiary === 'pharmacy') acc.pharmacy++;
-            return acc;
-          }, { total: 0, pending: 0, confirmed: 0, surgery: 0, fertility: 0, pharmacy: 0 });
+  const fetchDashboardTelemetry = async () => {
+    try {
+      // 1. Capture the token parameter manually
+      const token = sessionStorage.getItem('admin_token');
 
-          setMetrics(stats);
+      // 2. Inject the Authorization string directly into the config mapping configuration
+      const response = await axios.get(`${process.env.REACT_APP_SERVICE_API}/api/appointments`, {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : ''
         }
-      } catch (err) {
-        setError(err.response?.data?.message || 'Failed to aggregate portal system telemetry.');
-      } finally {
-        setLoading(false);
-      }
-    };
+      });
+      
+      if (response.data.success) {
+        const data = response.data.data;
+        
+        // Compute systemic metrics out of data vector array
+        const stats = data.reduce((acc, curr) => {
+          acc.total++;
+          if (curr.status === 'pending') acc.pending++;
+          if (curr.status === 'confirmed') acc.confirmed++;
+          if (curr.subsidiary === 'surgery') acc.surgery++;
+          if (curr.subsidiary === 'fertility') acc.fertility++;
+          if (curr.subsidiary === 'pharmacy') acc.pharmacy++;
+          return acc;
+        }, { total: 0, pending: 0, confirmed: 0, surgery: 0, fertility: 0, pharmacy: 0 });
 
-    fetchDashboardTelemetry();
-  }, []);
+        setMetrics(stats);
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to aggregate portal system telemetry.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchDashboardTelemetry();
+}, []);
 
   if (loading) return (
     <div className="min-h-screen bg-[#FAF9FF] flex items-center justify-center font-nova">

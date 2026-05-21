@@ -5,7 +5,7 @@ import axios from 'axios';
 
 const ManageBlogs = () => {
   const masterEase = [0.16, 1, 0.3, 1];
-  
+
   // App States
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,8 +26,16 @@ const ManageBlogs = () => {
   const fetchBlogs = async () => {
     setLoading(true);
     try {
-      // Hit backend route (requires credentials because get hooks verify status parameters later)
-      const response = await axios.get(`${process.env.REACT_APP_SERVICE_API}/api/blogs`, { withCredentials: true });
+      // 1. Manually capture the current session token signature
+      const token = sessionStorage.getItem('admin_token');
+
+      // 2. Pass the token cleanly inside the request's Authorization header
+      const response = await axios.get(`${process.env.REACT_APP_SERVICE_API}/api/blogs`, {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : ''
+        }
+      });
+
       if (response.data.success) {
         setBlogs(response.data.data);
       }
@@ -71,10 +79,19 @@ const ManageBlogs = () => {
     setError('');
 
     try {
+      // 1. Manually extract the token from session storage
+      const token = sessionStorage.getItem('admin_token');
+
       const response = await axios.post(
         `${process.env.REACT_APP_SERVICE_API}/api/blogs`,
         formData,
-        { withCredentials: true, headers: { 'Content-Type': 'application/json' } }
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            // 2. Inject the Authorization string along with Content-Type
+            'Authorization': token ? `Bearer ${token}` : ''
+          }
+        }
       );
 
       if (response.data.success) {
@@ -91,11 +108,21 @@ const ManageBlogs = () => {
   };
 
   // Purge Document Entry Out of MongoDB Matrix
+  // Purge Document Entry Out of MongoDB Matrix
   const handleDelete = async (id) => {
     if (!window.confirm('Are you absolutely certain you want to purge this clinical literature asset log?')) return;
-    
+
     try {
-      const response = await axios.delete(`${process.env.REACT_APP_SERVICE_API}/api/blogs/${id}`, { withCredentials: true });
+      // 1. Capture the token sequence manually
+      const token = sessionStorage.getItem('admin_token');
+
+      // 2. Map the token onto the config configuration block headers object
+      const response = await axios.delete(`${process.env.REACT_APP_SERVICE_API}/api/blogs/${id}`, {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : ''
+        }
+      });
+
       if (response.data.success) {
         setBlogs(prev => prev.filter(b => b._id !== id));
       }
@@ -114,14 +141,14 @@ const ManageBlogs = () => {
   return (
     <div className="min-h-screen bg-[#FAF9FF] p-8 md:p-12 font-nova relative">
       <div className="max-w-7xl mx-auto space-y-8">
-        
+
         {/* Module Header Bar */}
         <div className="flex items-center justify-between">
           <div>
             <span className="text-[10px] font-black text-nova-sky uppercase tracking-[0.4em] block mb-2">// Corporate Literature Engine</span>
             <h1 className="text-4xl font-black text-slate-950 uppercase tracking-tighter">Manage Medical Blogs</h1>
           </div>
-          
+
           <button
             onClick={() => setIsModalOpen(true)}
             className="h-12 px-6 bg-slate-950 text-white font-black text-xs uppercase tracking-widest rounded-xl shadow-lg hover:bg-nova-blue flex items-center gap-2 transition-colors duration-300"
@@ -152,9 +179,9 @@ const ManageBlogs = () => {
                 <div>
                   {/* Image viewport displaying the direct Base64 source */}
                   <div className="h-48 bg-slate-100 w-full relative overflow-hidden">
-                    <img 
-                      src={blog.coverImage} 
-                      alt={blog.title} 
+                    <img
+                      src={blog.coverImage}
+                      alt={blog.title}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                     <span className={`absolute top-4 left-4 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-wider ${getCategoryColor(blog.category)} shadow-sm`}>
@@ -195,9 +222,9 @@ const ManageBlogs = () => {
       <AnimatePresence>
         {isModalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            
+
             {/* Backdrop Mask */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }} animate={{ opacity: 0.4 }} exit={{ opacity: 0 }}
               onClick={() => setIsModalOpen(false)}
               className="absolute inset-0 bg-slate-950"
@@ -239,7 +266,7 @@ const ManageBlogs = () => {
                       <option value="pharmacy">Nova Pharmacy</option>
                     </select>
                   </div>
-                  
+
                   {/* Author Line */}
                   <div className="space-y-1.5">
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Author Registry Signature</label>
@@ -264,12 +291,12 @@ const ManageBlogs = () => {
                         <Image size={24} className="text-slate-300" />
                       )}
                     </div>
-                    
+
                     <div className="text-center sm:text-left space-y-1">
-                      <input 
+                      <input
                         required
-                        type="file" 
-                        accept="image/*" 
+                        type="file"
+                        accept="image/*"
                         onChange={handleImageConversion}
                         className="text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-[10px] file:font-black file:uppercase file:tracking-wider file:bg-slate-950 file:text-white file:cursor-pointer hover:file:bg-nova-blue file:transition-all"
                       />
