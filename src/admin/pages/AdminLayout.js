@@ -28,27 +28,30 @@ const AdminLayout = () => {
   ];
 
   // THE REAL LOGOUT ENGINE
-  const handleLogout = async () => {
+const handleLogout = async () => {
     try {
-      // Direct hit to your auth logout endpoint to invalidate and flush the HTTP-Only token cookie
+      // 1. Direct hit to your auth logout endpoint using your environment target URL string
       const response = await axios.post(
-        'http://localhost:4000/api/auth/logout', 
-        {}, 
-        { 
-          withCredentials: true // MANDATORY: Directs the browser to pass and flush the secure cookie wrapper
-        }
+        `${process.env.REACT_APP_SERVICE_API}/api/auth/logout`, 
+        {}
       );
       
       if (response.data.success) {
-        // Safe disconnection achieved. Terminate UI session state and drop back to login page
+        // 2. Wipe down the token signature from the local storage layer instance
+        sessionStorage.removeItem('admin_token');
+        
+        // Terminate UI session state and drop back to login page
         navigate('/admin/login', { replace: true });
-        toast.success('Successfully logged out. See you next time!'); // Friendly toast for UX feedback
+        toast.success('Successfully logged out. See you next time!'); 
       }
     } catch (err) {
       console.error('[CRITICAL] Admin layout session detachment failed:', err.message);
-      // Fallback: If backend is unreachable, force boot to login so frontend state drops anyway
+      
+      // FALLBACK SECURITY: If the backend is down or unreachable, purge the local 
+      // session parameters anyway so the user isn't locked into an orphan UI state.
+      sessionStorage.removeItem('admin_token');
       navigate('/admin/login', { replace: true });
-
+      toast.error('Session cleared locally due to connection issues.');
     }
   };
 
