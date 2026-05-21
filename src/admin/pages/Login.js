@@ -46,6 +46,7 @@ const AdminLogin = () => {
         navigate('/admin/dashboard');
         toast.success('Authentication successful. Redirecting to dashboard...');
       }
+      return response.data;
     } catch (err) {
       setLoading(false);
       toast.error('Authentication failed. Please check your credentials and try again.');
