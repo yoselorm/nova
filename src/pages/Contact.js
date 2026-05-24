@@ -61,7 +61,7 @@ const Contact = () => {
                 <ContactCard 
                   icon={<Mail size={20} />} 
                   title="Email" 
-                  lines={["Info@novasurgerycenter.com"]} 
+                  lines={["info@novasurgerycenter.com"]} 
                   variants={fadeInUp}
                 />
                 <ContactCard 

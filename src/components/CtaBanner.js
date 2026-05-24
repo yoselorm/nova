@@ -45,7 +45,7 @@ const CTABanner = () => {
             
             {/* Phone Button */}
             <motion.a 
-              href="tel:+2330XXXXXXXX"
+            href="tel:+233-302-751-290"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="bg-white rounded-full pl-2 pr-8 py-2 flex items-center gap-4 shadow-xl transition-all group"
@@ -53,7 +53,7 @@ const CTABanner = () => {
               <div className="bg-nova-blue text-white p-3 rounded-full group-hover:rotate-12 transition-transform">
                 <Phone size={20} fill="currentColor" />
               </div>
-              <span className="text-nova-blue font-bold text-xs sm:text-lg">+233 (0) XXX XXX XXX</span>
+              <span className="text-nova-blue font-bold text-xs sm:text-lg">+233 (0) 302 751 290</span>
             </motion.a>
 
             {/* Book Now Button */}

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, Image, Trash2, Edit3, AlertCircle, FileText, X, Check, Eye } from 'lucide-react';
+import { Plus, Image, Trash2, Edit3, AlertCircle, FileText, X, ImagePlus } from 'lucide-react';
 import axios from 'axios';
+import toast from '../../components/Toast';
 
 const ManageBlogs = () => {
   const masterEase = [0.16, 1, 0.3, 1];
@@ -12,30 +13,31 @@ const ManageBlogs = () => {
   const [error, setError] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [submitLoading, setSubmitLoading] = useState(false);
+  
+  // Update Tracking Architecture States
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [activeBlogId, setActiveBlogId] = useState(null);
 
-  // Composer Form Parameters State
+  // Custom Structural Confirmation Modal States
+  const [deleteModal, setDeleteModal] = useState({ isOpen: false, targetId: null });
+
+  // Composer Form Parameters State Vector
   const [formData, setFormData] = useState({
     title: '',
     category: 'general',
     author: 'Nova Medical Editorial Board',
     readTime: '3 min read',
     content: '',
-    coverImage: '' // This will safely lock our raw converted Base64 string string payload
+    coverImage: '' // Secure base64 data string payload
   });
 
   const fetchBlogs = async () => {
     setLoading(true);
     try {
-      // 1. Manually capture the current session token signature
       const token = sessionStorage.getItem('admin_token');
-
-      // 2. Pass the token cleanly inside the request's Authorization header
       const response = await axios.get(`${process.env.REACT_APP_SERVICE_API}/api/blogs`, {
-        headers: {
-          Authorization: token ? `Bearer ${token}` : ''
-        }
+        headers: { Authorization: token ? `Bearer ${token}` : '' }
       });
-
       if (response.data.success) {
         setBlogs(response.data.data);
       }
@@ -50,20 +52,19 @@ const ManageBlogs = () => {
     fetchBlogs();
   }, []);
 
-  // THE CORE ENGINE: Convert File Object to Base64 String 
+  // Convert File Object to Base64 String Matrix
   const handleImageConversion = (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    // Fast file-size guard block (MongoDB documents are capped at 16MB)
     if (file.size > 4 * 1024 * 1024) {
-      alert('Asset payload exceeds maximum optimization size threshold (4MB). Optimize image before seeding.');
+      alert('Asset payload exceeds maximum optimization size threshold (4MB).');
       return;
     }
 
     const reader = new FileReader();
     reader.onloadend = () => {
-      setFormData(prev => ({ ...prev, coverImage: reader.result })); // This result is your raw "data:image/png;base64,..." string
+      setFormData(prev => ({ ...prev, coverImage: reader.result }));
     };
     reader.readAsDataURL(file);
   };
@@ -72,33 +73,73 @@ const ManageBlogs = () => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  // Submit Article Payload Array to Matrix
-  const handleSubmit = async (e) => {
+  // Open clean composer layout frame
+  const handleOpenCreateModal = () => {
+    setIsEditMode(false);
+    setActiveBlogId(null);
+    setFormData({
+      title: '',
+      category: 'general',
+      author: 'Nova Medical Editorial Board',
+      readTime: '3 min read',
+      content: '',
+      coverImage: ''
+    });
+    setIsModalOpen(true);
+  };
+
+  // Prepopulate form configuration fields to edit mode
+  const handleOpenEditModal = (blog) => {
+    setIsEditMode(true);
+    setActiveBlogId(blog._id);
+    setFormData({
+      title: blog.title,
+      category: blog.category,
+      author: blog.author,
+      readTime: blog.readTime,
+      content: blog.content,
+      coverImage: blog.coverImage
+    });
+    setIsModalOpen(true);
+  };
+
+  // Universal Submission Router logic branch
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     setSubmitLoading(true);
     setError('');
 
+    const token = sessionStorage.getItem('admin_token');
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': token ? `Bearer ${token}` : ''
+    };
+
     try {
-      // 1. Manually extract the token from session storage
-      const token = sessionStorage.getItem('admin_token');
-
-      const response = await axios.post(
-        `${process.env.REACT_APP_SERVICE_API}/api/blogs`,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            // 2. Inject the Authorization string along with Content-Type
-            'Authorization': token ? `Bearer ${token}` : ''
-          }
+      if (isEditMode) {
+        // EXECUTE PUT UPDATE LOGIC
+        const response = await axios.put(
+          `${process.env.REACT_APP_SERVICE_API}/api/blogs/${activeBlogId}`,
+          formData,
+          { headers }
+        );
+        if (response.data.success) {
+          setBlogs(prev => prev.map(b => b._id === activeBlogId ? response.data.data : b));
+          setIsModalOpen(false);
+          toast.success('Article updated successfully.');
         }
-      );
-
-      if (response.data.success) {
-        // Append the new object back to local arrays instantly and clean frames
-        setBlogs(prev => [response.data.data, ...prev]);
-        setIsModalOpen(false);
-        setFormData({ title: '', category: 'general', author: 'Nova Medical Editorial Board', readTime: '3 min read', content: '', coverImage: '' });
+      } else {
+        // EXECUTE POST CREATION LOGIC
+        const response = await axios.post(
+          `${process.env.REACT_APP_SERVICE_API}/api/blogs`,
+          formData,
+          { headers }
+        );
+        if (response.data.success) {
+          setBlogs(prev => [response.data.data, ...prev]);
+          setIsModalOpen(false);
+          toast.success('Article created successfully.');
+        }
       }
     } catch (err) {
       setError(err.response?.data?.message || 'Failed transmission of literary asset pipeline.');
@@ -107,35 +148,31 @@ const ManageBlogs = () => {
     }
   };
 
-  // Purge Document Entry Out of MongoDB Matrix
-  // Purge Document Entry Out of MongoDB Matrix
-  const handleDelete = async (id) => {
-    if (!window.confirm('Are you absolutely certain you want to purge this clinical literature asset log?')) return;
-
+  // Fire execution of asset delete purge sequence
+  const executePurge = async () => {
     try {
-      // 1. Capture the token sequence manually
       const token = sessionStorage.getItem('admin_token');
-
-      // 2. Map the token onto the config configuration block headers object
-      const response = await axios.delete(`${process.env.REACT_APP_SERVICE_API}/api/blogs/${id}`, {
-        headers: {
-          Authorization: token ? `Bearer ${token}` : ''
-        }
-      });
+      const response = await axios.delete(
+        `${process.env.REACT_APP_SERVICE_API}/api/blogs/${deleteModal.targetId}`, 
+        { headers: { Authorization: token ? `Bearer ${token}` : '' } }
+      );
 
       if (response.data.success) {
-        setBlogs(prev => prev.filter(b => b._id !== id));
+        setBlogs(prev => prev.filter(b => b._id !== deleteModal.targetId));
+        setDeleteModal({ isOpen: false, targetId: null });
+        toast.success('Article deleted successfully.');
       }
     } catch (err) {
       alert(err.response?.data?.message || 'Failed execution of asset purge sequence.');
+      setDeleteModal({ isOpen: false, targetId: null });
     }
   };
 
   const getCategoryColor = (cat) => {
-    if (cat === 'surgery') return 'text-surgery-main bg-red-50';
-    if (cat === 'fertility') return 'text-[#009774] bg-emerald-50';
-    if (cat === 'pharmacy') return 'text-[#5B2897] bg-purple-50';
-    return 'text-nova-blue bg-blue-50';
+    if (cat === 'surgery') return 'text-red-600 bg-red-50';
+    if (cat === 'fertility') return 'text-emerald-600 bg-emerald-50';
+    if (cat === 'pharmacy') return 'text-purple-600 bg-purple-50';
+    return 'text-blue-600 bg-blue-50';
   };
 
   return (
@@ -145,13 +182,13 @@ const ManageBlogs = () => {
         {/* Module Header Bar */}
         <div className="flex items-center justify-between">
           <div>
-            <span className="text-[10px] font-black text-nova-sky uppercase tracking-[0.4em] block mb-2">// Corporate Literature Engine</span>
+            <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] block mb-2">// Corporate Literature Engine</span>
             <h1 className="text-4xl font-black text-slate-950 uppercase tracking-tighter">Manage Medical Blogs</h1>
           </div>
 
           <button
-            onClick={() => setIsModalOpen(true)}
-            className="h-12 px-6 bg-slate-950 text-white font-black text-xs uppercase tracking-widest rounded-xl shadow-lg hover:bg-nova-blue flex items-center gap-2 transition-colors duration-300"
+            onClick={handleOpenCreateModal}
+            className="h-12 px-6 bg-slate-950 text-white font-black text-xs uppercase tracking-widest rounded-xl shadow-lg hover:bg-slate-800 flex items-center gap-2 transition-colors duration-300"
           >
             <Plus size={16} /> Write Article
           </button>
@@ -163,7 +200,7 @@ const ManageBlogs = () => {
           </div>
         )}
 
-        {/* COMPACT REGISTRY ARTICLE GRID */}
+        {/* REGISTRY ARTICLE GRID */}
         {loading ? (
           <div className="h-64 flex items-center justify-center">
             <span className="w-8 h-8 border-4 border-slate-950 border-t-transparent rounded-full animate-spin" />
@@ -177,7 +214,6 @@ const ManageBlogs = () => {
             {blogs.map((blog) => (
               <div key={blog._id} className="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-sm flex flex-col justify-between group hover:shadow-md transition-shadow">
                 <div>
-                  {/* Image viewport displaying the direct Base64 source */}
                   <div className="h-48 bg-slate-100 w-full relative overflow-hidden">
                     <img
                       src={blog.coverImage}
@@ -204,7 +240,14 @@ const ManageBlogs = () => {
                   <span className="text-[10px] font-mono font-black uppercase text-slate-300">NVB-LOG</span>
                   <div className="flex gap-2">
                     <button
-                      onClick={() => handleDelete(blog._id)}
+                      onClick={() => handleOpenEditModal(blog)}
+                      className="w-9 h-9 bg-slate-50 border border-slate-100 text-slate-700 rounded-xl flex items-center justify-center hover:bg-slate-950 hover:text-white transition-colors"
+                      title="Edit Article parameters"
+                    >
+                      <Edit3 size={14} />
+                    </button>
+                    <button
+                      onClick={() => setDeleteModal({ isOpen: true, targetId: blog._id })}
                       className="w-9 h-9 bg-rose-50 border border-rose-100 text-rose-600 rounded-xl flex items-center justify-center hover:bg-rose-600 hover:text-white transition-colors"
                       title="Purge Article"
                     >
@@ -218,19 +261,16 @@ const ManageBlogs = () => {
         )}
       </div>
 
-      {/* COMPOSER SLIDE OVERLAY WRITER MODAL */}
+      {/* COMPOSER SLIDE OVERLAY COMPONENT */}
       <AnimatePresence>
         {isModalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-
-            {/* Backdrop Mask */}
             <motion.div
               initial={{ opacity: 0 }} animate={{ opacity: 0.4 }} exit={{ opacity: 0 }}
               onClick={() => setIsModalOpen(false)}
               className="absolute inset-0 bg-slate-950"
             />
 
-            {/* Modal Body wrapper box */}
             <motion.div
               initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }}
               transition={{ ease: masterEase }}
@@ -238,25 +278,25 @@ const ManageBlogs = () => {
             >
               <div className="flex items-center justify-between pb-6 border-b border-slate-100 mb-6">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-nova-blue text-white rounded-lg flex items-center justify-center">
+                  <div className="w-8 h-8 bg-slate-950 text-white rounded-lg flex items-center justify-center">
                     <FileText size={16} />
                   </div>
-                  <h3 className="text-xl font-black text-slate-950 uppercase tracking-tight">Compose Clinical Article</h3>
+                  <h3 className="text-xl font-black text-slate-950 uppercase tracking-tight">
+                    {isEditMode ? 'Modify Clinical Article' : 'Compose Clinical Article'}
+                  </h3>
                 </div>
                 <button onClick={() => setIsModalOpen(false)} className="text-slate-400 hover:text-slate-600 transition-colors">
                   <X size={20} />
                 </button>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-5">
-                {/* Inputs: Title */}
+              <form onSubmit={handleFormSubmit} className="space-y-5">
                 <div className="space-y-1.5">
                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Article Core Title</label>
-                  <input required type="text" placeholder="e.g., Technological Breakthroughs In Advanced IVF Procedures" value={formData.title} onChange={(e) => handleInputChange('title', e.target.value)} className="w-full h-12 bg-slate-50 border border-slate-100 rounded-xl px-4 text-xs font-bold text-slate-900 focus:outline-none focus:border-slate-300" />
+                  <input required type="text" placeholder="e.g., Technological Breakthroughs In Advanced IVF" value={formData.title} onChange={(e) => handleInputChange('title', e.target.value)} className="w-full h-12 bg-slate-50 border border-slate-100 rounded-xl px-4 text-xs font-bold text-slate-900 focus:outline-none focus:border-slate-300" />
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  {/* Category Target Select */}
                   <div className="space-y-1.5">
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Channel Target</label>
                     <select value={formData.category} onChange={(e) => handleInputChange('category', e.target.value)} className="w-full h-12 bg-slate-50 border border-slate-100 rounded-xl px-4 text-xs font-bold text-slate-800 focus:outline-none">
@@ -267,20 +307,17 @@ const ManageBlogs = () => {
                     </select>
                   </div>
 
-                  {/* Author Line */}
                   <div className="space-y-1.5">
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Author Registry Signature</label>
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Author Signature</label>
                     <input type="text" value={formData.author} onChange={(e) => handleInputChange('author', e.target.value)} className="w-full h-12 bg-slate-50 border border-slate-100 rounded-xl px-4 text-xs font-bold text-slate-900 focus:outline-none" />
                   </div>
 
-                  {/* Read timeline info */}
                   <div className="space-y-1.5">
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Estimated Metric Read Matrix</label>
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Read Matrix Metric</label>
                     <input type="text" value={formData.readTime} onChange={(e) => handleInputChange('readTime', e.target.value)} className="w-full h-12 bg-slate-50 border border-slate-100 rounded-xl px-4 text-xs font-bold text-slate-900 focus:outline-none" />
                   </div>
                 </div>
 
-                {/* THE IMAGING FIELD: Live File Picker to Base64 Hook */}
                 <div className="space-y-2">
                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Cover Image Graphic Asset</label>
                   <div className="flex flex-col sm:flex-row gap-4 items-center p-4 border border-dashed border-slate-200 bg-slate-50/50 rounded-2xl">
@@ -294,33 +331,70 @@ const ManageBlogs = () => {
 
                     <div className="text-center sm:text-left space-y-1">
                       <input
-                        required
+                        required={!isEditMode} // Optional on updates
                         type="file"
                         accept="image/*"
                         onChange={handleImageConversion}
-                        className="text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-[10px] file:font-black file:uppercase file:tracking-wider file:bg-slate-950 file:text-white file:cursor-pointer hover:file:bg-nova-blue file:transition-all"
+                        className="text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-[10px] file:font-black file:uppercase file:tracking-wider file:bg-slate-950 file:text-white file:cursor-pointer hover:file:bg-slate-800 file:transition-all"
                       />
-                      <p className="text-[10px] text-slate-400 font-medium">PNG, JPEG up to 4MB. Converted to secure string array locally inside storage cache matrices.</p>
+                      <p className="text-[10px] text-slate-400 font-medium">PNG, JPEG up to 4MB.</p>
                     </div>
                   </div>
                 </div>
 
-                {/* Content Payload Field */}
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Core Literature Text Payload</label>
-                  <textarea required rows={6} placeholder="Write your clinical research findings or public update message metrics here..." value={formData.content} onChange={(e) => handleInputChange('content', e.target.value)} className="w-full bg-slate-50 border border-slate-100 rounded-xl p-4 text-xs font-bold text-slate-900 focus:outline-none focus:border-slate-300 resize-none" />
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Core Literature Content</label>
+                  <textarea required rows={6} placeholder="Write your clinical updates metrics here..." value={formData.content} onChange={(e) => handleInputChange('content', e.target.value)} className="w-full bg-slate-50 border border-slate-100 rounded-xl p-4 text-xs font-bold text-slate-900 focus:outline-none focus:border-slate-300 resize-none" />
                 </div>
 
-                {/* Submit Panel */}
                 <div className="flex justify-end gap-3 pt-4 border-t border-slate-100 mt-6">
                   <button type="button" onClick={() => setIsModalOpen(false)} className="h-12 px-6 border border-slate-100 rounded-xl text-xs font-black uppercase tracking-wider text-slate-500 hover:bg-slate-50 transition-colors">
                     Abort
                   </button>
-                  <button type="submit" disabled={submitLoading} className="h-12 px-8 bg-slate-950 text-white font-black text-xs uppercase tracking-widest rounded-xl hover:bg-nova-blue transition-colors disabled:opacity-40 flex items-center justify-center min-w-[140px]">
-                    {submitLoading ? <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : 'Dispatch Log'}
+                  <button type="submit" disabled={submitLoading} className="h-12 px-8 bg-slate-950 text-white font-black text-xs uppercase tracking-widest rounded-xl hover:bg-slate-800 transition-colors disabled:opacity-40 flex items-center justify-center min-w-[140px]">
+                    {submitLoading ? <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : isEditMode ? 'Save Changes' : 'Dispatch Log'}
                   </button>
                 </div>
               </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* ANNOTATED CUSTOM DESIGN CONFIRMATION PURGE DIALOG */}
+      <AnimatePresence>
+        {deleteModal.isOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <motion.div 
+              initial={{ opacity: 0 }} animate={{ opacity: 0.4 }} exit={{ opacity: 0 }}
+              onClick={() => setDeleteModal({ isOpen: false, targetId: null })}
+              className="absolute inset-0 bg-slate-950"
+            />
+            <motion.div 
+              initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }}
+              className="bg-white rounded-3xl max-w-sm w-full p-6 relative z-10 text-center space-y-4 shadow-2xl border border-slate-100"
+            >
+              <div className="w-12 h-12 bg-rose-50 text-rose-600 border border-rose-100 rounded-2xl flex items-center justify-center mx-auto">
+                <Trash2 size={20} />
+              </div>
+              <div className="space-y-1">
+                <h4 className="text-base font-black text-slate-950 uppercase tracking-tight">Purge Literature Asset?</h4>
+                <p className="text-xs text-slate-400 font-medium leading-relaxed">This systemic destruction procedure will remove the entry from MongoDB instantly. You cannot undo this modification.</p>
+              </div>
+              <div className="grid grid-cols-2 gap-3 pt-2">
+                <button 
+                  onClick={() => setDeleteModal({ isOpen: false, targetId: null })}
+                  className="h-11 border border-slate-100 rounded-xl text-xs font-black uppercase tracking-wider text-slate-500 hover:bg-slate-50 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button 
+                  onClick={executePurge}
+                  className="h-11 bg-rose-600 text-white rounded-xl text-xs font-black uppercase tracking-wider hover:bg-rose-700 transition-colors shadow-lg shadow-rose-600/10"
+                >
+                  Confirm Purge
+                </button>
+              </div>
             </motion.div>
           </div>
         )}

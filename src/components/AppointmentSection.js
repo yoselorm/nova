@@ -101,7 +101,7 @@ const AppointmentSection = () => {
           <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-12">
             <div className="space-y-4">
               <h4 className="flex items-center gap-3 text-nova-sky font-bold text-xs uppercase tracking-widest"><Phone size={16} /> Quick Contact</h4>
-              <p className="text-xl font-medium">+233 (0) XXX XXX XXX</p>
+              <p className="text-xl font-medium">+233 (0) 302 751 290</p>
               <p className="text-white/60 text-sm">info@novahealthcare.com</p>
             </div>
             <div className="space-y-4">
@@ -113,7 +113,7 @@ const AppointmentSection = () => {
 
           <motion.div variants={itemVariants} className="mt-12 pt-12 border-t border-white/10 flex items-start gap-4">
             <MapPin className="text-nova-sky" />
-            <p className="text-white/70 leading-relaxed font-medium">123 Nova Close, East Legon,<br /> Accra, Ghana</p>
+            <p className="text-white/70 leading-relaxed font-medium">#7 Mensah Danfah Ave. East Legon (Adjiriganor)<br /> Accra, Ghana</p>
           </motion.div>
         </motion.div>
 

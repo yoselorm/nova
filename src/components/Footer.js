@@ -141,13 +141,13 @@ const Footer = ({ variant = 'default' }) => {
               <div className="flex items-start gap-4">
                 <MapPin className={`${activeTheme.iconColor} mt-1 transition-colors duration-500`} size={20} />
                 <span className="text-slate-400 text-sm leading-relaxed font-medium">
-                  East Legon, <br />
+                  #7 Mensah Danfah Ave. East Legon (Adjiriganor)<br />
                   Accra, Ghana
                 </span>
               </div>
               <div className="flex items-center gap-4">
                 <Phone className={`${activeTheme.iconColor} transition-colors duration-500`} size={20} />
-                <span className="text-slate-400 text-sm font-bold">+233 (0) XXX XXX XXX</span>
+                <span className="text-slate-400 text-sm font-bold">+233 (0) 302 751 290</span>
               </div>
               <div className="flex items-center gap-4">
                 <Mail className={`${activeTheme.iconColor} transition-colors duration-500`} size={20} />

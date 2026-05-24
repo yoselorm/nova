@@ -26,6 +26,7 @@ import ManageBlogs from './admin/pages/ManageBlogs';
 import BlogDetailView from './pages/BlogDetailView';
 import BlogShowcase from './pages/Blog';
 import ScrollReset from './components/ScrollReset';
+import ProtectedRoute from './utils/ProtectedRoute';
 // Note: Import your OverviewBoard, ManageAppointments, and ManageBlogs here when ready!
 
 const ScrollToTop = () => {
@@ -90,10 +91,9 @@ function App() {
         {/* ==========================================================
             3. INTERNAL DASHBOARD SYSTEM (Uses Dedicated Admin Layout)
            ========================================================== */}
-        <Route path="/admin" element={<AdminLayout />}>
+        <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
           {/* Automatically forward a bare "/admin" hit directly to dashboard */}
           <Route index element={<Navigate to="dashboard" replace />} />
-          
           {/* Un-comment these sub-views as we construct them! */}
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="appointments" element={<ManageAppointments />} />
