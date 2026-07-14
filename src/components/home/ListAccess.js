@@ -30,7 +30,7 @@ const ListAccess = () => {
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-6 -mt-16 lg:-mt-24 relative z-40">
+    <div className="max-w-7xl mx-auto px-6 -mt-8 relative z-40">
       <motion.div 
         variants={containerVariants}
         initial="hidden"
