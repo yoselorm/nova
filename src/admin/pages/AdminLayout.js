@@ -21,7 +21,7 @@ const AdminLayout = () => {
   const navigate = useNavigate();
 
   const menuItems = [
-    { name: 'Overview Board', path: '/admin/dashboard', icon: <LayoutDashboard size={18} /> },
+    { name: 'Dashboard', path: '/admin/dashboard', icon: <LayoutDashboard size={18} /> },
     { name: 'Appointments', path: '/admin/appointments', icon: <CalendarClock size={18} /> },
     { name: 'Manage Blogs', path: '/admin/blogs', icon: <FileText size={18} /> },
     { name: 'Manage Careers', path: '/admin/jobs', icon: <Briefcase size={18} /> },
@@ -42,16 +42,16 @@ const handleLogout = async () => {
         
         // Terminate UI session state and drop back to login page
         navigate('/admin/login', { replace: true });
-        toast.success('Successfully logged out. See you next time!'); 
+        toast.success('You have been logged out. See you next time!');
       }
     } catch (err) {
-      console.error('[CRITICAL] Admin layout session detachment failed:', err.message);
-      
-      // FALLBACK SECURITY: If the backend is down or unreachable, purge the local 
-      // session parameters anyway so the user isn't locked into an orphan UI state.
+      console.error('Logout request failed:', err.message);
+
+      // If the backend is down or unreachable, clear the local session anyway
+      // so the admin isn't stuck unable to log out.
       sessionStorage.removeItem('admin_token');
       navigate('/admin/login', { replace: true });
-      toast.error('Session cleared locally due to connection issues.');
+      toast.error("You've been logged out, but we couldn't reach the server.");
     }
   };
 
@@ -71,7 +71,7 @@ const handleLogout = async () => {
             </div>
             <div className="flex flex-col">
               <span className="text-base font-black tracking-tighter text-white">NOVA CENTRAL</span>
-              <span className="text-[9px] text-nova-sky font-black tracking-[0.2em] uppercase">Control Matrix</span>
+              <span className="text-[9px] text-nova-sky font-black tracking-[0.2em] uppercase">Admin Panel</span>
             </div>
           </div>
 
@@ -108,7 +108,7 @@ const handleLogout = async () => {
             className="flex items-center gap-4 w-full px-4 py-3.5 rounded-xl text-xs font-black uppercase tracking-widest text-slate-400 hover:text-rose-400 hover:bg-rose-500/5 transition-all duration-300 group"
           >
             <LogOut size={18} className="text-slate-500 group-hover:text-rose-400 transition-colors" />
-            Disconnect Log
+            Log Out
           </button>
         </div>
       </aside>
@@ -132,7 +132,7 @@ const handleLogout = async () => {
             <div className="hidden sm:flex items-center gap-3 bg-slate-50 border border-slate-100 px-4 py-2 rounded-xl">
               <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
               <span className="text-[10px] text-slate-500 font-black uppercase tracking-wider flex items-center gap-1.5">
-                <ShieldCheck size={12} className="text-emerald-600" /> Core Terminal Secure
+                <ShieldCheck size={12} className="text-emerald-600" /> Connection Secure
               </span>
             </div>
           </div>
@@ -152,14 +152,16 @@ const handleLogout = async () => {
               </div>
               <div className="hidden md:flex flex-col text-left">
                 <span className="text-xs font-black text-slate-900 tracking-tight leading-none">Super Admin</span>
-                <span className="text-[9px] text-slate-400 font-bold tracking-wider mt-0.5">Root Access</span>
+                <span className="text-[9px] text-slate-400 font-bold tracking-wider mt-0.5">Administrator</span>
               </div>
             </div>
           </div>
         </header>
 
         {/* 3. CORE DYNAMIC DISPLAY VIEWPORT */}
-        <main className="flex-1 overflow-y-auto p-6 md:p-12 bg-[#FAF9FF] relative z-10">
+        {/* No z-index here on purpose: giving main its own stacking context would trap any
+            fixed-position modal rendered inside <Outlet /> behind the header's z-20 context. */}
+        <main className="flex-1 overflow-y-auto p-6 md:p-12 bg-[#FAF9FF] relative">
           <Outlet />
         </main>
       </div>
@@ -218,7 +220,7 @@ const handleLogout = async () => {
             className="flex items-center gap-4 w-full px-4 py-3.5 rounded-xl text-xs font-black uppercase tracking-widest text-slate-400 hover:text-rose-400 hover:bg-rose-500/5 transition-all"
           >
             <LogOut size={18} />
-            Disconnect Log
+            Log Out
           </button>
         </div>
       </aside>

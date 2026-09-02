@@ -28,7 +28,7 @@ const ManageAppointments = () => {
         setFilteredData(response.data.data);
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Error pulling data array.');
+      setError(err.response?.data?.message || 'Failed to load appointments.');
     } finally {
       setLoading(false);
     }
@@ -66,7 +66,7 @@ const ManageAppointments = () => {
         setAppointments(prev => prev.map(item => item._id === id ? { ...item, status: targetStatus } : item));
       }
     } catch (err) {
-      alert(err.response?.data?.message || 'State validation modify failure.');
+      alert(err.response?.data?.message || 'Failed to update the appointment status.');
     } finally {
       setActionLoadingId(null);
     }
@@ -91,15 +91,15 @@ const ManageAppointments = () => {
         {/* Top Control Header Bar */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <span className="text-[10px] font-black text-nova-sky uppercase tracking-[0.4em] block mb-2">// Patient Pipeline Processing</span>
+            <span className="text-[10px] font-black text-nova-sky uppercase tracking-[0.4em] block mb-2">Appointments</span>
             <h1 className="text-4xl font-black text-slate-950 uppercase tracking-tighter">Manage Appointments</h1>
           </div>
-          
-          <button 
+
+          <button
             onClick={fetchAppointments}
             className="self-start md:self-auto h-12 px-5 bg-white border border-slate-100 text-slate-600 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center gap-2 hover:bg-slate-50 shadow-sm transition-all"
           >
-            <RefreshCw size={14} className={loading ? 'animate-spin' : ''} /> Refresh Ledger
+            <RefreshCw size={14} className={loading ? 'animate-spin' : ''} /> Refresh
           </button>
         </div>
 
@@ -115,7 +115,7 @@ const ManageAppointments = () => {
             <Filter size={12} /> Filter :
           </div>
           {[
-            { id: 'all', label: 'All Operations' },
+            { id: 'all', label: 'All' },
             { id: 'surgery', label: 'Surgery Centre' },
             { id: 'fertility', label: 'Fertility Centre' },
             { id: 'pharmacy', label: 'Nova Pharmacy' }
@@ -141,18 +141,18 @@ const ManageAppointments = () => {
               <thead>
                 <tr className="bg-slate-50/70 border-b border-slate-100 text-[10px] font-black text-slate-400 uppercase tracking-widest">
                   <th className="p-6">Tracking ID</th>
-                  <th className="p-6">Patient Context</th>
-                  <th className="p-6">Target Wing</th>
-                  <th className="p-6">Timeline Scheduled</th>
-                  <th className="p-6">Status Log</th>
-                  <th className="p-6 text-right">Operational Triggers</th>
+                  <th className="p-6">Patient</th>
+                  <th className="p-6">Center</th>
+                  <th className="p-6">Date & Time</th>
+                  <th className="p-6">Status</th>
+                  <th className="p-6 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 text-sm">
                   {filteredData.length === 0 ? (
                     <tr>
                       <td colSpan="6" className="p-12 text-center text-slate-400 font-bold text-xs uppercase tracking-wide">
-                        No appointment entries match the current filter.
+                        No appointments match this filter.
                       </td>
                     </tr>
                   ) : (
@@ -223,7 +223,7 @@ const ManageAppointments = () => {
                             )}
                             {item.status !== 'pending' && (
                               <span className="text-[10px] font-bold text-slate-300 uppercase tracking-widest pointer-events-none select-none">
-                                Immutable Log
+                                No Action Needed
                               </span>
                             )}
                           </div>

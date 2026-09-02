@@ -44,7 +44,7 @@ const ManageJobs = () => {
         setJobs(response.data.data);
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Error pulling administrative job arrays.');
+      setError(err.response?.data?.message || 'Failed to load job postings.');
     } finally {
       setLoading(false);
     }
@@ -115,7 +115,7 @@ const ManageJobs = () => {
         }
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed transmission of job posting pipeline.');
+      setError(err.response?.data?.message || 'Failed to save the job posting.');
     } finally {
       setSubmitLoading(false);
     }
@@ -133,7 +133,7 @@ const ManageJobs = () => {
         toast.success('Job posting deleted successfully.');
       }
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Failed execution of job purge sequence.');
+      toast.error(err.response?.data?.message || 'Failed to delete the job posting.');
       setDeleteModal({ isOpen: false, targetId: null });
     }
   };
@@ -164,7 +164,7 @@ const ManageJobs = () => {
 
         <div className="flex items-center justify-between">
           <div>
-            <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] block mb-2">// Talent Acquisition Engine</span>
+            <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] block mb-2">Careers</span>
             <h1 className="text-4xl font-black text-slate-950 uppercase tracking-tighter">Manage Careers</h1>
           </div>
 
@@ -188,7 +188,7 @@ const ManageJobs = () => {
           </div>
         ) : jobs.length === 0 ? (
           <div className="bg-white rounded-2xl border border-slate-100 p-16 text-center text-slate-400 font-bold text-xs uppercase tracking-wider">
-            No job postings found. Launch a new post above.
+            No job postings yet. Click "Post Job" to add one.
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -324,7 +324,7 @@ const ManageJobs = () => {
 
                 <div className="flex justify-end gap-3 pt-4 border-t border-slate-100 mt-6">
                   <button type="button" onClick={() => setIsModalOpen(false)} className="h-12 px-6 border border-slate-100 rounded-xl text-xs font-black uppercase tracking-wider text-slate-500 hover:bg-slate-50 transition-colors">
-                    Abort
+                    Cancel
                   </button>
                   <button type="submit" disabled={submitLoading} className="h-12 px-8 bg-slate-950 text-white font-black text-xs uppercase tracking-widest rounded-xl hover:bg-slate-800 transition-colors disabled:opacity-40 flex items-center justify-center min-w-[140px]">
                     {submitLoading ? <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : isEditMode ? 'Save Changes' : 'Publish Job'}
@@ -350,7 +350,7 @@ const ManageJobs = () => {
               </div>
               <div className="space-y-1">
                 <h4 className="text-base font-black text-slate-950 uppercase tracking-tight">Delete Job Posting?</h4>
-                <p className="text-xs text-slate-400 font-medium leading-relaxed">This will permanently remove the posting and all linked applications from MongoDB. You cannot undo this.</p>
+                <p className="text-xs text-slate-400 font-medium leading-relaxed">This will permanently delete the posting and all its applications. This can't be undone.</p>
               </div>
               <div className="grid grid-cols-2 gap-3 pt-2">
                 <button

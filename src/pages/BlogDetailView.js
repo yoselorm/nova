@@ -23,7 +23,7 @@ const BlogDetailView = ({ isAdmin = false }) => {
           setBlog(response.data.data);
         }
       } catch (err) {
-        setError(err.response?.data?.message || 'Failed to locate article payload array inside server.');
+        setError(err.response?.data?.message || "We couldn't find this article.");
       } finally {
         setLoading(false);
       }
@@ -33,12 +33,12 @@ const BlogDetailView = ({ isAdmin = false }) => {
   }, [slug]);
 
   const handleDeleteFromView = async () => {
-    if (!window.confirm('CRITICAL: Clear this literary log completely from database registries?')) return;
+    if (!window.confirm('Delete this article? This can\'t be undone.')) return;
     try {
       await axios.delete(`${process.env.REACT_APP_SERVICE_API}/api/blogs/${blog._id}`, { withCredentials: true });
-      navigate('/admin/blogs'); // Send admin back to their main management board panel
+      navigate('/admin/blogs');
     } catch (err) {
-      alert('Error clearing data vector arrays.');
+      alert('Failed to delete the article.');
     }
   };
 
@@ -51,7 +51,7 @@ const BlogDetailView = ({ isAdmin = false }) => {
   if (error) return (
     <div className="min-h-[60vh] max-w-xl mx-auto flex flex-col items-center justify-center text-center p-6 font-nova">
       <ShieldAlert size={40} className="text-rose-500 mb-4" />
-      <h3 className="text-lg font-black uppercase text-slate-900 tracking-tight">Transmission Fault</h3>
+      <h3 className="text-lg font-black uppercase text-slate-900 tracking-tight">Something Went Wrong</h3>
       <p className="text-xs text-slate-400 font-bold uppercase mt-2">{error}</p>
       <button 
         onClick={() => navigate(isAdmin ? '/admin/blogs' : '/blog')}
@@ -79,18 +79,18 @@ const BlogDetailView = ({ isAdmin = false }) => {
           className="h-10 px-4 bg-white border border-slate-100 rounded-xl text-slate-600 font-bold text-xs uppercase tracking-wider flex items-center gap-2 hover:bg-slate-50 transition-colors shadow-sm"
         >
           <ChevronLeft size={16} /> 
-          {isAdmin ? 'Back to Workspace' : 'All Medical Literature'}
+          {isAdmin ? 'Back to Blog Posts' : 'All Articles'}
         </button>
 
         {/* DYNAMIC ADMINISTRATIVE DESTRUCTION OVERLAY SWITCH */}
         {isAdmin && (
           <div className="flex items-center gap-2 bg-amber-50 border border-amber-200 px-4 py-1.5 rounded-xl">
-            <span className="text-amber-800 text-[10px] font-black uppercase tracking-wider hidden sm:inline">Root Inspection View</span>
+            <span className="text-amber-800 text-[10px] font-black uppercase tracking-wider hidden sm:inline">Admin View</span>
             <button
               onClick={handleDeleteFromView}
               className="h-8 px-3 bg-rose-600 hover:bg-rose-700 text-white rounded-lg flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider transition-colors shadow-sm shadow-rose-900/10"
             >
-              <Trash2 size={12} /> Purge Post
+              <Trash2 size={12} /> Delete Post
             </button>
           </div>
         )}

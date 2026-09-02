@@ -36,7 +36,7 @@ const JobDetailView = () => {
           setJob(response.data.data);
         }
       } catch (err) {
-        setError(err.response?.data?.message || 'Failed to locate job posting inside server.');
+        setError(err.response?.data?.message || "We couldn't find this job posting.");
       } finally {
         setLoading(false);
       }
@@ -91,7 +91,7 @@ const JobDetailView = () => {
         toast.success('Application submitted successfully.');
       }
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Failed transmission of application payload.');
+      toast.error(err.response?.data?.message || 'Failed to submit your application. Please try again.');
     } finally {
       setSubmitLoading(false);
     }
@@ -112,7 +112,7 @@ const JobDetailView = () => {
   if (error || !job) return (
     <div className="min-h-[60vh] max-w-xl mx-auto flex flex-col items-center justify-center text-center p-6 font-nova">
       <ShieldAlert size={40} className="text-rose-500 mb-4" />
-      <h3 className="text-lg font-black uppercase text-slate-900 tracking-tight">Transmission Fault</h3>
+      <h3 className="text-lg font-black uppercase text-slate-900 tracking-tight">Something Went Wrong</h3>
       <p className="text-xs text-slate-400 font-bold uppercase mt-2">{error}</p>
       <button
         onClick={() => navigate('/careers')}

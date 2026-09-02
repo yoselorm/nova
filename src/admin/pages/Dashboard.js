@@ -38,7 +38,7 @@ const AdminDashboard = () => {
         setMetrics(stats);
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to aggregate portal system telemetry.');
+      setError(err.response?.data?.message || 'Failed to load dashboard data.');
     } finally {
       setLoading(false);
       // Defer to next paint so the width transition below has a 0% starting point to animate from
@@ -61,8 +61,8 @@ const AdminDashboard = () => {
         
         {/* Header Block */}
         <div>
-          <span className="text-[10px] font-black text-nova-sky uppercase tracking-[0.4em] block mb-2">// System Command Architecture</span>
-          <h1 className="text-4xl font-black text-slate-950 uppercase tracking-tighter">Operational Overview</h1>
+          <span className="text-[10px] font-black text-nova-sky uppercase tracking-[0.4em] block mb-2">Welcome back</span>
+          <h1 className="text-4xl font-black text-slate-950 uppercase tracking-tighter">Dashboard</h1>
         </div>
 
         {error && (
@@ -74,10 +74,10 @@ const AdminDashboard = () => {
         {/* METRICS GRID ARRAY */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
-            { label: 'Total Registry', val: metrics.total, icon: <Users size={20} />, color: 'text-nova-blue bg-blue-50' },
-            { label: 'Pending Action', val: metrics.pending, icon: <Clock size={20} />, color: 'text-amber-600 bg-amber-50' },
-            { label: 'Confirmed Sessions', val: metrics.confirmed, icon: <CheckCircle size={20} />, color: 'text-emerald-600 bg-emerald-50' },
-            { label: 'Growth Vector', val: 'Operational', icon: <TrendingUp size={20} />, color: 'text-purple-600 bg-purple-50' }
+            { label: 'Total Appointments', val: metrics.total, icon: <Users size={20} />, color: 'text-nova-blue bg-blue-50' },
+            { label: 'Pending', val: metrics.pending, icon: <Clock size={20} />, color: 'text-amber-600 bg-amber-50' },
+            { label: 'Confirmed', val: metrics.confirmed, icon: <CheckCircle size={20} />, color: 'text-emerald-600 bg-emerald-50' },
+            { label: 'Status', val: 'Active', icon: <TrendingUp size={20} />, color: 'text-purple-600 bg-purple-50' }
           ].map((card, i) => (
             <div key={i} className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
               <div>
@@ -93,7 +93,7 @@ const AdminDashboard = () => {
 
         {/* SUBSIDIARY CHANNEL SPLIT MATRIX */}
         <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
-          <h3 className="text-sm font-black text-slate-900 uppercase tracking-wider mb-6">Load Balance Across Centers</h3>
+          <h3 className="text-sm font-black text-slate-900 uppercase tracking-wider mb-6">Appointments by Center</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               { name: 'Surgery Centre', count: metrics.surgery, pct: metrics.total ? (metrics.surgery / metrics.total) * 100 : 0, bar: 'bg-surgery-main' },
@@ -103,7 +103,7 @@ const AdminDashboard = () => {
               <div key={idx} className="space-y-3">
                 <div className="flex justify-between items-end">
                   <span className="text-xs font-black text-slate-700 uppercase tracking-wide">{sub.name}</span>
-                  <span className="text-xs font-mono font-bold text-slate-400">{sub.count} logs ({Math.round(sub.pct)}%)</span>
+                  <span className="text-xs font-mono font-bold text-slate-400">{sub.count} ({Math.round(sub.pct)}%)</span>
                 </div>
                 <div className="w-full h-2 bg-slate-50 rounded-full overflow-hidden border border-slate-100">
                   <div

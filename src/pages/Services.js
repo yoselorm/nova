@@ -79,7 +79,7 @@ const Services = () => {
 
               {/* CTA Line */}
               <div className="mt-10 flex items-center gap-4 opacity-0 group-hover:opacity-100 transition-all transform translate-y-4 group-hover:translate-y-0">
-                <span className="text-[10px] font-black uppercase tracking-widest text-nova-sky">Inquire Detail</span>
+                <span className="text-[10px] font-black uppercase tracking-widest text-nova-sky">Learn More</span>
                 <ArrowRight size={14} className="text-nova-sky" />
               </div>
 

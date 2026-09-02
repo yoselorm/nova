@@ -25,7 +25,7 @@ const BlogShowcase = () => {
           setBlogs(response.data.data);
         }
       } catch (err) {
-        setError(err.response?.data?.message || 'The clinical publications array is currently unreachable.');
+        setError(err.response?.data?.message || "We couldn't load articles right now.");
       } finally {
         setLoading(false);
       }
@@ -97,7 +97,7 @@ const BlogShowcase = () => {
           </div>
         ) : blogs.length === 0 ? (
           <div className="bg-white rounded-2xl border border-slate-100 p-16 text-center text-slate-400 font-bold text-xs uppercase tracking-wider max-w-xl mx-auto shadow-sm">
-            No published articles matched this channel telemetry framework yet.
+            No articles found in this category yet.
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -139,7 +139,7 @@ const BlogShowcase = () => {
 
                 {/* Card Action Link Signature Line */}
                 <div className="p-6 pt-0 mt-4 flex items-center gap-2 text-xs font-black uppercase tracking-widest text-slate-950 group-hover:text-nova-blue transition-colors">
-                  Read Literature 
+                  Read Article
                   <ArrowRight size={14} className="transform group-hover:translate-x-1 transition-transform" />
                 </div>
               </Link>

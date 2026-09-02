@@ -17,7 +17,7 @@ const Careers = () => {
           setJobs(response.data.data);
         }
       } catch (err) {
-        setError(err.response?.data?.message || 'The careers listing array is currently unreachable.');
+        setError(err.response?.data?.message || "We couldn't load job postings right now.");
       } finally {
         setLoading(false);
       }

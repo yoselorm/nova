@@ -86,7 +86,7 @@ const BookAppointment = () => {
         setStep(4);
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Transmission vector failure. The system scheduler could not register this window.');
+      setError(err.response?.data?.message || "Something went wrong. We couldn't book this time — please try again.");
     } finally {
       setSubmitLoading(false);
     }
@@ -125,7 +125,7 @@ const BookAppointment = () => {
           <div>
             <div className="flex items-center gap-6 mb-8">
               {[
-                { s: 1, label: 'Centre', icon: <Stethoscope size={14} /> },
+                { s: 1, label: 'Center', icon: <Stethoscope size={14} /> },
                 { s: 2, label: 'Schedule', icon: <Calendar size={14} /> },
                 { s: 3, label: 'Details', icon: <User size={14} /> }
               ].map((item) => (
@@ -158,8 +158,8 @@ const BookAppointment = () => {
                   className="space-y-6 animate-fade-in-up"
                 >
                   <div>
-                    <h2 className="text-3xl font-black text-slate-950 uppercase tracking-tighter leading-none">Select Medical Branch</h2>
-                    <p className="text-xs font-medium text-slate-400 mt-2">Which specialty wing are you routing your consultation booking parameters to?</p>
+                    <h2 className="text-3xl font-black text-slate-950 uppercase tracking-tighter leading-none">Choose a Center</h2>
+                    <p className="text-xs font-medium text-slate-400 mt-2">Which center would you like to visit?</p>
                   </div>
                   <div className="space-y-3">
                     {subsidiaries.map((sub) => (
@@ -193,7 +193,7 @@ const BookAppointment = () => {
                   className="space-y-6 animate-fade-in-up"
                 >
                   <div>
-                    <h2 className="text-3xl font-black text-slate-950 uppercase tracking-tighter leading-none">Configure Timeline</h2>
+                    <h2 className="text-3xl font-black text-slate-950 uppercase tracking-tighter leading-none">Pick a Date & Time</h2>
                     <p className="text-xs font-medium text-slate-400 mt-2">We accept appointments Monday, Wednesday, and Friday only.</p>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -208,7 +208,7 @@ const BookAppointment = () => {
                       <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Mon, Wed & Fri only</p>
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Available Windows</label>
+                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Available Times</label>
                       <div className="grid grid-cols-2 gap-2">
                         {timeSlots.map((slot) => (
                           <button
@@ -235,27 +235,27 @@ const BookAppointment = () => {
                   className="space-y-5 animate-fade-in-up"
                 >
                   <div>
-                    <h2 className="text-3xl font-black text-slate-950 uppercase tracking-tighter leading-none">Patient Information</h2>
-                    <p className="text-xs font-medium text-slate-400 mt-2">Provide core telemetry logs so clinicians can sync your historical registry.</p>
+                    <h2 className="text-3xl font-black text-slate-950 uppercase tracking-tighter leading-none">Your Details</h2>
+                    <p className="text-xs font-medium text-slate-400 mt-2">Tell us a bit about yourself so we can prepare for your visit.</p>
                   </div>
                   <div className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-1.5">
-                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Full Legal Name</label>
+                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Full Name</label>
                         <input type="text" required placeholder="Kwame Mensah" value={bookingData.fullName} onChange={(e) => handleInputChange('fullName', e.target.value)} className="w-full h-12 bg-slate-50 border border-slate-100 rounded-xl px-4 text-xs font-bold text-slate-900 focus:outline-none focus:border-slate-300" />
                       </div>
                       <div className="space-y-1.5">
-                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Contact Phone Matrix</label>
+                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Phone Number</label>
                         <input type="tel" required placeholder="+233 XX XXX XXXX" value={bookingData.phone} onChange={(e) => handleInputChange('phone', e.target.value)} className="w-full h-12 bg-slate-50 border border-slate-100 rounded-xl px-4 text-xs font-bold text-slate-900 focus:outline-none focus:border-slate-300" />
                       </div>
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Secure Email Address</label>
+                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Email Address</label>
                       <input type="email" required placeholder="kwame@domain.com" value={bookingData.email} onChange={(e) => handleInputChange('email', e.target.value)} className="w-full h-12 bg-slate-50 border border-slate-100 rounded-xl px-4 text-xs font-bold text-slate-900 focus:outline-none focus:border-slate-300" />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Consultation Case Notes (Optional)</label>
-                      <textarea rows={3} placeholder="Brief description of clinical requirements..." value={bookingData.notes} onChange={(e) => handleInputChange('notes', e.target.value)} className="w-full bg-slate-50 border border-slate-100 rounded-xl p-4 text-xs font-bold text-slate-900 focus:outline-none focus:border-slate-300 resize-none" />
+                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Notes (Optional)</label>
+                      <textarea rows={3} placeholder="Anything you'd like us to know beforehand..." value={bookingData.notes} onChange={(e) => handleInputChange('notes', e.target.value)} className="w-full bg-slate-50 border border-slate-100 rounded-xl p-4 text-xs font-bold text-slate-900 focus:outline-none focus:border-slate-300 resize-none" />
                     </div>
                   </div>
                 </div>
@@ -270,8 +270,8 @@ const BookAppointment = () => {
                     <CheckCircle2 size={40} />
                   </div>
                   <div>
-                    <h2 className="text-3xl font-black text-slate-950 uppercase tracking-tighter leading-none">Transmission Confirmed</h2>
-                    <p className="text-xs font-medium text-slate-400 mt-2 max-w-sm mx-auto">Your medical consultation pipeline has been locked. A secure routing schedule file has been dispatched to your email ledger.</p>
+                    <h2 className="text-3xl font-black text-slate-950 uppercase tracking-tighter leading-none">Appointment Booked</h2>
+                    <p className="text-xs font-medium text-slate-400 mt-2 max-w-sm mx-auto">Your appointment is confirmed. A confirmation email is on its way.</p>
                   </div>
                   <button 
                     onClick={() => {
@@ -309,12 +309,11 @@ const BookAppointment = () => {
                 className={`h-12 px-8 ${getAccentColor()} rounded-xl text-xs font-black uppercase tracking-widest flex items-center gap-2 transition-all duration-300 disabled:opacity-40 shadow-lg min-w-[160px] justify-center`}
               >
                 {submitLoading ? (
-                  // Spinning buffer state tracker inside button container frame
                   <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 ) : step === 3 ? (
-                  <>Finalize Dispatch <ArrowRight size={14} /></>
+                  <>Confirm Booking <ArrowRight size={14} /></>
                 ) : (
-                  <>Advance Array <ArrowRight size={14} /></>
+                  <>Next <ArrowRight size={14} /></>
                 )}
               </button>
             </div>
@@ -330,61 +329,57 @@ const BookAppointment = () => {
           <div className="relative z-10">
             <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 px-3 py-1 rounded-full mb-8">
               <Sparkles size={12} className={getTextColor()} />
-              <span className="text-white/60 text-[9px] font-black uppercase tracking-wider">Live Pipeline Telemetry</span>
+              <span className="text-white/60 text-[9px] font-black uppercase tracking-wider">Booking Summary</span>
             </div>
 
             <h3 className="text-xl font-black uppercase tracking-tight mb-6 border-b border-white/10 pb-4">
-              Booking Registry
+              Your Booking
             </h3>
 
-            {/* Dynamic Summary Blueprint Slots */}
+            {/* Dynamic Summary Slots */}
             <div className="space-y-6">
               <div>
-                <span className="text-[9px] font-black uppercase tracking-widest text-white/40 block mb-1">Target Center</span>
+                <span className="text-[9px] font-black uppercase tracking-widest text-white/40 block mb-1">Center</span>
                 <p className="text-sm font-black uppercase tracking-wide">
-                  {bookingData.subsidiary ? subsidiaries.find(s => s.id === bookingData.subsidiary)?.name : 'Unassigned Branch'}
+                  {bookingData.subsidiary ? subsidiaries.find(s => s.id === bookingData.subsidiary)?.name : 'Not selected yet'}
                 </p>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <span className="text-[9px] font-black uppercase tracking-widest text-white/40 block mb-1">Timeline Date</span>
+                  <span className="text-[9px] font-black uppercase tracking-widest text-white/40 block mb-1">Date</span>
                   <p className="text-xs font-bold text-slate-300">
-                    {bookingData.date ? bookingData.date : 'Pending Matrix'}
+                    {bookingData.date ? bookingData.date : 'Not set'}
                   </p>
                 </div>
                 <div>
-                  <span className="text-[9px] font-black uppercase tracking-widest text-white/40 block mb-1">Target Window</span>
+                  <span className="text-[9px] font-black uppercase tracking-widest text-white/40 block mb-1">Time</span>
                   <p className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
                     {bookingData.timeSlot ? (
                       <>
                         <Clock size={12} className={getTextColor()} />
                         {bookingData.timeSlot}
                       </>
-                    ) : 'Unscheduled'}
+                    ) : 'Not set'}
                   </p>
                 </div>
               </div>
 
               <div className="pt-4 border-t border-white/5 space-y-3">
                 <div>
-                  <span className="text-[9px] font-black uppercase tracking-widest text-white/40 block mb-1">Patient Log</span>
+                  <span className="text-[9px] font-black uppercase tracking-widest text-white/40 block mb-1">Name</span>
                   <p className="text-xs font-bold text-slate-300 truncate">
-                    {bookingData.fullName || 'Anonymous Identity'}
+                    {bookingData.fullName || 'Not entered yet'}
                   </p>
                 </div>
                 <div>
-                  <span className="text-[9px] font-black uppercase tracking-widest text-white/40 block mb-1">System Communications</span>
+                  <span className="text-[9px] font-black uppercase tracking-widest text-white/40 block mb-1">Email</span>
                   <p className="text-xs font-mono text-white/50 truncate">
-                    {bookingData.email || 'awaiting_contact_parameters...'}
+                    {bookingData.email || 'Not entered yet'}
                   </p>
                 </div>
               </div>
             </div>
-          </div>
-
-          <div className="relative z-10 pt-8 text-[9px] font-mono text-white/20 uppercase tracking-widest">
-            ID // NVH-{Math.floor(100000 + Math.random() * 900000)}
           </div>
         </div>
 

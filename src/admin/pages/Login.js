@@ -42,14 +42,13 @@ const AdminLogin = () => {
         setLoading(false);
         // Route the system directly to your secure dashboard layout workspace
         navigate('/admin/dashboard');
-        toast.success('Authentication successful. Redirecting to dashboard...');
+        toast.success('Logged in. Redirecting to your dashboard...');
       }
       return response.data;
     } catch (err) {
       setLoading(false);
-      toast.error('Authentication failed. Please check your credentials and try again.');
-      // Grab error parameter messages sent straight out of your authController catch blocks
-      const errorMessage = err.response?.data?.message || 'Connection failure to the auth engine.';
+      toast.error('Login failed. Please check your email and password.');
+      const errorMessage = err.response?.data?.message || "Couldn't connect to the server. Please try again.";
       setError(errorMessage);
     }
   };
@@ -76,14 +75,14 @@ const AdminLogin = () => {
           <div className="mb-10">
             <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-200 px-3 py-1 rounded-full mb-4">
               <ShieldAlert size={12} className="text-amber-600" />
-              <span className="text-amber-800 text-[9px] font-black uppercase tracking-wider">Restricted Access Terminal</span>
+              <span className="text-amber-800 text-[9px] font-black uppercase tracking-wider">Staff Only</span>
             </div>
             <h2 className="text-3xl md:text-4xl font-black text-slate-950 tracking-tighter uppercase leading-none">
-              Authenticate <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-nova-blue via-nova-sky to-slate-400 font-light lowercase italic">credentials.</span>
+              Admin <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-nova-blue via-nova-sky to-slate-400 font-light lowercase italic">login.</span>
             </h2>
             <p className="text-slate-400 text-xs font-medium mt-3 leading-relaxed">
-              Provide authorized management parameters to access internal medical appointment pipelines and publishing arrays.
+              Sign in to manage appointments, blog posts, and job listings.
             </p>
           </div>
 
@@ -98,7 +97,7 @@ const AdminLogin = () => {
           <form onSubmit={handleLogin} className="space-y-5">
             {/* Input: Email */}
             <div className="space-y-2">
-              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Operational Email</label>
+              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Email</label>
               <div className="relative">
                 <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300">
                   <Mail size={18} />
@@ -116,10 +115,7 @@ const AdminLogin = () => {
 
             {/* Input: Password */}
             <div className="space-y-2">
-              <div className="flex justify-between items-center">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Security Passcode</label>
-                <span className="text-[10px] font-bold text-slate-300 uppercase tracking-wider select-none">System Bound</span>
-              </div>
+              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Password</label>
               <div className="relative">
                 <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300">
                   <Lock size={18} />
@@ -152,7 +148,7 @@ const AdminLogin = () => {
                 <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               ) : (
                 <>
-                  Establish Connection
+                  Log In
                   <ArrowRight size={16} className="transform group-hover:translate-x-1 transition-transform" />
                 </>
               )}
@@ -160,9 +156,9 @@ const AdminLogin = () => {
           </form>
         </div>
 
-        {/* Lower Regulatory Log */}
+        {/* Footer */}
         <div className="text-[10px] font-bold text-slate-300 uppercase tracking-widest">
-          © {new Date().getFullYear()} Nova Group Security Protocol Logs.
+          © {new Date().getFullYear()} Nova Healthcare Group. All rights reserved.
         </div>
       </div>
 
@@ -181,31 +177,31 @@ const AdminLogin = () => {
         <div className="absolute left-0 right-0 top-1/2 h-[1px] bg-white/[0.03]" />
 
         <div className="relative z-10 max-w-lg">
-          <span className="text-[10px] font-black text-nova-sky uppercase tracking-[0.4em] block mb-6">// Global Core Operations Control</span>
+          <span className="text-[10px] font-black text-nova-sky uppercase tracking-[0.4em] block mb-6">Admin Portal</span>
 
           <div className="overflow-hidden mb-6">
             <h3 className="text-white text-4xl md:text-5xl font-black tracking-tighter leading-[1.05] uppercase animate-fade-in-up">
-              Centralized Healthcare <br />
-              Management Array.
+              Manage Nova <br />
+              Healthcare.
             </h3>
           </div>
 
           <p className="text-slate-400 font-medium leading-relaxed text-sm border-l-2 border-nova-blue pl-6">
-            Access secure telemetry data profiles, configure clinical operational hours for your subsidiaries, and safely publish validated medical literature across the public domains.
+            Manage appointments, update clinic hours, and publish content across all of Nova's subsidiaries from one place.
           </p>
 
           {/* Miniature Metrics Frame Accent */}
           <div className="mt-12 grid grid-cols-2 gap-6 border border-white/[0.05] bg-white/[0.02] p-6 rounded-2xl backdrop-blur-md max-w-sm">
             <div>
-              <p className="text-white/30 text-[9px] font-black uppercase tracking-wider mb-1">System Status</p>
+              <p className="text-white/30 text-[9px] font-black uppercase tracking-wider mb-1">Status</p>
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-                <span className="text-xs font-bold uppercase text-white tracking-wide">Operational</span>
+                <span className="text-xs font-bold uppercase text-white tracking-wide">Online</span>
               </div>
             </div>
             <div>
-              <p className="text-white/30 text-[9px] font-black uppercase tracking-wider mb-1">Network Encryption</p>
-              <p className="text-xs font-black text-nova-sky uppercase tracking-wide">AES-256 GCM</p>
+              <p className="text-white/30 text-[9px] font-black uppercase tracking-wider mb-1">Encryption</p>
+              <p className="text-xs font-black text-nova-sky uppercase tracking-wide">AES-256</p>
             </div>
           </div>
         </div>

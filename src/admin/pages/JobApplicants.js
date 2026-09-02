@@ -32,7 +32,7 @@ const JobApplicants = () => {
         setApplications(response.data.data);
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Error pulling applicant registry array.');
+      setError(err.response?.data?.message || 'Failed to load applicants.');
     } finally {
       setLoading(false);
     }
@@ -55,7 +55,7 @@ const JobApplicants = () => {
         setApplications(prev => prev.map(a => a._id === appId ? response.data.data : a));
       }
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Status update failure.');
+      toast.error(err.response?.data?.message || 'Failed to update status.');
     } finally {
       setActionLoadingId(null);
     }
@@ -70,10 +70,10 @@ const JobApplicants = () => {
       if (response.data.success) {
         setApplications(prev => prev.filter(a => a._id !== deleteModal.targetId));
         setDeleteModal({ isOpen: false, targetId: null });
-        toast.success('Applicant record deleted.');
+        toast.success('Applicant deleted.');
       }
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Failed to delete applicant record.');
+      toast.error(err.response?.data?.message || 'Failed to delete applicant.');
       setDeleteModal({ isOpen: false, targetId: null });
     }
   };
@@ -103,7 +103,7 @@ const JobApplicants = () => {
         </button>
 
         <div>
-          <span className="text-[10px] font-black text-nova-sky uppercase tracking-[0.4em] block mb-2">// Applicant Registry</span>
+          <span className="text-[10px] font-black text-nova-sky uppercase tracking-[0.4em] block mb-2">Applicants</span>
           <h1 className="text-4xl font-black text-slate-950 uppercase tracking-tighter">{job?.title || 'Applicants'}</h1>
           <p className="text-xs text-slate-400 font-bold uppercase tracking-wide mt-2">{applications.length} application{applications.length !== 1 ? 's' : ''} received</p>
         </div>
@@ -128,7 +128,7 @@ const JobApplicants = () => {
                     <th className="p-6">Contact</th>
                     <th className="p-6">Resume</th>
                     <th className="p-6">Status</th>
-                    <th className="p-6 text-right">Operations</th>
+                    <th className="p-6 text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 text-sm">
@@ -182,7 +182,7 @@ const JobApplicants = () => {
                           <button
                             onClick={() => setDeleteModal({ isOpen: true, targetId: app._id })}
                             className="w-9 h-9 bg-rose-50 border border-rose-100 text-rose-600 rounded-xl inline-flex items-center justify-center hover:bg-rose-600 hover:text-white transition-colors"
-                            title="Delete applicant record"
+                            title="Delete applicant"
                           >
                             <Trash2 size={14} />
                           </button>
@@ -210,8 +210,8 @@ const JobApplicants = () => {
                 <Trash2 size={20} />
               </div>
               <div className="space-y-1">
-                <h4 className="text-base font-black text-slate-950 uppercase tracking-tight">Delete Applicant Record?</h4>
-                <p className="text-xs text-slate-400 font-medium leading-relaxed">This will permanently remove this application from MongoDB. You cannot undo this.</p>
+                <h4 className="text-base font-black text-slate-950 uppercase tracking-tight">Delete this applicant?</h4>
+                <p className="text-xs text-slate-400 font-medium leading-relaxed">This will permanently delete this application. This can't be undone.</p>
               </div>
               <div className="grid grid-cols-2 gap-3 pt-2">
                 <button

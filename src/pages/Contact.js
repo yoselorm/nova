@@ -1,10 +1,37 @@
 import React, { useState } from 'react';
 import bgimage from '../assets/images/herobg.jpg';
 import { Phone, Mail, MapPin, Clock, Send, CheckCircle2 } from 'lucide-react';
+import axios from 'axios';
 import useReveal from '../utils/useReveal';
+import toast from '../components/Toast';
 
 const Contact = () => {
   const [isRobotChecked, setIsRobotChecked] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({ fullName: '', subject: '', email: '', message: '' });
+
+  const handleChange = (e) => {
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!isRobotChecked) return;
+
+    setLoading(true);
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_SERVICE_API}/api/contact`, formData);
+      if (response.data.success) {
+        toast.success("Message sent. We'll get back to you soon.");
+        setFormData({ fullName: '', subject: '', email: '', message: '' });
+        setIsRobotChecked(false);
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to send your message. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <main className="relative min-h-screen w-full font-nova overflow-hidden flex flex-col">
@@ -63,19 +90,23 @@ const Contact = () => {
             {/* RIGHT SIDE: The High-End Form */}
             <div className="bg-white/10 backdrop-blur-3xl p-8 md:p-12 rounded-[4rem] border border-white/20 shadow-2xl shadow-black/50 animate-fade-in-up [animation-delay:150ms]">
               <h3 className="text-2xl font-black tracking-tight text-white mb-8">Direct Inquiry</h3>
-              <form className="space-y-5">
+              <form onSubmit={handleSubmit} className="space-y-5">
                 <div className="grid md:grid-cols-2 gap-5">
-                  <GlassInput placeholder="Full Name" />
-                  <GlassInput placeholder="Subject" />
+                  <GlassInput name="fullName" placeholder="Full Name" required value={formData.fullName} onChange={handleChange} />
+                  <GlassInput name="subject" placeholder="Subject" value={formData.subject} onChange={handleChange} />
                 </div>
-                <GlassInput placeholder="Email Address" type="email" />
-                <textarea 
-                  placeholder="Your Message..." 
+                <GlassInput name="email" placeholder="Email Address" type="email" required value={formData.email} onChange={handleChange} />
+                <textarea
+                  name="message"
+                  placeholder="Your Message..."
+                  required
+                  value={formData.message}
+                  onChange={handleChange}
                   className="w-full bg-white/5 border border-white/10 rounded-3xl px-8 py-6 text-white placeholder:text-white/30 focus:outline-none focus:border-nova-sky transition-all min-h-[120px]"
                 />
 
                 {/* --- ROBOT CHECK --- */}
-                <div 
+                <div
                   onClick={() => setIsRobotChecked(!isRobotChecked)}
                   className={`flex items-center justify-between p-5 rounded-2xl border cursor-pointer transition-all ${
                     isRobotChecked ? 'bg-nova-sky/20 border-nova-sky' : 'bg-white/5 border-white/10 hover:border-white/30'
@@ -93,12 +124,17 @@ const Contact = () => {
                 </div>
 
                 <button
-                  disabled={!isRobotChecked}
+                  type="submit"
+                  disabled={!isRobotChecked || loading}
                   className={`w-full py-5 rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] flex items-center justify-center gap-3 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] ${
                     isRobotChecked ? 'bg-nova-sky text-nova-blue shadow-xl shadow-nova-sky/20' : 'bg-white/5 text-white/20 cursor-not-allowed'
-                  }`}
+                  } disabled:opacity-60`}
                 >
-                  Confirm & Send <Send size={14} />
+                  {loading ? (
+                    <span className="w-4 h-4 border-2 border-nova-blue/30 border-t-nova-blue rounded-full animate-spin" />
+                  ) : (
+                    <>Confirm & Send <Send size={14} /></>
+                  )}
                 </button>
               </form>
             </div>
@@ -160,7 +196,7 @@ const ContactCard = ({ icon, title, lines }) => (
 );
 
 const GlassInput = ({ ...props }) => (
-  <input 
+  <input
     {...props}
     className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-white/20 focus:outline-none focus:border-nova-sky transition-all"
   />

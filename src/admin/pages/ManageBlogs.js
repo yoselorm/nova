@@ -39,7 +39,7 @@ const ManageBlogs = () => {
         setBlogs(response.data.data);
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Error pulling administrative blog arrays.');
+      setError(err.response?.data?.message || 'Failed to load blog posts.');
     } finally {
       setLoading(false);
     }
@@ -55,7 +55,7 @@ const ManageBlogs = () => {
     if (!file) return;
 
     if (file.size > 4 * 1024 * 1024) {
-      alert('Asset payload exceeds maximum optimization size threshold (4MB).');
+      alert('Image is too large. Please choose a file under 4MB.');
       return;
     }
 
@@ -123,7 +123,7 @@ const ManageBlogs = () => {
         if (response.data.success) {
           setBlogs(prev => prev.map(b => b._id === activeBlogId ? response.data.data : b));
           setIsModalOpen(false);
-          toast.success('Article updated successfully.');
+          toast.success('Post updated successfully.');
         }
       } else {
         // EXECUTE POST CREATION LOGIC
@@ -135,11 +135,11 @@ const ManageBlogs = () => {
         if (response.data.success) {
           setBlogs(prev => [response.data.data, ...prev]);
           setIsModalOpen(false);
-          toast.success('Article created successfully.');
+          toast.success('Post published successfully.');
         }
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed transmission of literary asset pipeline.');
+      setError(err.response?.data?.message || 'Failed to save the post.');
     } finally {
       setSubmitLoading(false);
     }
@@ -157,10 +157,10 @@ const ManageBlogs = () => {
       if (response.data.success) {
         setBlogs(prev => prev.filter(b => b._id !== deleteModal.targetId));
         setDeleteModal({ isOpen: false, targetId: null });
-        toast.success('Article deleted successfully.');
+        toast.success('Post deleted successfully.');
       }
     } catch (err) {
-      alert(err.response?.data?.message || 'Failed execution of asset purge sequence.');
+      alert(err.response?.data?.message || 'Failed to delete the post.');
       setDeleteModal({ isOpen: false, targetId: null });
     }
   };
@@ -179,8 +179,8 @@ const ManageBlogs = () => {
         {/* Module Header Bar */}
         <div className="flex items-center justify-between">
           <div>
-            <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] block mb-2">// Corporate Literature Engine</span>
-            <h1 className="text-4xl font-black text-slate-950 uppercase tracking-tighter">Manage Medical Blogs</h1>
+            <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] block mb-2">Blog</span>
+            <h1 className="text-4xl font-black text-slate-950 uppercase tracking-tighter">Manage Blog Posts</h1>
           </div>
 
           <button
@@ -204,7 +204,7 @@ const ManageBlogs = () => {
           </div>
         ) : blogs.length === 0 ? (
           <div className="bg-white rounded-2xl border border-slate-100 p-16 text-center text-slate-400 font-bold text-xs uppercase tracking-wider">
-            No published medical records found. Launch writer array above.
+            No blog posts yet. Click "Write Article" to add one.
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -233,20 +233,19 @@ const ManageBlogs = () => {
                 </div>
 
                 {/* Card Operations Footer Panel */}
-                <div className="p-6 pt-0 flex justify-between items-center border-t border-slate-50 mt-4">
-                  <span className="text-[10px] font-mono font-black uppercase text-slate-300">NVB-LOG</span>
+                <div className="p-6 pt-0 flex justify-end items-center border-t border-slate-50 mt-4">
                   <div className="flex gap-2">
                     <button
                       onClick={() => handleOpenEditModal(blog)}
                       className="w-9 h-9 bg-slate-50 border border-slate-100 text-slate-700 rounded-xl flex items-center justify-center hover:bg-slate-950 hover:text-white transition-colors"
-                      title="Edit Article parameters"
+                      title="Edit post"
                     >
                       <Edit3 size={14} />
                     </button>
                     <button
                       onClick={() => setDeleteModal({ isOpen: true, targetId: blog._id })}
                       className="w-9 h-9 bg-rose-50 border border-rose-100 text-rose-600 rounded-xl flex items-center justify-center hover:bg-rose-600 hover:text-white transition-colors"
-                      title="Purge Article"
+                      title="Delete post"
                     >
                       <Trash2 size={14} />
                     </button>
@@ -275,7 +274,7 @@ const ManageBlogs = () => {
                     <FileText size={16} />
                   </div>
                   <h3 className="text-xl font-black text-slate-950 uppercase tracking-tight">
-                    {isEditMode ? 'Modify Clinical Article' : 'Compose Clinical Article'}
+                    {isEditMode ? 'Edit Blog Post' : 'New Blog Post'}
                   </h3>
                 </div>
                 <button onClick={() => setIsModalOpen(false)} className="text-slate-400 hover:text-slate-600 transition-colors">
@@ -285,13 +284,13 @@ const ManageBlogs = () => {
 
               <form onSubmit={handleFormSubmit} className="space-y-5">
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Article Core Title</label>
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Title</label>
                   <input required type="text" placeholder="e.g., Technological Breakthroughs In Advanced IVF" value={formData.title} onChange={(e) => handleInputChange('title', e.target.value)} className="w-full h-12 bg-slate-50 border border-slate-100 rounded-xl px-4 text-xs font-bold text-slate-900 focus:outline-none focus:border-slate-300" />
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Channel Target</label>
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Category</label>
                     <select value={formData.category} onChange={(e) => handleInputChange('category', e.target.value)} className="w-full h-12 bg-slate-50 border border-slate-100 rounded-xl px-4 text-xs font-bold text-slate-800 focus:outline-none">
                       <option value="general">General Healthcare</option>
                       <option value="surgery">Surgery Centre</option>
@@ -301,18 +300,18 @@ const ManageBlogs = () => {
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Author Signature</label>
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Author</label>
                     <input type="text" value={formData.author} onChange={(e) => handleInputChange('author', e.target.value)} className="w-full h-12 bg-slate-50 border border-slate-100 rounded-xl px-4 text-xs font-bold text-slate-900 focus:outline-none" />
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Read Matrix Metric</label>
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Read Time</label>
                     <input type="text" value={formData.readTime} onChange={(e) => handleInputChange('readTime', e.target.value)} className="w-full h-12 bg-slate-50 border border-slate-100 rounded-xl px-4 text-xs font-bold text-slate-900 focus:outline-none" />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Cover Image Graphic Asset</label>
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Cover Image</label>
                   <div className="flex flex-col sm:flex-row gap-4 items-center p-4 border border-dashed border-slate-200 bg-slate-50/50 rounded-2xl">
                     <div className="h-28 w-44 bg-white border border-slate-100 rounded-xl overflow-hidden flex items-center justify-center shrink-0 relative group">
                       {formData.coverImage ? (
@@ -336,16 +335,16 @@ const ManageBlogs = () => {
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Core Literature Content</label>
-                  <textarea required rows={6} placeholder="Write your clinical updates metrics here..." value={formData.content} onChange={(e) => handleInputChange('content', e.target.value)} className="w-full bg-slate-50 border border-slate-100 rounded-xl p-4 text-xs font-bold text-slate-900 focus:outline-none focus:border-slate-300 resize-none" />
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Content</label>
+                  <textarea required rows={6} placeholder="Write the article here..." value={formData.content} onChange={(e) => handleInputChange('content', e.target.value)} className="w-full bg-slate-50 border border-slate-100 rounded-xl p-4 text-xs font-bold text-slate-900 focus:outline-none focus:border-slate-300 resize-none" />
                 </div>
 
                 <div className="flex justify-end gap-3 pt-4 border-t border-slate-100 mt-6">
                   <button type="button" onClick={() => setIsModalOpen(false)} className="h-12 px-6 border border-slate-100 rounded-xl text-xs font-black uppercase tracking-wider text-slate-500 hover:bg-slate-50 transition-colors">
-                    Abort
+                    Cancel
                   </button>
                   <button type="submit" disabled={submitLoading} className="h-12 px-8 bg-slate-950 text-white font-black text-xs uppercase tracking-widest rounded-xl hover:bg-slate-800 transition-colors disabled:opacity-40 flex items-center justify-center min-w-[140px]">
-                    {submitLoading ? <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : isEditMode ? 'Save Changes' : 'Dispatch Log'}
+                    {submitLoading ? <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : isEditMode ? 'Save Changes' : 'Publish'}
                   </button>
                 </div>
               </form>
@@ -367,8 +366,8 @@ const ManageBlogs = () => {
                 <Trash2 size={20} />
               </div>
               <div className="space-y-1">
-                <h4 className="text-base font-black text-slate-950 uppercase tracking-tight">Purge Literature Asset?</h4>
-                <p className="text-xs text-slate-400 font-medium leading-relaxed">This systemic destruction procedure will remove the entry from MongoDB instantly. You cannot undo this modification.</p>
+                <h4 className="text-base font-black text-slate-950 uppercase tracking-tight">Delete this post?</h4>
+                <p className="text-xs text-slate-400 font-medium leading-relaxed">This will permanently delete the post. This can't be undone.</p>
               </div>
               <div className="grid grid-cols-2 gap-3 pt-2">
                 <button 
@@ -381,7 +380,7 @@ const ManageBlogs = () => {
                   onClick={executePurge}
                   className="h-11 bg-rose-600 text-white rounded-xl text-xs font-black uppercase tracking-wider hover:bg-rose-700 transition-colors shadow-lg shadow-rose-600/10"
                 >
-                  Confirm Purge
+                  Delete
                 </button>
               </div>
             </div>

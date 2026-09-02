@@ -1,17 +1,8 @@
 import React from 'react';
-import { Heart, Microscope, Sparkles, ShieldCheck, ArrowRight, Activity } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Heart, Microscope, Sparkles, ShieldCheck, Activity } from 'lucide-react';
 
-// Centralized dynamic image imports matching requested asset allocations
-import MenopauseImg from '../../assets/images/fertilityImg.jpg';
-import CancerScreeningImg from '../../assets/images/fertilityImg.jpg';
-import ExecutivePhysicalImg from '../../assets/images/fertilityImg.jpg';
-import GeneralGynImg from '../../assets/images/fertilityImg.jpg';
 import FamilyPlanningImg from '../../assets/images/fertilityImg.jpg';
-import FibroidsImg from '../../assets/images/fertilityImg.jpg';
-import AmbulanceImg from '../../assets/images/fertilityImg.jpg';
-import LabServicesImg from '../../assets/images/fertilityImg.jpg';
-import PharmacyImg from '../../assets/images/fertilityImg.jpg';
-import WellnessImg from '../../assets/images/fertilityImg.jpg';
 
 const FertilityCenter = () => {
   const features = [
@@ -21,16 +12,16 @@ const FertilityCenter = () => {
   ];
 
   const sections = [
-    { title: "Menopause Management", code: "FERT-A1", tag: "Hormonal Care", img: MenopauseImg, desc: "Specialized diagnostics and systemic therapy logs for transitional health." },
-    { title: "Breast & Cervical Cancer Screening", code: "FERT-A2", tag: "Preventive Screening", img: CancerScreeningImg, desc: "High-resolution diagnostic loops and early intervention oncology screenings." },
-    { title: "Executive Physical Suites", code: "FERT-A3", tag: "Comprehensive", img: ExecutivePhysicalImg, desc: "Elite diagnostic monitoring and personalized cardiovascular/metabolic stress mapping." },
-    { title: "General Women's Health Gynecology", code: "FERT-B1", tag: "Core Clinical", img: GeneralGynImg, desc: "Routine and expert investigative pathways covering all reproductive lifecycles." },
-    { title: "Fertility & Family Planning", code: "FERT-B2", tag: "Reproductive Lab", img: FamilyPlanningImg, desc: "Male and female pathfinding protocols featuring ovulation induction and IUI." },
-    { title: "Fibroids: Diagnosis & Management", code: "FERT-B3", tag: "Uterine Integrity", img: FibroidsImg, desc: "Advanced imaging and uterine-preservation focused therapy parameters." },
-    { title: "Laboratory Services", code: "FERT-C1", tag: "Pathology Log", img: LabServicesImg, desc: "Integrated clinical pathology, semen analysis, and hormonal assay mapping." },
-    { title: "Nova Pharmacy Department", code: "FERT-C2", tag: "Cold-Chain", img: PharmacyImg, desc: "Direct dispensing of specialized high-potency and cold-chain fertility compounds." },
-    { title: "Wellness & Preventive Medicine", code: "FERT-C3", tag: "Longevity", img: WellnessImg, desc: "Proactive, multi-tier immune and metabolic optimization frameworks." },
-    { title: "Private Medical Ambulance Services", code: "FERT-D1", tag: "Emergency Log", img: AmbulanceImg, desc: "24/7 dedicated critical care transport and synchronized triage routing." }
+    { title: "Menopause Management", code: "FERT-A1", tag: "Hormonal Care", desc: "Specialized diagnostics and systemic therapy logs for transitional health." },
+    { title: "Breast & Cervical Cancer Screening", code: "FERT-A2", tag: "Preventive Screening", desc: "High-resolution diagnostic loops and early intervention oncology screenings." },
+    { title: "Executive Physical Suites", code: "FERT-A3", tag: "Comprehensive", desc: "Elite diagnostic monitoring and personalized cardiovascular/metabolic stress mapping." },
+    { title: "General Women's Health Gynecology", code: "FERT-B1", tag: "Core Clinical", desc: "Routine and expert investigative pathways covering all reproductive lifecycles." },
+    { title: "Fertility & Family Planning", code: "FERT-B2", tag: "Reproductive Lab", desc: "Male and female pathfinding protocols featuring ovulation induction and IUI." },
+    { title: "Fibroids: Diagnosis & Management", code: "FERT-B3", tag: "Uterine Integrity", desc: "Advanced imaging and uterine-preservation focused therapy parameters." },
+    { title: "Laboratory Services", code: "FERT-C1", tag: "Pathology Log", desc: "Integrated clinical pathology, semen analysis, and hormonal assay mapping." },
+    { title: "Nova Pharmacy Department", code: "FERT-C2", tag: "Cold-Chain", desc: "Direct dispensing of specialized high-potency and cold-chain fertility compounds." },
+    { title: "Wellness & Preventive Medicine", code: "FERT-C3", tag: "Longevity", desc: "Proactive, multi-tier immune and metabolic optimization frameworks." },
+    { title: "Private Medical Ambulance Services", code: "FERT-D1", tag: "Emergency Log", desc: "24/7 dedicated critical care transport and synchronized triage routing." }
   ];
 
   return (
@@ -165,40 +156,21 @@ const FertilityCenter = () => {
           {/* Clean Picture-Heavy List Board Layout */}
           <div className="grid md:grid-cols-2 gap-6">
             {sections.map((item, index) => (
-              <div 
+              <div
                 key={index}
-                className="group border border-slate-100 rounded-[2.5rem] bg-slate-50 overflow-hidden flex flex-col sm:flex-row items-stretch hover:bg-slate-900 hover:border-slate-900 transition-all duration-500 cursor-pointer"
+                className="group border border-slate-100 rounded-[2.5rem] bg-slate-50 overflow-hidden hover:bg-slate-900 hover:border-slate-900 transition-all duration-500 cursor-pointer"
               >
-                {/* Fixed Image Quadrant Box */}
-                <div className="sm:w-2/5 min-h-[200px] relative overflow-hidden bg-slate-200">
-                  <img 
-                    src={item.img} 
-                    alt={item.title} 
-                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" 
-                  />
-                  <div className="absolute inset-0 bg-[#009774]/10 opacity-30 mix-blend-multiply group-hover:opacity-0 transition-opacity duration-500" />
-                </div>
-
-                {/* Content Details */}
-                <div className="p-8 sm:w-3/5 flex flex-col justify-between items-start">
-                  <div className="w-full">
-                    <div className="flex justify-between items-center mb-3">
-                      <span className="text-[9px] font-black text-slate-300 group-hover:text-[#8BEE07] transition-colors tracking-tight">{item.code}</span>
-                      <span className="text-[9px] font-black bg-emerald-50 text-[#009774] group-hover:bg-[#009774] group-hover:text-white px-2 py-0.5 rounded uppercase tracking-wider transition-colors">{item.tag}</span>
-                    </div>
-                    <h4 className="font-bold text-slate-800 text-xl group-hover:text-white transition-colors tracking-tight mb-2">
-                      {item.title}
-                    </h4>
-                    <p className="text-slate-400 text-xs font-medium leading-relaxed group-hover:text-slate-300/80 transition-colors">
-                      {item.desc}
-                    </p>
+                <div className="p-8 w-full">
+                  <div className="flex justify-between items-center mb-3">
+                    <span className="text-[9px] font-black text-slate-300 group-hover:text-[#8BEE07] transition-colors tracking-tight">{item.code}</span>
+                    <span className="text-[9px] font-black bg-emerald-50 text-[#009774] group-hover:bg-[#009774] group-hover:text-white px-2 py-0.5 rounded uppercase tracking-wider transition-colors">{item.tag}</span>
                   </div>
-
-                  {/* Action Row */}
-                  <div className="flex items-center gap-2 mt-6 opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0 duration-300">
-                    <span className="text-[9px] font-black uppercase text-[#8BEE07] tracking-widest">View Operations</span>
-                    <ArrowRight size={12} className="text-[#8BEE07]" />
-                  </div>
+                  <h4 className="font-bold text-slate-800 text-xl group-hover:text-white transition-colors tracking-tight mb-2">
+                    {item.title}
+                  </h4>
+                  <p className="text-slate-400 text-xs font-medium leading-relaxed group-hover:text-slate-300/80 transition-colors">
+                    {item.desc}
+                  </p>
                 </div>
               </div>
             ))}
@@ -215,9 +187,9 @@ const FertilityCenter = () => {
                 <p className="text-white/40 text-xs font-medium mt-0.5">Secure, automated pipeline logs for patient data tracking and diagnostic requests.</p>
               </div>
             </div>
-            <button className="bg-white text-slate-950 font-black uppercase tracking-widest text-[10px] px-8 py-4 rounded-xl shadow-md hover:bg-[#8BEE07] hover:text-[#009774] transition-all whitespace-nowrap">
+            <Link to="/contact" className="inline-flex items-center justify-center bg-white text-slate-950 font-black uppercase tracking-widest text-[10px] px-8 py-4 rounded-xl shadow-md hover:bg-[#8BEE07] hover:text-[#009774] transition-all whitespace-nowrap">
               Inquire Center Capacity
-            </button>
+            </Link>
           </div>
 
         </div>

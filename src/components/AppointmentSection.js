@@ -50,7 +50,7 @@ const AppointmentSection = () => {
   const handleConfirmAppointment = async (e) => {
     e.preventDefault();
     if (formData.service === 'Select Service') {
-      setError('Please select a valid medical service target.');
+      setError('Please choose a service.');
       return;
     }
     if (!formData.date || !isAllowedAppointmentDay(formData.date)) {
@@ -58,7 +58,7 @@ const AppointmentSection = () => {
       return;
     }
     if (!formData.timeSlot) {
-      setError('Please select a preferred time window slot.');
+      setError('Please choose a time.');
       return;
     }
 
@@ -73,14 +73,14 @@ const AppointmentSection = () => {
         date: formData.date,
         timeSlot: formData.timeSlot,
         subsidiary: formData.service || 'general', // Maps cleanly to your controller's naming schemas, with fallback
-        notes: formData.notes || 'No custom case notes provided.'
+        notes: formData.notes || 'No notes provided.'
       });
 
       if (response.data.success) {
         setSuccess(true);
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Transmission pipeline collision.');
+      setError(err.response?.data?.message || 'Something went wrong. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -136,8 +136,8 @@ const AppointmentSection = () => {
             {success ? (
               <div className="text-center py-16 space-y-4 relative z-10 text-white">
                 <CheckCircle2 size={50} className="text-nova-sky mx-auto animate-bounce" />
-                <h3 className="text-2xl font-black uppercase tracking-tight">Booking Received</h3>
-                <p className="text-xs text-white/70 max-w-xs mx-auto leading-relaxed">Your healthcare appointment request has been compiled and dropped into the admin matrix streams.</p>
+                <h3 className="text-2xl font-black uppercase tracking-tight">Request Received</h3>
+                <p className="text-xs text-white/70 max-w-xs mx-auto leading-relaxed">Thanks! We've received your appointment request and will be in touch soon.</p>
               </div>
             ) : (
               <form onSubmit={handleConfirmAppointment} className="space-y-5 relative z-10">
@@ -173,7 +173,7 @@ const AppointmentSection = () => {
 
                 {/* TIME WINDOW SELECTOR ARRAY */}
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black text-white/40 uppercase tracking-widest block px-1">Available Windows</label>
+                  <label className="text-[10px] font-black text-white/40 uppercase tracking-widest block px-1">Available Times</label>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                     {timeSlots.map((slot) => (
                       <button
@@ -194,7 +194,7 @@ const AppointmentSection = () => {
 
                 {/* CASE NOTES TEXTAREA CONTROLLER */}
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black text-white/40 uppercase tracking-widest block px-1">Consultation Requirements</label>
+                  <label className="text-[10px] font-black text-white/40 uppercase tracking-widest block px-1">Notes (Optional)</label>
                   <textarea 
                     rows={3} 
                     placeholder="Brief description of clinical requirements..." 

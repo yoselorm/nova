@@ -1,5 +1,6 @@
 import React from 'react';
-import { Pill, ShieldCheck, Clock, FileText, ArrowRight, Activity, Layers } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Pill, ShieldCheck, Clock, FileText, Activity, Layers } from 'lucide-react';
 import PharmacyHeroImg from '../../assets/images/facility.jpg';
 
 const Pharmacy = () => {
@@ -168,23 +169,18 @@ const Pharmacy = () => {
           {/* Clean List Board Array */}
           <div className="grid md:grid-cols-2 gap-4">
             {services.map((item, index) => (
-              <div 
+              <div
                 key={index}
-                className="group border border-slate-100 p-8 rounded-[2rem] bg-slate-50 flex items-center justify-between hover:bg-slate-900 hover:border-slate-900 transition-all duration-500 cursor-pointer"
+                className="group border border-slate-100 rounded-[2.5rem] bg-slate-50 overflow-hidden hover:bg-slate-900 hover:border-slate-900 transition-all duration-500 cursor-pointer"
               >
-                <div>
-                  <div className="flex items-center gap-3 mb-2">
+                <div className="p-8 w-full">
+                  <div className="flex justify-between items-center mb-3">
                     <span className="text-[9px] font-black text-slate-300 group-hover:text-[#9965DF] transition-colors tracking-tight">{item.code}</span>
                     <span className="text-[9px] font-black bg-purple-50 text-[#5B2897] group-hover:bg-[#5B2897] group-hover:text-white px-2 py-0.5 rounded uppercase tracking-wider transition-colors">{item.tag}</span>
                   </div>
-                  <h4 className="font-bold text-slate-800 text-lg group-hover:text-white transition-colors tracking-tight">
+                  <h4 className="font-bold text-slate-800 text-xl group-hover:text-white transition-colors tracking-tight">
                     {item.title}
                   </h4>
-                </div>
-                
-                {/* Brand Hover Circle Indicator */}
-                <div className="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-400 group-hover:bg-[#5B2897] group-hover:border-[#5B2897] group-hover:text-white transition-all transform group-hover:rotate-45">
-                  <ArrowRight size={16} />
                 </div>
               </div>
             ))}
@@ -202,9 +198,9 @@ const Pharmacy = () => {
               </div>
             </div>
             
-            <button className="bg-white text-slate-950 font-black uppercase tracking-widest text-[10px] px-8 py-4 rounded-xl shadow-md hover:bg-[#7D36DD] hover:text-white transition-colors whitespace-nowrap">
-              Submit Prescription Log
-            </button>
+            <Link to="/contact" className="inline-flex items-center justify-center bg-white text-slate-950 font-black uppercase tracking-widest text-[10px] px-8 py-4 rounded-xl shadow-md hover:bg-[#7D36DD] hover:text-white transition-colors whitespace-nowrap">
+              Contact Pharmacy Team
+            </Link>
           </div>
 
         </div>
