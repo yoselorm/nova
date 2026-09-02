@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Phone, Calendar, MapPin, Send, CheckCircle2, AlertCircle } from 'lucide-react';
 import axios from 'axios';
 import useReveal from '../utils/useReveal';
+import AppointmentDatePicker from './AppointmentDatePicker';
 
 const AppointmentSection = () => {
   const [loading, setLoading] = useState(false);
@@ -27,24 +28,8 @@ const AppointmentSection = () => {
     '01:00 PM', '02:30 PM', '04:00 PM'
   ];
 
-  // Clinic only accepts appointments on Monday, Wednesday, and Friday
-  const ALLOWED_APPOINTMENT_DAYS = [1, 3, 5];
-  const isAllowedAppointmentDay = (dateString) => {
-    if (!dateString) return true;
-    return ALLOWED_APPOINTMENT_DAYS.includes(new Date(`${dateString}T00:00:00`).getDay());
-  };
-
   const handleInputChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
-  };
-
-  const handleDateChange = (value) => {
-    if (value && !isAllowedAppointmentDay(value)) {
-      setError('Appointments are only available on Monday, Wednesday, and Friday. Please select one of those days.');
-      return;
-    }
-    setError('');
-    handleInputChange('date', value);
   };
 
   const handleConfirmAppointment = async (e) => {
@@ -53,8 +38,8 @@ const AppointmentSection = () => {
       setError('Please choose a service.');
       return;
     }
-    if (!formData.date || !isAllowedAppointmentDay(formData.date)) {
-      setError('Please select a Monday, Wednesday, or Friday appointment date.');
+    if (!formData.date) {
+      setError('Please select an appointment date.');
       return;
     }
     if (!formData.timeSlot) {
@@ -159,7 +144,11 @@ const AppointmentSection = () => {
                 </div>
                 
                 <div className="grid md:grid-cols-2 gap-4">
-                  <Input type="date" required value={formData.date} onChange={(e) => handleDateChange(e.target.value)} />
+                  <AppointmentDatePicker
+                    value={formData.date}
+                    onChange={(value) => handleInputChange('date', value)}
+                    triggerClassName="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white text-sm focus:outline-none focus:border-nova-sky transition-all flex items-center justify-between"
+                  />
                   <select
                     value={formData.service}
                     onChange={(e) => handleInputChange('service', e.target.value)}

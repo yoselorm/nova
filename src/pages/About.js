@@ -26,9 +26,8 @@ const About = () => {
           <div
             ref={imgRef}
             className={`rounded-[4rem] overflow-hidden border-[15px] border-white shadow-xl relative h-[600px] transition-all duration-[1200ms] ease-out ${
-              imgVisible ? 'opacity-100' : 'opacity-0'
+              imgVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'
             }`}
-            style={{ clipPath: imgVisible ? 'inset(0% 0% 0% 0%)' : 'inset(0% 100% 0% 0%)' }}
           >
             <img src={NovaHistoryImg} className="w-full h-full object-cover" alt="Nova History" />
             <div className="absolute inset-0 bg-gradient-to-t from-nova-blue/40 to-transparent" />

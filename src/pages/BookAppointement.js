@@ -11,6 +11,7 @@ import {
   AlertCircle
 } from 'lucide-react';
 import axios from 'axios'; // Imported to execute the pipeline flight
+import AppointmentDatePicker from '../components/AppointmentDatePicker';
 
 const BookAppointment = () => {
   const [step, setStep] = useState(1);
@@ -39,24 +40,8 @@ const BookAppointment = () => {
     '01:00 PM', '02:30 PM', '04:00 PM'
   ];
 
-  // Clinic only accepts appointments on Monday, Wednesday, and Friday
-  const ALLOWED_APPOINTMENT_DAYS = [1, 3, 5];
-  const isAllowedAppointmentDay = (dateString) => {
-    if (!dateString) return true;
-    return ALLOWED_APPOINTMENT_DAYS.includes(new Date(`${dateString}T00:00:00`).getDay());
-  };
-
   const handleInputChange = (field, value) => {
     setBookingData(prev => ({ ...prev, [field]: value }));
-  };
-
-  const handleDateChange = (value) => {
-    if (value && !isAllowedAppointmentDay(value)) {
-      setError('Appointments are only available on Monday, Wednesday, and Friday. Please select one of those days.');
-      return;
-    }
-    setError('');
-    handleInputChange('date', value);
   };
 
   const nextStep = () => setStep(prev => Math.min(prev + 1, 4));
@@ -199,13 +184,11 @@ const BookAppointment = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Preferred Date</label>
-                      <input
-                        type="date"
+                      <AppointmentDatePicker
                         value={bookingData.date}
-                        onChange={(e) => handleDateChange(e.target.value)}
-                        className="w-full h-12 bg-slate-50 border border-slate-100 rounded-xl px-4 text-sm font-bold text-slate-900 focus:outline-none focus:border-slate-300"
+                        onChange={(value) => handleInputChange('date', value)}
+                        triggerClassName="w-full h-12 bg-slate-50 border border-slate-100 rounded-xl px-4 text-sm font-bold text-slate-900 focus:outline-none focus:border-slate-300 flex items-center justify-between"
                       />
-                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Mon, Wed & Fri only</p>
                     </div>
                     <div className="space-y-2">
                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Available Times</label>

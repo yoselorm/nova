@@ -53,12 +53,12 @@ const CinematicHero = () => {
               </Link>
 
               {/* Video/Secondary Action */}
-              <button className="flex items-center gap-4 text-white group">
+              {/* <button className="flex items-center gap-4 text-white group">
                 <span className="w-14 h-14 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-slate-950 transition-all duration-500">
                   <Play size={20} fill="currentColor" />
                 </span>
                 <span className="font-black uppercase tracking-widest text-[10px]">Watch Facility Tour</span>
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
