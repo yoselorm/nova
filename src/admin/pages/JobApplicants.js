@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ChevronLeft, Download, Trash2, AlertCircle, Mail, Phone, FileText } from 'lucide-react';
+import { ChevronLeft, Download, Eye, Trash2, AlertCircle, Mail, Phone } from 'lucide-react';
 import axios from 'axios';
 import toast from '../../components/Toast';
 
@@ -85,6 +85,9 @@ const JobApplicants = () => {
     return 'text-amber-700 bg-amber-50';
   };
 
+  // Browsers can render PDFs and images inline; Word docs have no native in-browser viewer
+  const isViewableResume = (type) => type === 'application/pdf' || (type || '').startsWith('image/');
+
   if (loading) return (
     <div className="min-h-screen bg-[#FAF9FF] flex items-center justify-center font-nova">
       <span className="w-8 h-8 border-4 border-nova-blue border-t-transparent rounded-full animate-spin" />
@@ -155,13 +158,27 @@ const JobApplicants = () => {
                         </td>
 
                         <td className="p-6">
-                          <a
-                            href={app.resume}
-                            download={app.resumeName || `${app.fullName}-resume`}
-                            className="h-9 px-3 bg-slate-50 border border-slate-100 text-slate-700 rounded-lg flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider hover:bg-slate-950 hover:text-white transition-colors w-fit"
-                          >
-                            <Download size={12} /> <FileText size={12} /> Resume
-                          </a>
+                          <div className="flex gap-2">
+                            {isViewableResume(app.resumeType) && (
+                              <a
+                                href={app.resume}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="h-9 px-3 bg-slate-50 border border-slate-100 text-slate-700 rounded-lg flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider hover:bg-slate-950 hover:text-white transition-colors"
+                                title="View resume"
+                              >
+                                <Eye size={12} /> View
+                              </a>
+                            )}
+                            <a
+                              href={app.resume}
+                              download={app.resumeName || `${app.fullName}-resume`}
+                              className="h-9 px-3 bg-slate-50 border border-slate-100 text-slate-700 rounded-lg flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider hover:bg-slate-950 hover:text-white transition-colors"
+                              title="Download resume"
+                            >
+                              <Download size={12} /> Download
+                            </a>
+                          </div>
                         </td>
 
                         <td className="p-6">
