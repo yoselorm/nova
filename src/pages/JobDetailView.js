@@ -196,8 +196,10 @@ const JobDetailView = () => {
       </div>
 
       {/* APPLICATION MODAL */}
+      {/* z-[1100]: the public site header is a fixed z-[1000] element (see PublicLayout.js),
+          so any modal rendered inside a page must clear that to paint above it. */}
       {isApplyOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[1100] flex items-center justify-center p-4">
             <div
               onClick={closeApplyModal}
               className="absolute inset-0 bg-slate-950/40 animate-fade-in"
