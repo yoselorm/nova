@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, Image, Trash2, Edit3, AlertCircle, FileText, X, ImagePlus } from 'lucide-react';
+import { Plus, Image, Trash2, Edit3, AlertCircle, FileText, X } from 'lucide-react';
 import axios from 'axios';
 import toast from '../../components/Toast';
 
 const ManageBlogs = () => {
-  const masterEase = [0.16, 1, 0.3, 1];
-
   // App States
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -262,19 +259,15 @@ const ManageBlogs = () => {
       </div>
 
       {/* COMPOSER SLIDE OVERLAY COMPONENT */}
-      <AnimatePresence>
         {isModalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <motion.div
-              initial={{ opacity: 0 }} animate={{ opacity: 0.4 }} exit={{ opacity: 0 }}
+            <div
               onClick={() => setIsModalOpen(false)}
-              className="absolute inset-0 bg-slate-950"
+              className="absolute inset-0 bg-slate-950/40 animate-fade-in"
             />
 
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }}
-              transition={{ ease: masterEase }}
-              className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-8 relative z-10 shadow-2xl border border-slate-100"
+            <div
+              className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-8 relative z-10 shadow-2xl border border-slate-100 animate-scale-in"
             >
               <div className="flex items-center justify-between pb-6 border-b border-slate-100 mb-6">
                 <div className="flex items-center gap-3">
@@ -356,23 +349,19 @@ const ManageBlogs = () => {
                   </button>
                 </div>
               </form>
-            </motion.div>
+            </div>
           </div>
         )}
-      </AnimatePresence>
 
       {/* ANNOTATED CUSTOM DESIGN CONFIRMATION PURGE DIALOG */}
-      <AnimatePresence>
         {deleteModal.isOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <motion.div 
-              initial={{ opacity: 0 }} animate={{ opacity: 0.4 }} exit={{ opacity: 0 }}
+            <div
               onClick={() => setDeleteModal({ isOpen: false, targetId: null })}
-              className="absolute inset-0 bg-slate-950"
+              className="absolute inset-0 bg-slate-950/40 animate-fade-in"
             />
-            <motion.div 
-              initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-white rounded-3xl max-w-sm w-full p-6 relative z-10 text-center space-y-4 shadow-2xl border border-slate-100"
+            <div
+              className="bg-white rounded-3xl max-w-sm w-full p-6 relative z-10 text-center space-y-4 shadow-2xl border border-slate-100 animate-scale-in"
             >
               <div className="w-12 h-12 bg-rose-50 text-rose-600 border border-rose-100 rounded-2xl flex items-center justify-center mx-auto">
                 <Trash2 size={20} />
@@ -395,10 +384,9 @@ const ManageBlogs = () => {
                   Confirm Purge
                 </button>
               </div>
-            </motion.div>
+            </div>
           </div>
         )}
-      </AnimatePresence>
     </div>
   );
 };

@@ -27,6 +27,10 @@ import BlogDetailView from './pages/BlogDetailView';
 import BlogShowcase from './pages/Blog';
 import ScrollReset from './components/ScrollReset';
 import ProtectedRoute from './utils/ProtectedRoute';
+import Careers from './pages/Careers';
+import JobDetailView from './pages/JobDetailView';
+import ManageJobs from './admin/pages/ManageJobs';
+import JobApplicants from './admin/pages/JobApplicants';
 // Note: Import your OverviewBoard, ManageAppointments, and ManageBlogs here when ready!
 
 const ScrollToTop = () => {
@@ -75,6 +79,8 @@ function App() {
           {/* <Route path='/book-appointment' element={<Navigate to="/#book" replace />} />  */}
           <Route path="/blog" element={<BlogShowcase />} />
           <Route path="/blogs/:slug" element={<BlogDetailView isAdmin={false} />} />
+          <Route path="/careers" element={<Careers />} />
+          <Route path="/careers/:slug" element={<JobDetailView />} />
           <Route path='/book-appointment' element={<BookAppointment />} />
           
           {/* Subsidiary Focus Pages */}
@@ -99,6 +105,8 @@ function App() {
           <Route path="appointments" element={<ManageAppointments />} />
           <Route path="blogs" element={<ManageBlogs />} />
           <Route path="blogs/:slug" element={<BlogDetailView isAdmin={true} />} />
+          <Route path="jobs" element={<ManageJobs />} />
+          <Route path="jobs/:id/applicants" element={<JobApplicants />} />
         </Route>
 
         {/* CATCH-ALL REDIRECT FOR BROKEN LINKS */}

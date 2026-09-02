@@ -1,11 +1,8 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { ShieldAlert, Clock, ShieldCheck, ArrowRight, Activity } from 'lucide-react';
 import SurgeryHeroImg from '../../assets/images/facility.jpg';
 
 const SurgeryCenter = () => {
-  const masterEase = [0.16, 1, 0.3, 1];
-
   const specs = [
     { label: "Operating Theaters", value: "02", desc: "Ultra-modern cleanrooms" },
     { label: "Since", value: "2015", desc: "First free-standing center" },
@@ -52,13 +49,10 @@ const SurgeryCenter = () => {
             </div>
 
             <div className="overflow-hidden">
-              <motion.h1 
-                initial={{ y: "100%" }} animate={{ y: 0 }} transition={{ duration: 1, ease: masterEase }}
-                className="text-5xl md:text-8xl font-black tracking-tighter uppercase text-white leading-[0.9]"
-              >
+              <h1 className="text-5xl md:text-8xl font-black tracking-tighter uppercase text-white leading-[0.9] animate-fade-in-up">
                 Nova Surgery <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7A1613] via-[#9D653E] to-[#ffdcdb] italic font-light lowercase">center.</span>
-              </motion.h1>
+              </h1>
             </div>
 
             <p className="text-slate-300 text-sm md:text-base max-w-lg font-medium leading-relaxed border-l-2 border-[#9D653E] pl-6">

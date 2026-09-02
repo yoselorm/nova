@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import { ShieldAlert, Eye, EyeOff, Lock, Mail, ArrowRight, AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'; // Import Axios for your data pipeline flights
@@ -7,7 +6,6 @@ import toast from '../../components/Toast';
 
 const AdminLogin = () => {
   const navigate = useNavigate();
-  const masterEase = [0.16, 1, 0.3, 1];
 
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
@@ -186,13 +184,10 @@ const AdminLogin = () => {
           <span className="text-[10px] font-black text-nova-sky uppercase tracking-[0.4em] block mb-6">// Global Core Operations Control</span>
 
           <div className="overflow-hidden mb-6">
-            <motion.h3
-              initial={{ y: "100%" }} animate={{ y: 0 }} transition={{ duration: 1, ease: masterEase }}
-              className="text-white text-4xl md:text-5xl font-black tracking-tighter leading-[1.05] uppercase"
-            >
+            <h3 className="text-white text-4xl md:text-5xl font-black tracking-tighter leading-[1.05] uppercase animate-fade-in-up">
               Centralized Healthcare <br />
               Management Array.
-            </motion.h3>
+            </h3>
           </div>
 
           <p className="text-slate-400 font-medium leading-relaxed text-sm border-l-2 border-nova-blue pl-6">

@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 @font-face {
   font-family: 'proxima-nova';
   src: url('assets/font/ProximaNovaRegular.ttf') format('truetype');
@@ -48,6 +46,34 @@
 .animate-marquee:hover {
   animation-play-state: paused;
   /* Pause when user wants to read a specific card */
+}
+
+@keyframes kenBurns {
+  0% {
+    transform: scale(1.15);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-ken-burns {
+  animation: kenBurns 20s ease-in-out infinite alternate;
+}
+
+@keyframes loadingBar {
+  0% {
+    left: -100%;
+  }
+
+  100% {
+    left: 100%;
+  }
+}
+
+.animate-loading-bar {
+  animation: loadingBar 1.5s linear infinite;
 }
 
 @keyframes spin-slow {

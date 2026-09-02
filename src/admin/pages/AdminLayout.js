@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  LayoutDashboard, 
-  CalendarClock, 
-  FileText, 
-  LogOut, 
-  Menu, 
-  X, 
-  Bell, 
+import {
+  LayoutDashboard,
+  CalendarClock,
+  FileText,
+  LogOut,
+  Menu,
+  X,
+  Bell,
   ShieldCheck,
-  UserCheck
+  UserCheck,
+  Briefcase
 } from 'lucide-react';
 import axios from 'axios'; // Import Axios to dispatch the operational tear-down flight
 import toast from '../../components/Toast';
@@ -19,12 +19,12 @@ const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const masterEase = [0.16, 1, 0.3, 1];
 
   const menuItems = [
     { name: 'Overview Board', path: '/admin/dashboard', icon: <LayoutDashboard size={18} /> },
     { name: 'Appointments', path: '/admin/appointments', icon: <CalendarClock size={18} /> },
     { name: 'Manage Blogs', path: '/admin/blogs', icon: <FileText size={18} /> },
+    { name: 'Manage Careers', path: '/admin/jobs', icon: <Briefcase size={18} /> },
   ];
 
   // THE REAL LOGOUT ENGINE
@@ -87,13 +87,9 @@ const handleLogout = async () => {
                     isActive ? 'text-white' : 'text-slate-400 hover:text-white hover:bg-white/[0.02]'
                   }`}
                 >
-                  {/* Active Indicator Slide Pill */}
+                  {/* Active Indicator Pill */}
                   {isActive && (
-                    <motion.div 
-                      layoutId="activeAdminNav"
-                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                      className="absolute inset-0 bg-nova-blue rounded-xl -z-10 shadow-md shadow-blue-950"
-                    />
+                    <div className="absolute inset-0 bg-nova-blue rounded-xl -z-10 shadow-md shadow-blue-950 animate-fade-in" />
                   )}
                   <span className={`transition-colors duration-300 ${isActive ? 'text-white' : 'text-slate-500 group-hover:text-nova-sky'}`}>
                     {item.icon}
@@ -169,72 +165,63 @@ const handleLogout = async () => {
       </div>
 
       {/* 4. RESPONSIVE MOBILE ACCORDION SIDEBAR DRAWER */}
-      <AnimatePresence>
-        {sidebarOpen && (
-          <>
-            {/* Overlay Mask */}
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.4 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setSidebarOpen(false)}
-              className="fixed inset-0 bg-slate-950 z-40 lg:hidden"
-            />
+      {/* Overlay Mask */}
+      <div
+        onClick={() => setSidebarOpen(false)}
+        className={`fixed inset-0 bg-slate-950 z-40 lg:hidden transition-opacity duration-300 ${
+          sidebarOpen ? 'opacity-40 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+      />
 
-            {/* Drawer Content Body */}
-            <motion.aside 
-              initial={{ x: '-100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '-100%' }}
-              transition={{ type: 'tween', duration: 0.4, ease: masterEase }}
-              className="fixed inset-y-0 left-0 w-72 bg-slate-950 text-white p-6 z-50 flex flex-col justify-between lg:hidden shadow-2xl"
-            >
-              <div>
-                <div className="flex items-center justify-between pb-6 border-b border-white/[0.05] mb-10">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-nova-blue rounded-xl flex items-center justify-center text-white font-black text-xl">
-                      N
-                    </div>
-                    <span className="text-base font-black tracking-tighter text-white">NOVA CENTRAL</span>
-                  </div>
-                  <button onClick={() => setSidebarOpen(false)} className="text-slate-400 hover:text-white">
-                    <X size={20} />
-                  </button>
-                </div>
-
-                <nav className="space-y-2">
-                  {menuItems.map((item) => {
-                    const isActive = location.pathname === item.path;
-                    return (
-                      <Link
-                        key={item.name}
-                        to={item.path}
-                        onClick={() => setSidebarOpen(false)}
-                        className={`flex items-center gap-4 px-4 py-3.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${
-                          isActive ? 'bg-nova-blue text-white' : 'text-slate-400 hover:text-white hover:bg-white/[0.02]'
-                        }`}
-                      >
-                        {item.icon}
-                        {item.name}
-                      </Link>
-                    );
-                  })}
-                </nav>
+      {/* Drawer Content Body */}
+      <aside
+        className={`fixed inset-y-0 left-0 w-72 max-w-[85vw] bg-slate-950 text-white p-6 z-50 flex flex-col justify-between lg:hidden shadow-2xl transition-transform duration-300 ease-out ${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
+        <div>
+          <div className="flex items-center justify-between pb-6 border-b border-white/[0.05] mb-10">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-nova-blue rounded-xl flex items-center justify-center text-white font-black text-xl">
+                N
               </div>
+              <span className="text-base font-black tracking-tighter text-white">NOVA CENTRAL</span>
+            </div>
+            <button onClick={() => setSidebarOpen(false)} className="text-slate-400 hover:text-white">
+              <X size={20} />
+            </button>
+          </div>
 
-              <div className="pt-6 border-t border-white/[0.05]">
-                <button 
-                  onClick={() => { setSidebarOpen(false); handleLogout(); }}
-                  className="flex items-center gap-4 w-full px-4 py-3.5 rounded-xl text-xs font-black uppercase tracking-widest text-slate-400 hover:text-rose-400 hover:bg-rose-500/5 transition-all"
+          <nav className="space-y-2">
+            {menuItems.map((item) => {
+              const isActive = location.pathname === item.path;
+              return (
+                <Link
+                  key={item.name}
+                  to={item.path}
+                  onClick={() => setSidebarOpen(false)}
+                  className={`flex items-center gap-4 px-4 py-3.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${
+                    isActive ? 'bg-nova-blue text-white' : 'text-slate-400 hover:text-white hover:bg-white/[0.02]'
+                  }`}
                 >
-                  <LogOut size={18} />
-                  Disconnect Log
-                </button>
-              </div>
-            </motion.aside>
-          </>
-        )}
-      </AnimatePresence>
+                  {item.icon}
+                  {item.name}
+                </Link>
+              );
+            })}
+          </nav>
+        </div>
+
+        <div className="pt-6 border-t border-white/[0.05]">
+          <button
+            onClick={() => { setSidebarOpen(false); handleLogout(); }}
+            className="flex items-center gap-4 w-full px-4 py-3.5 rounded-xl text-xs font-black uppercase tracking-widest text-slate-400 hover:text-rose-400 hover:bg-rose-500/5 transition-all"
+          >
+            <LogOut size={18} />
+            Disconnect Log
+          </button>
+        </div>
+      </aside>
 
     </div>
   );

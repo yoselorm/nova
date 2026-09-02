@@ -1,20 +1,18 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Stethoscope, 
-  Calendar, 
-  User, 
-  Clock, 
-  ArrowRight, 
-  ArrowLeft, 
-  CheckCircle2, 
+import {
+  Stethoscope,
+  Calendar,
+  User,
+  Clock,
+  ArrowRight,
+  ArrowLeft,
+  CheckCircle2,
   Sparkles,
   AlertCircle
 } from 'lucide-react';
 import axios from 'axios'; // Imported to execute the pipeline flight
 
 const BookAppointment = () => {
-  const masterEase = [0.16, 1, 0.3, 1];
   const [step, setStep] = useState(1);
   const [submitLoading, setSubmitLoading] = useState(false); // Live submission spinner switch
   const [error, setError] = useState(''); // Handles network or collision errors gracefully
@@ -37,12 +35,28 @@ const BookAppointment = () => {
   ];
 
   const timeSlots = [
-    '08:00 AM', '09:30 AM', '11:00 AM', 
+    '08:00 AM', '09:30 AM', '11:00 AM',
     '01:00 PM', '02:30 PM', '04:00 PM'
   ];
 
+  // Clinic only accepts appointments on Monday, Wednesday, and Friday
+  const ALLOWED_APPOINTMENT_DAYS = [1, 3, 5];
+  const isAllowedAppointmentDay = (dateString) => {
+    if (!dateString) return true;
+    return ALLOWED_APPOINTMENT_DAYS.includes(new Date(`${dateString}T00:00:00`).getDay());
+  };
+
   const handleInputChange = (field, value) => {
     setBookingData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleDateChange = (value) => {
+    if (value && !isAllowedAppointmentDay(value)) {
+      setError('Appointments are only available on Monday, Wednesday, and Friday. Please select one of those days.');
+      return;
+    }
+    setError('');
+    handleInputChange('date', value);
   };
 
   const nextStep = () => setStep(prev => Math.min(prev + 1, 4));
@@ -137,11 +151,11 @@ const BookAppointment = () => {
             )}
 
             {/* FORM CONTAINER SWITCHES */}
-            <AnimatePresence mode="wait">
+            <>
               {step === 1 && (
-                <motion.div
-                  key="step1" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 10 }} transition={{ ease: masterEase }}
-                  className="space-y-6"
+                <div
+                  key="step1"
+                  className="space-y-6 animate-fade-in-up"
                 >
                   <div>
                     <h2 className="text-3xl font-black text-slate-950 uppercase tracking-tighter leading-none">Select Medical Branch</h2>
@@ -170,27 +184,28 @@ const BookAppointment = () => {
                       </button>
                     ))}
                   </div>
-                </motion.div>
+                </div>
               )}
 
               {step === 2 && (
-                <motion.div
-                  key="step2" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 10 }} transition={{ ease: masterEase }}
-                  className="space-y-6"
+                <div
+                  key="step2"
+                  className="space-y-6 animate-fade-in-up"
                 >
                   <div>
                     <h2 className="text-3xl font-black text-slate-950 uppercase tracking-tighter leading-none">Configure Timeline</h2>
-                    <p className="text-xs font-medium text-slate-400 mt-2">Select your optimized validation date and daily slot matrix.</p>
+                    <p className="text-xs font-medium text-slate-400 mt-2">We accept appointments Monday, Wednesday, and Friday only.</p>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Preferred Date</label>
-                      <input 
-                        type="date" 
+                      <input
+                        type="date"
                         value={bookingData.date}
-                        onChange={(e) => handleInputChange('date', e.target.value)}
+                        onChange={(e) => handleDateChange(e.target.value)}
                         className="w-full h-12 bg-slate-50 border border-slate-100 rounded-xl px-4 text-sm font-bold text-slate-900 focus:outline-none focus:border-slate-300"
                       />
+                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Mon, Wed & Fri only</p>
                     </div>
                     <div className="space-y-2">
                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Available Windows</label>
@@ -211,13 +226,13 @@ const BookAppointment = () => {
                       </div>
                     </div>
                   </div>
-                </motion.div>
+                </div>
               )}
 
               {step === 3 && (
-                <motion.div
-                  key="step3" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 10 }} transition={{ ease: masterEase }}
-                  className="space-y-5"
+                <div
+                  key="step3"
+                  className="space-y-5 animate-fade-in-up"
                 >
                   <div>
                     <h2 className="text-3xl font-black text-slate-950 uppercase tracking-tighter leading-none">Patient Information</h2>
@@ -243,13 +258,13 @@ const BookAppointment = () => {
                       <textarea rows={3} placeholder="Brief description of clinical requirements..." value={bookingData.notes} onChange={(e) => handleInputChange('notes', e.target.value)} className="w-full bg-slate-50 border border-slate-100 rounded-xl p-4 text-xs font-bold text-slate-900 focus:outline-none focus:border-slate-300 resize-none" />
                     </div>
                   </div>
-                </motion.div>
+                </div>
               )}
 
               {step === 4 && (
-                <motion.div
-                  key="step4" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ ease: masterEase }}
-                  className="text-center py-12 space-y-4"
+                <div
+                  key="step4"
+                  className="text-center py-12 space-y-4 animate-scale-in"
                 >
                   <div className={`w-16 h-16 rounded-full mx-auto flex items-center justify-center bg-slate-50 ${getTextColor()}`}>
                     <CheckCircle2 size={40} />
@@ -267,9 +282,9 @@ const BookAppointment = () => {
                   >
                     Book Another Appointment
                   </button>
-                </motion.div>
+                </div>
               )}
-            </AnimatePresence>
+            </>
           </div>
 
           {/* Action Trigger Navigation Bars */}

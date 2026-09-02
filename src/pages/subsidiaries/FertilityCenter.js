@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { Heart, Microscope, Sparkles, ShieldCheck, ArrowRight, Activity } from 'lucide-react';
 
 // Centralized dynamic image imports matching requested asset allocations
@@ -15,8 +14,6 @@ import PharmacyImg from '../../assets/images/fertilityImg.jpg';
 import WellnessImg from '../../assets/images/fertilityImg.jpg';
 
 const FertilityCenter = () => {
-  const masterEase = [0.16, 1, 0.3, 1];
-
   const features = [
     { label: "Lab Grade", value: "Class-10", desc: "Cleanroom containment standard" },
     { label: "Monitoring", value: "24/7", desc: "Continuous incubation telemetry" },
@@ -67,13 +64,10 @@ const FertilityCenter = () => {
             </div>
 
             <div className="overflow-hidden">
-              <motion.h1 
-                initial={{ y: "100%" }} animate={{ y: 0 }} transition={{ duration: 1, ease: masterEase }}
-                className="text-5xl md:text-8xl font-black tracking-tighter uppercase text-white leading-[0.9]"
-              >
+              <h1 className="text-5xl md:text-8xl font-black tracking-tighter uppercase text-white leading-[0.9] animate-fade-in-up">
                 Nova <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#009774] via-[#6ac305] to-[#c7ffcf] italic font-light lowercase">fertility.</span>
-              </motion.h1>
+              </h1>
             </div>
 
             <p className="text-slate-300 text-sm md:text-base max-w-lg font-medium leading-relaxed border-l-2 border-[#009774] pl-6">

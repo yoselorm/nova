@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Filter, Check, X, AlertCircle, Calendar, RefreshCw } from 'lucide-react';
 import axios from 'axios';
 
@@ -150,7 +149,6 @@ const ManageAppointments = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 text-sm">
-                <AnimatePresence mode="popLayout">
                   {filteredData.length === 0 ? (
                     <tr>
                       <td colSpan="6" className="p-12 text-center text-slate-400 font-bold text-xs uppercase tracking-wide">
@@ -159,13 +157,9 @@ const ManageAppointments = () => {
                     </tr>
                   ) : (
                     filteredData.map((item) => (
-                      <motion.tr 
+                      <tr
                         key={item._id}
-                        layout
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="hover:bg-slate-50/40 transition-colors"
+                        className="hover:bg-slate-50/40 transition-colors animate-fade-in"
                       >
                         {/* ID */}
                         <td className="p-6 font-mono font-black text-xs text-slate-900">{item.trackingId}</td>
@@ -234,10 +228,9 @@ const ManageAppointments = () => {
                             )}
                           </div>
                         </td>
-                      </motion.tr>
+                      </tr>
                     ))
                   )}
-                </AnimatePresence>
               </tbody>
             </table>
           </div>

@@ -1,11 +1,8 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { Pill, ShieldCheck, Clock, FileText, ArrowRight, Activity, Layers } from 'lucide-react';
 import PharmacyHeroImg from '../../assets/images/facility.jpg';
 
 const Pharmacy = () => {
-  const masterEase = [0.16, 1, 0.3, 1];
-
   const features = [
     { label: "Sourcing Integrity", value: "100%", desc: "Direct manufacturer sourcing logs" },
     { label: "Fulfillment Pace", value: "<10m", desc: "Average wait time parameters" },
@@ -52,13 +49,10 @@ const Pharmacy = () => {
             </div>
 
             <div className="overflow-hidden">
-              <motion.h1 
-                initial={{ y: "100%" }} animate={{ y: 0 }} transition={{ duration: 1, ease: masterEase }}
-                className="text-5xl md:text-8xl font-black tracking-tighter uppercase text-white leading-[0.9]"
-              >
+              <h1 className="text-5xl md:text-8xl font-black tracking-tighter uppercase text-white leading-[0.9] animate-fade-in-up">
                 Nova <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8b46e5] via-[#a873f0] to-[#e4d5ff] italic font-light lowercase">pharmacy.</span>
-              </motion.h1>
+              </h1>
             </div>
 
             <p className="text-slate-300 text-sm md:text-base max-w-lg font-medium leading-relaxed border-l-2 border-[#5B2897] pl-6">

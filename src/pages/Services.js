@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Activity, ShieldCheck, Microscope, Plus } from 'lucide-react';
+import React from 'react';
+import { ArrowRight, Plus } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import useReveal from '../utils/useReveal';
 
 const Services = () => {
-  const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [ctaRef, ctaVisible] = useReveal();
 
   const services = [
     { title: "Menopause Management", detail: "Comprehensive hormonal assessment, personalized therapy plans, and bone density monitoring for a seamless transition." },
@@ -23,7 +23,7 @@ const Services = () => {
 
   return (
     <section className="relative min-h-screen py-24 bg-[#FAFBFF] overflow-hidden font-nova">
-      
+
       {/* --- ARCHITECTURAL WALL BACKGROUND --- */}
       <div className="absolute inset-0 z-0">
         <div className="absolute top-0 left-0 w-full h-full opacity-[0.03] pointer-events-none"
@@ -35,34 +35,24 @@ const Services = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        
+
         {/* HEADER SECTION */}
-        <div className="mb-20">
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="flex items-center gap-4 mb-6"
-          >
+        <div className="mb-20 animate-fade-in-up">
+          <div className="flex items-center gap-4 mb-6">
             <span className="w-12 h-[2px] bg-nova-sky" />
             <span className="text-[10px] font-black uppercase tracking-[0.4em] text-nova-blue">Medical Catalog</span>
-          </motion.div>
-          <motion.h2 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-5xl md:text-7xl font-black text-nova-blue tracking-tighter leading-[0.9]"
-          >
-            Our Specialist <br /> 
+          </div>
+          <h2 className="text-5xl md:text-7xl font-black text-nova-blue tracking-tighter leading-[0.9]">
+            Our Specialist <br />
             <span className="text-nova-sky italic font-light italic">Clinical Services.</span>
-          </motion.h2>
+          </h2>
         </div>
 
         {/* THE SERVICES GRID */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-0 border-t border-l border-slate-100">
           {services.map((service, idx) => (
-            <motion.div
+            <div
               key={idx}
-              onMouseEnter={() => setHoveredIndex(idx)}
-              onMouseLeave={() => setHoveredIndex(null)}
               className="relative p-10 lg:p-14 border-r border-b border-slate-100 bg-white group cursor-pointer overflow-hidden transition-colors duration-500 hover:bg-nova-blue"
             >
               {/* Animated Background Index Number */}
@@ -95,26 +85,27 @@ const Services = () => {
 
               {/* Structural Corner Detail */}
               <div className="absolute bottom-0 right-0 w-4 h-4 border-r border-b border-nova-sky scale-0 group-hover:scale-100 transition-transform origin-bottom-right" />
-            </motion.div>
+            </div>
           ))}
         </div>
 
         {/* BOTTOM CALL TO ACTION */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          className="mt-20 p-12 rounded-[3rem] bg-nova-blue text-white flex flex-col md:flex-row items-center justify-between gap-8"
+        <div
+          ref={ctaRef}
+          className={`mt-20 p-12 rounded-[3rem] bg-nova-blue text-white flex flex-col md:flex-row items-center justify-between gap-8 transition-all duration-700 ease-out ${
+            ctaVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
         >
           <div>
             <h4 className="text-3xl font-black tracking-tight mb-2">Need a Specialized Consultation?</h4>
             <p className="text-white/60 font-medium">Our clinical experts are available for detailed sessions.</p>
           </div>
-        <Link to="/book-appointment">     
+        <Link to="/book-appointment">
           <button className="bg-nova-sky text-nova-blue px-12 py-5 rounded-2xl font-black uppercase tracking-widest text-xs whitespace-nowrap hover:scale-105 transition-transform">
             Book Appointment
           </button>
           </Link>
-        </motion.div>
+        </div>
 
       </div>
     </section>

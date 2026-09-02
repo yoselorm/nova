@@ -1,24 +1,9 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { Calendar, FlaskConical, Stethoscope, Activity, Pill, Home } from 'lucide-react';
+import useReveal from '../../utils/useReveal';
 
 const ListAccess = () => {
-  // Ultra-smooth spring for the hover interaction
-  const hoverSpring = { type: "spring", stiffness: 400, damping: 17 };
-  
-  // Staggered entrance for the "Architectural" build look
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.08, delayChildren: 2 } // Starts after Hero title reveals
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 40, opacity: 0 },
-    visible: { y: 0, opacity: 1, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
-  };
+  const [ref, isVisible] = useReveal();
 
   const items = [
     { name: 'Appointments', icon: <Calendar />, count: '01' },
@@ -31,19 +16,11 @@ const ListAccess = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-6 -mt-8 relative z-40">
-      <motion.div 
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 lg:gap-0"
-      >
+      <div ref={ref} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 lg:gap-0">
         {items.map((item, idx) => (
-          <motion.div
+          <div
             key={item.name}
-            variants={itemVariants}
-            whileHover={{ y: -10 }}
-            transition={hoverSpring}
+            style={{ transitionDelay: isVisible ? `${idx * 80}ms` : '0ms' }}
             className={`
               relative group cursor-pointer overflow-hidden
               bg-white/80 backdrop-blur-2xl p-8 lg:p-10
@@ -54,7 +31,9 @@ const ListAccess = () => {
               ${idx === 2 ? 'rounded-br-[3rem] lg:rounded-none' : ''}
               ${idx === 3 ? 'rounded-tl-[3rem] lg:rounded-none' : ''}
               shadow-[0_20px_40px_rgba(0,0,0,0.03)]
-              hover:bg-nova-blue transition-colors duration-500
+              hover:bg-nova-blue hover:-translate-y-2
+              transition-all duration-500
+              ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
             `}
           >
             {/* 1. BACKGROUND GRID (Only visible on hover) */}
@@ -83,9 +62,9 @@ const ListAccess = () => {
             <div className="absolute top-0 right-0 w-8 h-8 opacity-0 group-hover:opacity-100 transition-opacity">
                <div className="absolute top-4 right-4 w-1 h-1 bg-white rounded-full animate-pulse" />
             </div>
-          </motion.div>
+          </div>
         ))}
-      </motion.div>
+      </div>
     </div>
   );
 };

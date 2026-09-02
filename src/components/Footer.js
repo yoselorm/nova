@@ -7,6 +7,15 @@ import fertilitylogo from '../assets/images/Fertilitylogo.png';
 import pharmacylogo from '../assets/images/Pharmacylogo.png';
 import footerlogo from '../assets/images/footer.png';
 
+// lucide-react ships no brand/social glyphs, so the Instagram mark is a raw inline SVG
+const InstagramIcon = ({ size = 18 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+  </svg>
+);
+
 const Footer = ({ variant = 'default' }) => {
   const currentYear = new Date().getFullYear();
   const location = useLocation();
@@ -97,8 +106,17 @@ const Footer = ({ variant = 'default' }) => {
               West Africa’s premier surgical and fertility destination. Dedicated to providing world-class, patient-centric medical excellence since 2015.
             </p>
             <div className="flex gap-4">
-              {[Mail].map((Icon, idx) => (
-                <a key={idx} href="#" className={`w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-white/60 hover:${activeTheme.logoBg} hover:text-white transition-all duration-300`}>
+              {[
+                { Icon: Mail, href: 'mailto:info@novahealthcare.com' },
+                { Icon: InstagramIcon, href: 'https://www.instagram.com/novahealthcareghana?utm_source=ig_web_button_share_sheet&igsi=ZDNlZDc0MzIxNw==' }
+              ].map(({ Icon, href }, idx) => (
+                <a
+                  key={idx}
+                  href={href}
+                  target={href.startsWith('http') ? '_blank' : undefined}
+                  rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                  className={`w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-white/60 hover:${activeTheme.logoBg} hover:text-white transition-all duration-300`}
+                >
                   <Icon size={18} />
                 </a>
               ))}

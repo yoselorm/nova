@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
-import { Stethoscope, Calendar, Clock, AlertCircle, Users, CheckCircle, TrendingUp } from 'lucide-react';
+import { Clock, AlertCircle, Users, CheckCircle, TrendingUp } from 'lucide-react';
 import axios from 'axios';
 
 const AdminDashboard = () => {
   const [metrics, setMetrics] = useState({ total: 0, pending: 0, confirmed: 0, surgery: 0, fertility: 0, pharmacy: 0 });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [barsVisible, setBarsVisible] = useState(false);
 
   useEffect(() => {
   const fetchDashboardTelemetry = async () => {
@@ -41,6 +41,8 @@ const AdminDashboard = () => {
       setError(err.response?.data?.message || 'Failed to aggregate portal system telemetry.');
     } finally {
       setLoading(false);
+      // Defer to next paint so the width transition below has a 0% starting point to animate from
+      requestAnimationFrame(() => setBarsVisible(true));
     }
   };
 
@@ -104,11 +106,9 @@ const AdminDashboard = () => {
                   <span className="text-xs font-mono font-bold text-slate-400">{sub.count} logs ({Math.round(sub.pct)}%)</span>
                 </div>
                 <div className="w-full h-2 bg-slate-50 rounded-full overflow-hidden border border-slate-100">
-                  <motion.div 
-                    initial={{ width: 0 }} 
-                    animate={{ width: `${sub.pct}%` }} 
-                    transition={{ duration: 1, ease: 'easeOut' }} 
-                    className={`h-full ${sub.bar}`} 
+                  <div
+                    style={{ width: barsVisible ? `${sub.pct}%` : '0%' }}
+                    className={`h-full transition-[width] duration-1000 ease-out ${sub.bar}`}
                   />
                 </div>
               </div>

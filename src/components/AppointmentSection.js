@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Phone, Calendar, MapPin, Send, CheckCircle2, AlertCircle, Clock } from 'lucide-react';
+import { Phone, Calendar, MapPin, Send, CheckCircle2, AlertCircle } from 'lucide-react';
 import axios from 'axios';
+import useReveal from '../utils/useReveal';
 
 const AppointmentSection = () => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+  const [textRef, textVisible] = useReveal();
+  const [formRef, formVisible] = useReveal();
 
   // Full Form Data Registry
   const [formData, setFormData] = useState({
@@ -21,18 +23,38 @@ const AppointmentSection = () => {
   });
 
   const timeSlots = [
-    '08:00 AM', '09:30 AM', '11:00 AM', 
+    '08:00 AM', '09:30 AM', '11:00 AM',
     '01:00 PM', '02:30 PM', '04:00 PM'
   ];
 
+  // Clinic only accepts appointments on Monday, Wednesday, and Friday
+  const ALLOWED_APPOINTMENT_DAYS = [1, 3, 5];
+  const isAllowedAppointmentDay = (dateString) => {
+    if (!dateString) return true;
+    return ALLOWED_APPOINTMENT_DAYS.includes(new Date(`${dateString}T00:00:00`).getDay());
+  };
+
   const handleInputChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleDateChange = (value) => {
+    if (value && !isAllowedAppointmentDay(value)) {
+      setError('Appointments are only available on Monday, Wednesday, and Friday. Please select one of those days.');
+      return;
+    }
+    setError('');
+    handleInputChange('date', value);
   };
 
   const handleConfirmAppointment = async (e) => {
     e.preventDefault();
     if (formData.service === 'Select Service') {
       setError('Please select a valid medical service target.');
+      return;
+    }
+    if (!formData.date || !isAllowedAppointmentDay(formData.date)) {
+      setError('Please select a Monday, Wednesday, or Friday appointment date.');
       return;
     }
     if (!formData.timeSlot) {
@@ -64,17 +86,6 @@ const AppointmentSection = () => {
     }
   };
 
-  // Animation Variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.2, delayChildren: 0.3 } }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30, filter: "blur(10px)" },
-    visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } }
-  };
-
   return (
     <section id='book' className="relative min-h-screen w-full flex items-center justify-center py-20 overflow-hidden font-nova">
       
@@ -88,17 +99,17 @@ const AppointmentSection = () => {
       <div className="max-w-7xl mx-auto px-6 w-full grid lg:grid-cols-2 gap-20 items-center relative z-10">
         
         {/* LEFT SIDE: Text Content */}
-        <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-white">
-          <motion.div variants={itemVariants} className="flex items-center gap-3 mb-6">
+        <div ref={textRef} className={`text-white transition-all duration-700 ease-out ${textVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className="flex items-center gap-3 mb-6">
             <span className="w-12 h-[1px] bg-nova-sky" />
             <span className="text-nova-sky font-black uppercase tracking-[0.4em] text-[10px]">Book Appointment</span>
-          </motion.div>
+          </div>
 
-          <motion.h2 variants={itemVariants} className="text-5xl md:text-7xl font-bold leading-[1.1] mb-8 tracking-tighter">
+          <h2 className="text-5xl md:text-7xl font-bold leading-[1.1] mb-8 tracking-tighter">
             Book your <span className="italic font-light">healthcare</span> <br /> visit <span className="text-nova-sky">today.</span>
-          </motion.h2>
+          </h2>
 
-          <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-12">
             <div className="space-y-4">
               <h4 className="flex items-center gap-3 text-nova-sky font-bold text-xs uppercase tracking-widest"><Phone size={16} /> Quick Contact</h4>
               <p className="text-xl font-medium">+233 (0) 302 751 290</p>
@@ -106,19 +117,19 @@ const AppointmentSection = () => {
             </div>
             <div className="space-y-4">
               <h4 className="flex items-center gap-3 text-nova-sky font-bold text-xs uppercase tracking-widest"><Calendar size={16} /> Schedule</h4>
-              <p className="text-xl font-medium">Mon - Sat: 8am to 6pm</p>
-              <p className="text-white/60 text-sm">Sunday: Emergencies Only</p>
+              <p className="text-xl font-medium">Mon, Wed & Fri</p>
+              <p className="text-white/60 text-sm">By Appointment Only</p>
             </div>
-          </motion.div>
+          </div>
 
-          <motion.div variants={itemVariants} className="mt-12 pt-12 border-t border-white/10 flex items-start gap-4">
+          <div className="mt-12 pt-12 border-t border-white/10 flex items-start gap-4">
             <MapPin className="text-nova-sky" />
             <p className="text-white/70 leading-relaxed font-medium">#7 Mensah Danfah Ave. East Legon (Adjiriganor)<br /> Accra, Ghana</p>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
         {/* RIGHT SIDE: Form Layout */}
-        <motion.div initial={{ opacity: 0, x: 50, rotateY: 10 }} whileInView={{ opacity: 1, x: 0, rotateY: 0 }} transition={{ duration: 1.2, ease: "easeOut" }} viewport={{ once: true }} className="perspective-1000">
+        <div ref={formRef} className={`transition-all duration-700 ease-out ${formVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-16'}`}>
           <div className="bg-white/10 backdrop-blur-2xl p-8 md:p-12 rounded-[3rem] border border-white/20 shadow-2xl relative overflow-hidden group">
             <div className="absolute -top-24 -right-24 w-48 h-48 bg-nova-sky/20 rounded-full blur-3xl group-hover:bg-nova-sky/40 transition-colors duration-700" />
 
@@ -148,8 +159,8 @@ const AppointmentSection = () => {
                 </div>
                 
                 <div className="grid md:grid-cols-2 gap-4">
-                  <Input type="date" required value={formData.date} onChange={(e) => handleInputChange('date', e.target.value)} />
-                  <select 
+                  <Input type="date" required value={formData.date} onChange={(e) => handleDateChange(e.target.value)} />
+                  <select
                     value={formData.service}
                     onChange={(e) => handleInputChange('service', e.target.value)}
                     className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white/80 focus:outline-none focus:border-nova-sky transition-all appearance-none cursor-pointer text-sm"
@@ -163,7 +174,7 @@ const AppointmentSection = () => {
                 {/* TIME WINDOW SELECTOR ARRAY */}
                 <div className="space-y-2">
                   <label className="text-[10px] font-black text-white/40 uppercase tracking-widest block px-1">Available Windows</label>
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                     {timeSlots.map((slot) => (
                       <button
                         key={slot}
@@ -193,23 +204,21 @@ const AppointmentSection = () => {
                   />
                 </div>
 
-                <motion.button
-                  whileHover={{ scale: loading ? 1 : 1.02 }}
-                  whileTap={{ scale: loading ? 1 : 0.98 }}
+                <button
                   disabled={loading}
                   type="submit"
-                  className="w-full bg-nova-sky text-nova-blue py-5 rounded-2xl font-black uppercase tracking-[0.1em] text-xs flex items-center justify-center gap-1 sm:gap-3 shadow-xl hover:shadow-nova-sky/20 transition-all disabled:opacity-50 mt-2"
+                  className="w-full bg-nova-sky text-nova-blue py-5 rounded-2xl font-black uppercase tracking-[0.1em] text-xs flex items-center justify-center gap-1 sm:gap-3 shadow-xl hover:shadow-nova-sky/20 transition-all duration-300 disabled:opacity-50 hover:scale-[1.02] active:scale-[0.98] mt-2"
                 >
                   {loading ? (
                     <span className="w-4 h-4 border-2 border-nova-blue/30 border-t-nova-blue rounded-full animate-spin" />
                   ) : (
                     <>Confirm Appointment <Send size={16} /></>
                   )}
-                </motion.button>
+                </button>
               </form>
             )}
           </div>
-        </motion.div>
+        </div>
 
       </div>
     </section>

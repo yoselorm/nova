@@ -1,12 +1,14 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import surgerylogo from '../../assets/images/Surgerylogo.png';
 import fertilitylogo from '../../assets/images/Fertilitylogo.png';
 import pharmacylogo from '../../assets/images/Pharmacylogo.png';
+import useReveal from '../../utils/useReveal';
 
 const CentresOfExcellence = () => {
+  const [ref, isVisible] = useReveal();
+
   const centres = [
     {
       title: "Surgery Centre",
@@ -14,7 +16,7 @@ const CentresOfExcellence = () => {
       cta: "View Services",
       path: "/surgery-center",
       // Light Burgundy / Wine Pastel
-      bgClass: "bg-[#fdf2f2]", 
+      bgClass: "bg-[#fdf2f2]",
       accentColor: "text-surgery-main",
       image: surgerylogo, // Use a PNG with transparent background if possible
       pattern: "radial-gradient(circle, rgba(128,0,32,0.05) 0%, transparent 70%)"
@@ -25,7 +27,7 @@ const CentresOfExcellence = () => {
       cta: "View Packages",
       path: "/fertility-center",
       // Light Teal / Sky Pastel
-      bgClass: "bg-[#f0f9f9]", 
+      bgClass: "bg-[#f0f9f9]",
       accentColor: "text-fertility-main",
       image: fertilitylogo, // Use a PNG with transparent background if possible
       pattern: "radial-gradient(circle, rgba(0,128,128,0.05) 0%, transparent 70%)"
@@ -36,7 +38,7 @@ const CentresOfExcellence = () => {
       cta: "View All",
       path: "/pharmacy",
       // Light Medical Blue Pastel
-      bgClass: "bg-[#f0f4ff]", 
+      bgClass: "bg-[#f0f4ff]",
       accentColor: "text-nova-blue",
       image: pharmacylogo, // Use a PNG with transparent background if possible
       pattern: "radial-gradient(circle, rgba(0,74,173,0.05) 0%, transparent 70%)"
@@ -46,18 +48,17 @@ const CentresOfExcellence = () => {
   return (
     <section className="py-24 px-6 bg-white font-nova">
       <div className="max-w-7xl mx-auto">
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div ref={ref} className="grid lg:grid-cols-3 gap-8">
           {centres.map((item, idx) => (
-            <motion.div
+            <div
               key={idx}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.1 }}
-              viewport={{ once: true }}
-              className={`relative overflow-hidden rounded-[2.5rem] p-10 h-[320px] flex flex-col justify-center ${item.bgClass} group cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500`}
+              style={{ transitionDelay: isVisible ? `${idx * 100}ms` : '0ms' }}
+              className={`relative overflow-hidden rounded-[2.5rem] p-10 h-[320px] flex flex-col justify-center ${item.bgClass} group cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 ${
+                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+              }`}
             >
               {/* Background Sunburst Pattern */}
-              <div 
+              <div
                 className="absolute inset-0 opacity-40 pointer-events-none"
                 style={{ backgroundImage: item.pattern }}
               />
@@ -70,8 +71,8 @@ const CentresOfExcellence = () => {
                 <p className="text-slate-500 text-sm mb-8 leading-relaxed font-medium">
                   {item.description}
                 </p>
-                
-                <Link 
+
+                <Link
                   to={item.path}
                   className="inline-flex items-center gap-2 bg-white px-6 py-3 rounded-full text-xs font-bold text-slate-800 shadow-sm hover:shadow-md transition-all group-hover:gap-4"
                 >
@@ -81,13 +82,13 @@ const CentresOfExcellence = () => {
 
               {/* Image Side - Positioned like the screenshot */}
               <div className="absolute bottom-3 right-3 w-1/2 h-[90%] pointer-events-none">
-                <img 
-                  src={item.image} 
-                  alt={item.title} 
+                <img
+                  src={item.image}
+                  alt={item.title}
                   className="w-full h-full object-contain object-bottom transition-transform duration-700 group-hover:scale-110"
                 />
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
