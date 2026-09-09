@@ -98,7 +98,7 @@ const AppointmentSection = () => {
             <div className="space-y-4">
               <h4 className="flex items-center gap-3 text-nova-sky font-bold text-xs uppercase tracking-widest"><Phone size={16} /> Quick Contact</h4>
               <p className="text-xl font-medium">+233 (0) 302 751 290</p>
-              <p className="text-white/60 text-sm">info@novahealthcare.com</p>
+              <p className="text-white/60 text-sm">info@novasurgerycenter.com</p>
             </div>
             <div className="space-y-4">
               <h4 className="flex items-center gap-3 text-nova-sky font-bold text-xs uppercase tracking-widest"><Calendar size={16} /> Schedule</h4>
