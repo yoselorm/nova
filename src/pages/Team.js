@@ -3,6 +3,7 @@ import { Users, GraduationCap, Briefcase, Award, UserCircle2 } from 'lucide-reac
 import useReveal from '../utils/useReveal';
 import FrancisImg from '../assets/images/francis.jpg';
 import CharleneImg from '../assets/images/Charlene.jpg';
+import EvelynImg from '../assets/images/DrEvelyn.jpeg';
 import IsaacImg from '../assets/images/Isaac.jpg';
 import VioletImg from '../assets/images/Violet.jpg';
 import AmadeaImg from '../assets/images/Amadea.jpg';
@@ -70,17 +71,41 @@ const featuredTeam = [
       'Registered as a Specialist Practitioner – Obstetrics and Gynaecology – Ghana Medical and Dental Council',
       'Registered as an Independent Specialist Practitioner – Obstetrics and Gynaecology – Health Professions Council, South Africa'
     ]
+  },
+  {
+    name: 'Evelyn Kwofie',
+    credentials: 'BSN, RN',
+    title: 'Head Nurse',
+    image: EvelynImg,
+    shortBio: [
+      'Evelyn Kwofie BSN, RN is a seasoned registered nurse with over 20 years of experience in clinical nursing, with expertise in medical-surgical nursing, emergency care, intensive care, gerontology, clinical leadership, and healthcare management.',
+      "Beyond her clinical role, Evelyn is passionate about training, mentorship, and community impact. She is committed to developing young healthcare professionals and has trained volunteers and consulted for various children's ministries on effective and age-appropriate teaching methods. She also engaged in programs funded by the Mastercard Foundation under the Kayayoo Early Childhood Initiative.",
+      'As part of her community outreach efforts, she volunteers her time to train Kayayei in markets across Greater Accra on healthcare issues and first aid practices. She was also a participant at TEDx WeijaEd.',
+      'Outside of her professional and volunteer work, Evelyn enjoys travelling and exploring nature. She is a Christian, wife and a mother.'
+    ],
+    education: [
+      'Bachelor of Science in Nursing, Stevenson University, USA',
+      'Certificate in Health Administration and Management, Ghana Institute of Management and Public Administration (GIMPA)',
+      'MSc in Clinical Leadership and Management (in progress), University of Ghana Business School'
+    ],
+    involvement: [
+      'Trainer and mentor for young healthcare professionals and volunteers',
+      "Consultant to children's ministries on effective, age-appropriate teaching methods",
+      'Participant in Mastercard Foundation-funded programs under the Kayayoo Early Childhood Initiative',
+      'Volunteer trainer for Kayayei in Greater Accra markets on healthcare issues and first aid practices',
+      'Speaker, TEDx WeijaEd'
+    ],
+    societies: []
   }
 ];
 
 // Team members whose full biography write-up is still pending
 const pendingProfiles = [
-  { name: 'Dr. Isaac Baidoo', title: 'MD', image: IsaacImg },
+  // { name: 'Dr. Isaac Baidoo', title: 'MD', image: IsaacImg },
   { name: 'Dr. Violet Habwe', title: 'MD', image: VioletImg },
   { name: 'Dr. Amadea Tetteh', title: 'MD', image: AmadeaImg },
   { name: 'Emily M. Nwankwo', title: 'Business Development and Capacity Building', image: EmilyImg },
-  { name: 'Dr. Barbara Fenyi', title: 'Medical Doctor', image: null },
-  { name: 'Evelyn Kwofie', title: 'Head Nurse', image: null }
+  { name: 'Dr. Barbara Fenyi', title: 'Medical Doctor', image: null }
 ];
 
 const BioSection = ({ icon, title, children }) => (
@@ -146,13 +171,15 @@ const FeaturedProfile = ({ doc, shaded }) => {
             </ul>
           </BioSection>
 
-          <BioSection icon={<Award size={16} />} title="Professional Societies and Affiliations">
-            <ul className="space-y-2">
-              {doc.societies.map((item, i) => (
-                <li key={i} className="text-slate-600 text-sm font-medium leading-relaxed pl-4 border-l-2 border-slate-100">{item}</li>
-              ))}
-            </ul>
-          </BioSection>
+          {doc.societies.length > 0 && (
+            <BioSection icon={<Award size={16} />} title="Professional Societies and Affiliations">
+              <ul className="space-y-2">
+                {doc.societies.map((item, i) => (
+                  <li key={i} className="text-slate-600 text-sm font-medium leading-relaxed pl-4 border-l-2 border-slate-100">{item}</li>
+                ))}
+              </ul>
+            </BioSection>
+          )}
         </div>
       </div>
     </section>
