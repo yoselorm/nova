@@ -107,7 +107,7 @@ const Footer = ({ variant = 'default' }) => {
             </p>
             <div className="flex gap-4">
               {[
-                { Icon: Mail, href: 'mailto:info@novahealthcare.com' },
+                { Icon: Mail, href: 'mailto:info@novasurgerycenter.com' },
                 { Icon: InstagramIcon, href: 'https://www.instagram.com/novahealthcareghana?utm_source=ig_web_button_share_sheet&igsi=ZDNlZDc0MzIxNw==' }
               ].map(({ Icon, href }, idx) => (
                 <a
@@ -169,7 +169,7 @@ const Footer = ({ variant = 'default' }) => {
               </div>
               <div className="flex items-center gap-4">
                 <Mail className={`${activeTheme.iconColor} transition-colors duration-500`} size={20} />
-                <span className="text-slate-400 text-sm font-bold">info@novahealthcare.com</span>
+                <span className="text-slate-400 text-sm font-bold">info@novasurgerycenter.com</span>
               </div>
             </div>
           </div>
