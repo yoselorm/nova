@@ -1,17 +1,17 @@
 import React from 'react';
-import { Calendar, FlaskConical, Stethoscope, Activity, Pill, Home } from 'lucide-react';
+import { Stethoscope, FlaskConical, Scan, Ambulance, Pill, HeartHandshake } from 'lucide-react';
 import useReveal from '../../utils/useReveal';
 
 const ListAccess = () => {
   const [ref, isVisible] = useReveal();
 
   const items = [
-    { name: 'Appointments', icon: <Calendar />, count: '01' },
-    { name: 'Diagnostics', icon: <FlaskConical />, count: '02' },
-    { name: 'Specialists', icon: <Stethoscope />, count: '03' },
-    { name: 'Wellness', icon: <Activity />, count: '04' },
+    { name: 'Laparoscopy GYN & General Surgery Procedures', icon: <Stethoscope />, count: '01' },
+    { name: 'Breast and Cervical Cancer Screening', icon: <FlaskConical />, count: '02' },
+    { name: 'Diagnostic Radiology (X-ray & Scan)', icon: <Scan />, count: '03' },
+    { name: 'Private Medical Ambulance', icon: <Ambulance />, count: '04' },
     { name: 'Pharmacy', icon: <Pill />, count: '05' },
-    { name: 'Home Care', icon: <Home />, count: '06' },
+    { name: 'Fertility & Family Planning', icon: <HeartHandshake />, count: '06' },
   ];
 
   return (
@@ -24,7 +24,7 @@ const ListAccess = () => {
             className={`
               relative group cursor-pointer overflow-hidden
               bg-white/80 backdrop-blur-2xl p-8 lg:p-10
-              flex flex-col items-start justify-between
+              flex flex-col items-start justify-start
               border-r border-b border-slate-100 last:border-r-0
               ${idx === 0 ? 'rounded-tl-[3rem] rounded-bl-[3rem] lg:rounded-bl-none lg:rounded-l-[3rem]' : ''}
               ${idx === items.length - 1 ? 'rounded-tr-[3rem] rounded-br-[3rem] lg:rounded-br-none lg:rounded-r-[3rem]' : ''}
