@@ -1,6 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Filter, Check, X, AlertCircle, Calendar, RefreshCw } from 'lucide-react';
+import { Filter, Check, X, AlertCircle, Calendar, RefreshCw, Clock } from 'lucide-react';
 import axios from 'axios';
+
+// The hospital assigns the actual time slot — these are the only windows it offers
+const TIME_SLOTS = ['08:00 AM', '09:30 AM', '11:00 AM', '01:00 PM', '02:30 PM', '04:00 PM'];
+
+const SERVICE_LABELS = {
+  wellness: 'Wellness Check',
+  gynecology: 'Gynecology Consultation',
+  fertility: 'Fertility Consultation',
+  surgery: 'Surgery Centre',
+  pharmacy: 'Nova Pharmacy'
+};
 
 const ManageAppointments = () => {
   const [appointments, setAppointments] = useState([]);
@@ -53,7 +64,7 @@ const ManageAppointments = () => {
 
     try {
       const response = await axios.put(
-        `${process.env.REACT_APP_SERVICE_API}/api/appointments/${id}`, 
+        `${process.env.REACT_APP_SERVICE_API}/api/appointments/${id}`,
         { status: targetStatus },
         {
           headers: {
@@ -72,10 +83,37 @@ const ManageAppointments = () => {
     }
   };
 
+  // The hospital, not the patient, decides the actual appointment time
+  const updateTimeSlot = async (id, targetTimeSlot) => {
+    setActionLoadingId(id);
+    const token = sessionStorage.getItem('admin_token');
+
+    try {
+      const response = await axios.put(
+        `${process.env.REACT_APP_SERVICE_API}/api/appointments/${id}`,
+        { timeSlot: targetTimeSlot },
+        {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : ''
+          }
+        }
+      );
+      if (response.data.success) {
+        setAppointments(prev => prev.map(item => item._id === id ? { ...item, timeSlot: targetTimeSlot } : item));
+      }
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to update the appointment time.');
+    } finally {
+      setActionLoadingId(null);
+    }
+  };
+
   const getSubsidiaryBadge = (sub) => {
-    if (sub === 'surgery') return 'text-surgery-main bg-red-50 border-red-100';
     if (sub === 'fertility') return 'text-[#009774] bg-emerald-50 border-emerald-100';
-    return 'text-[#5B2897] bg-purple-50 border-purple-100';
+    if (sub === 'gynecology') return 'text-[#5B2897] bg-purple-50 border-purple-100';
+    if (sub === 'wellness') return 'text-nova-blue bg-blue-50 border-blue-100';
+    if (sub === 'surgery') return 'text-surgery-main bg-red-50 border-red-100';
+    return 'text-slate-500 bg-slate-100 border-slate-200';
   };
 
   const getStatusBadge = (status) => {
@@ -116,9 +154,9 @@ const ManageAppointments = () => {
           </div>
           {[
             { id: 'all', label: 'All' },
-            { id: 'surgery', label: 'Surgery Centre' },
-            { id: 'fertility', label: 'Fertility Centre' },
-            { id: 'pharmacy', label: 'Nova Pharmacy' }
+            { id: 'wellness', label: 'Wellness Check' },
+            { id: 'gynecology', label: 'Gynecology Consultation' },
+            { id: 'fertility', label: 'Fertility Consultation' }
           ].map(btn => (
             <button
               key={btn.id}
@@ -178,17 +216,32 @@ const ManageAppointments = () => {
                         {/* Subsidiary Wing */}
                         <td className="p-6">
                           <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border ${getSubsidiaryBadge(item.subsidiary)}`}>
-                            {item.subsidiary}
+                            {SERVICE_LABELS[item.subsidiary] || item.subsidiary}
                           </span>
                         </td>
 
                         {/* Date and Window */}
                         <td className="p-6 font-medium text-slate-700">
-                          <div className="flex items-center gap-1.5 text-xs font-bold text-slate-900">
+                          <div className="flex items-center gap-1.5 text-xs font-bold text-slate-900 mb-1.5">
                             <Calendar size={12} className="text-slate-400" />
                             {new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                           </div>
-                          <div className="text-[11px] text-slate-400 font-bold uppercase tracking-wide mt-1 pl-4">{item.timeSlot}</div>
+                          <div className="relative w-fit">
+                            <select
+                              value={item.timeSlot || ''}
+                              disabled={actionLoadingId === item._id}
+                              onChange={(e) => updateTimeSlot(item._id, e.target.value)}
+                              className={`appearance-none pl-6 pr-2 py-1 rounded-lg text-[11px] font-bold uppercase tracking-wide border focus:outline-none cursor-pointer ${
+                                item.timeSlot ? 'text-slate-700 bg-white border-slate-200' : 'text-amber-700 bg-amber-50 border-amber-100'
+                              }`}
+                            >
+                              <option value="">Not set</option>
+                              {TIME_SLOTS.map(slot => (
+                                <option key={slot} value={slot}>{slot}</option>
+                              ))}
+                            </select>
+                            <Clock size={11} className="absolute left-1.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400" />
+                          </div>
                         </td>
 
                         {/* Status Label */}
