@@ -4,12 +4,6 @@ import { ShieldAlert, Clock, ShieldCheck, Activity } from 'lucide-react';
 import SurgeryHeroImg from '../../assets/images/facility.jpg';
 
 const SurgeryCenter = () => {
-  const specs = [
-    { label: "Operating Theaters", value: "02", desc: "Ultra-modern cleanrooms" },
-    { label: "Since", value: "2015", desc: "First free-standing center" },
-    { label: "Recovery Suite", value: "24/7", desc: "Post-operative monitoring" },
-  ];
-
   const procedures = [
     { title: "Laparoscopic GYN Procedures", code: "SURG-01", time: "Minimally Invasive" },
     { title: "General Surgery Procedures", code: "SURG-02", time: "Day-Care Basis" },
@@ -39,13 +33,13 @@ const SurgeryCenter = () => {
                style={{ backgroundImage: 'radial-gradient(#7A1613 1.5px, transparent 1.5px)', backgroundSize: '40px 40px' }} />
         </div>
 
-        <div className="max-w-7xl mx-auto w-full relative z-10 grid lg:grid-cols-12 items-center gap-12">
-          <div className="lg:col-span-7 space-y-6">
+        <div className="max-w-7xl mx-auto w-full relative z-10">
+          <div className="max-w-3xl space-y-6">
             {/* BRAND PILL: Velvet Crimson Tag */}
             <div className="inline-flex items-center gap-3 bg-[#7A1613]/30 border border-[#9D413E]/30 px-4 py-2 rounded-full backdrop-blur-xl">
               <span className="w-2 h-2 bg-[#9D413E] rounded-full animate-pulse" />
               <span className="text-[#ffb1ae] text-[9px] font-black uppercase tracking-[0.3em]">
-                Advanced Surgical Pavilion
+                Advanced Surgical Care
               </span>
             </div>
 
@@ -60,79 +54,13 @@ const SurgeryCenter = () => {
               West Africa’s premier free-standing day surgery facility. Engineered for rapid recovery, clinical precision, and absolute patient privacy since 2015.
             </p>
           </div>
-
-          {/* Right Metrics Column */}
-          <div className="lg:col-span-5 grid grid-cols-1 gap-4 border-t lg:border-t-0 lg:border-l border-red-950/40 pt-8 lg:pt-0 lg:pl-12">
-            {specs.map((spec, i) => (
-              <div key={i} className="relative bg-white/[0.02] border border-white/5 p-6 rounded-2xl backdrop-blur-md">
-                <p className="text-[#9D653E] text-[10px] font-black tracking-widest uppercase mb-1">// {spec.label}</p>
-                <div className="flex items-baseline gap-4">
-                  <p className="text-3xl md:text-5xl font-black tracking-tight text-white">{spec.value}</p>
-                  <p className="text-slate-400 text-xs font-medium leading-tight">{spec.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
-      {/* 2. STRUCTURAL CORE INTEGRITY LAYOUT (Clean White Background) */}
-      <section className="py-28 max-w-7xl mx-auto px-6 bg-transparent grid lg:grid-cols-12 gap-16 items-center">
-        {/* Left Side Content Parameters */}
-        <div className="lg:col-span-6 space-y-6">
-          <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#7A1613] block">Core Advantage</span>
-          <h2 className="text-3xl md:text-5xl font-black text-slate-950 tracking-tighter leading-tight">
-            Why Specialists Choose <br />Our Free-Standing Suites.
-          </h2>
-          <p className="text-slate-500 font-medium leading-relaxed text-sm md:text-base">
-            Nova operates independently of standard tertiary wards. This structural segregation eliminates cross-infection hazards common in crowded environments, guaranteeing a pristine sterile setting dedicated strictly to elective surgical tasks.
-          </p>
-          
-          <div className="w-fit p-6 bg-[#7A1613]/5 border border-[#7A1613]/10 rounded-2xl flex items-center gap-4">
-             <Activity className="text-[#9D653E] animate-pulse" size={24} />
-             <div className="text-left">
-                <p className="text-xs font-black text-[#7A1613] uppercase tracking-widest">Zero-Hops Sterile Supply</p>
-                <p className="text-[11px] text-slate-400 font-medium mt-0.5">Direct routing to localized anesthesia logs.</p>
-             </div>
-          </div>
-        </div>
-
-        {/* Right Side Image Block Frame */}
-        <div className="lg:col-span-6 relative">
-          <div className="absolute inset-0 bg-[#7A1613]/5 rounded-[3.5rem] border border-slate-100 translate-x-4 translate-y-4 -z-10" />
-          
-          <div className="relative group overflow-hidden rounded-[3.5rem] border border-slate-100 bg-white shadow-xl shadow-slate-200/50">
-            {/* Primary embedded structural image container */}
-            <div className="h-[420px] w-full bg-slate-100">
-              <img 
-                src={SurgeryHeroImg} 
-                alt="Nova Operating Room Setup" 
-                className="w-full h-full object-cover opacity-90 transition-transform duration-700 group-hover:scale-105"
-              />
-            </div>
-
-            {/* Floating info dashboard panel overlay */}
-            <div className="absolute bottom-0 inset-x-0 p-8 bg-gradient-to-t from-white via-white/95 to-white/40 border-t border-slate-100 backdrop-blur-sm space-y-3">
-              <div className="w-10 h-10 bg-[#7A1613]/5 border border-[#7A1613]/10 text-[#7A1613] rounded-xl flex items-center justify-center">
-                <ShieldAlert size={18} />
-              </div>
-              <h3 className="text-xl font-black text-slate-950 uppercase tracking-tight">Minimally Invasive Philosophy</h3>
-              <p className="text-slate-500 font-medium leading-relaxed text-xs">
-                By deploying elite laparoscopic infrastructure, our specialists minimize tissue trauma and drastically shorten recovery windows.
-              </p>
-              <div className="flex flex-wrap gap-4 pt-2 border-t border-slate-100">
-                <div className="flex items-center gap-2 text-[11px] font-bold text-slate-700"><ShieldCheck size={14} className="text-[#9D413E]" /> Gas Insufflation</div>
-                <div className="flex items-center gap-2 text-[11px] font-bold text-slate-700"><Clock size={14} className="text-[#9D413E]" /> Reduced Stay Paths</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. THE SURGICAL PROCEDURE DIRECTORY (Clean Light Style Layout) */}
+      {/* 2. THE SURGICAL PROCEDURE DIRECTORY (Clean Light Style Layout) */}
       <section className="py-28 bg-white text-slate-950 rounded-t-[5rem] border-t border-slate-100">
         <div className="max-w-7xl mx-auto px-6">
-          
+
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-20 gap-6">
             <div>
               <div className="flex items-center gap-3 mb-4">
@@ -179,12 +107,65 @@ const SurgeryCenter = () => {
                 <p className="text-white/40 text-xs font-medium mt-0.5">Secure clinical document logs for diagnostics and theater booking.</p>
               </div>
             </div>
-            
+
             <Link to="/contact" className="inline-flex items-center justify-center bg-white text-slate-950 font-black uppercase tracking-widest text-[10px] px-8 py-4 rounded-xl shadow-md hover:bg-[#9D653E] hover:text-white transition-colors whitespace-nowrap">
               Inquire Theatre Space
             </Link>
           </div>
 
+        </div>
+      </section>
+
+      {/* 3. STRUCTURAL CORE INTEGRITY LAYOUT (Clean White Background) */}
+      <section className="py-28 max-w-7xl mx-auto px-6 bg-transparent grid lg:grid-cols-12 gap-16 items-center">
+        {/* Left Side Content Parameters */}
+        <div className="lg:col-span-6 space-y-6">
+          <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#7A1613] block">Core Advantage</span>
+          <h2 className="text-3xl md:text-5xl font-black text-slate-950 tracking-tighter leading-tight">
+            Why Specialists Choose <br />Our Free-Standing Suites.
+          </h2>
+          <p className="text-slate-500 font-medium leading-relaxed text-sm md:text-base">
+            Nova operates independently of standard tertiary wards. This structural segregation eliminates cross-infection hazards common in crowded environments, guaranteeing a pristine sterile setting dedicated strictly to elective surgical tasks.
+          </p>
+
+          <div className="w-fit p-6 bg-[#7A1613]/5 border border-[#7A1613]/10 rounded-2xl flex items-center gap-4">
+             <Activity className="text-[#9D653E] animate-pulse" size={24} />
+             <div className="text-left">
+                <p className="text-xs font-black text-[#7A1613] uppercase tracking-widest">Zero-Hops Sterile Supply</p>
+                <p className="text-[11px] text-slate-400 font-medium mt-0.5">Direct routing to localized anesthesia logs.</p>
+             </div>
+          </div>
+        </div>
+
+        {/* Right Side Image Block Frame */}
+        <div className="lg:col-span-6 relative">
+          <div className="absolute inset-0 bg-[#7A1613]/5 rounded-[3.5rem] border border-slate-100 translate-x-4 translate-y-4 -z-10" />
+
+          <div className="relative group overflow-hidden rounded-[3.5rem] border border-slate-100 bg-white shadow-xl shadow-slate-200/50">
+            {/* Primary embedded structural image container */}
+            <div className="h-[420px] w-full bg-slate-100">
+              <img
+                src={SurgeryHeroImg}
+                alt="Nova Operating Room Setup"
+                className="w-full h-full object-cover opacity-90 transition-transform duration-700 group-hover:scale-105"
+              />
+            </div>
+
+            {/* Floating info dashboard panel overlay */}
+            <div className="absolute bottom-0 inset-x-0 p-8 bg-gradient-to-t from-white via-white/95 to-white/40 border-t border-slate-100 backdrop-blur-sm space-y-3">
+              <div className="w-10 h-10 bg-[#7A1613]/5 border border-[#7A1613]/10 text-[#7A1613] rounded-xl flex items-center justify-center">
+                <ShieldAlert size={18} />
+              </div>
+              <h3 className="text-xl font-black text-slate-950 uppercase tracking-tight">Minimally Invasive Philosophy</h3>
+              <p className="text-slate-500 font-medium leading-relaxed text-xs">
+                By deploying elite laparoscopic infrastructure, our specialists minimize tissue trauma and drastically shorten recovery windows.
+              </p>
+              <div className="flex flex-wrap gap-4 pt-2 border-t border-slate-100">
+                <div className="flex items-center gap-2 text-[11px] font-bold text-slate-700"><ShieldCheck size={14} className="text-[#9D413E]" /> Gas Insufflation</div>
+                <div className="flex items-center gap-2 text-[11px] font-bold text-slate-700"><Clock size={14} className="text-[#9D413E]" /> Reduced Stay Paths</div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 

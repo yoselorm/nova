@@ -3,7 +3,6 @@ import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import surgerylogo from '../../assets/images/Surgerylogo.png';
 import fertilitylogo from '../../assets/images/Fertilitylogo.png';
-import pharmacylogo from '../../assets/images/Pharmacylogo.png';
 import useReveal from '../../utils/useReveal';
 
 const CentresOfExcellence = () => {
@@ -31,24 +30,13 @@ const CentresOfExcellence = () => {
       accentColor: "text-fertility-main",
       image: fertilitylogo, // Use a PNG with transparent background if possible
       pattern: "radial-gradient(circle, rgba(0,128,128,0.05) 0%, transparent 70%)"
-    },
-    {
-      title: "Nova Pharmacy",
-      description: "Expert pharmaceutical care and specialist medical supplies.",
-      cta: "View All",
-      path: "/pharmacy",
-      // Light Medical Blue Pastel
-      bgClass: "bg-[#f0f4ff]",
-      accentColor: "text-nova-blue",
-      image: pharmacylogo, // Use a PNG with transparent background if possible
-      pattern: "radial-gradient(circle, rgba(0,74,173,0.05) 0%, transparent 70%)"
     }
   ];
 
   return (
     <section className="py-24 px-6 bg-white font-nova">
       <div className="max-w-7xl mx-auto">
-        <div ref={ref} className="grid lg:grid-cols-3 gap-8">
+        <div ref={ref} className="grid lg:grid-cols-2 gap-8">
           {centres.map((item, idx) => (
             <div
               key={idx}

@@ -41,7 +41,6 @@ const Navbar = ({ variant = 'default' }) => {
   const subsidiaries = [
     { name: 'Surgery Centre', slug: 'surgery-center', color: 'text-surgery-main' },
     { name: 'Fertility Centre', slug: 'fertility-center', color: 'text-fertility-main' },
-    { name: 'Pharmacy', slug: 'pharmacy', color: 'text-pharmacy-main' },
   ];
 
   const mainLinks = ['Home', 'About', 'Team', 'Services', 'Contact', 'Blog', 'Careers'];
@@ -94,7 +93,7 @@ const Navbar = ({ variant = 'default' }) => {
 
           <div className="flex gap-3">
             {/* Book Appointment Button */}
-          <Link to="/book-appointment">
+          <Link to="/#book">
             <button
               className={`${activeTheme.btnBg} text-white px-8 py-3 rounded-full text-sm font-bold shadow-lg hover:shadow-xl transition-all duration-300`}
             >
@@ -169,7 +168,7 @@ const Navbar = ({ variant = 'default' }) => {
 
           <div className="flex gap-3 pt-4">
             {/* Book Appointment Button */}
-            <Link to="/book-appointment">
+            <Link to="/#book">
               <button
                 className={`flex-1 ${activeTheme.btnBg} text-white px-6 py-3 rounded-lg text-sm font-bold transition-shadow hover:shadow-lg duration-300`}
               >

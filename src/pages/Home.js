@@ -3,7 +3,7 @@ import Hero from '../components/home/Hero'
 import ListAccess from '../components/home/ListAccess'
 import IntroSection from '../components/home/IntroSection'
 import CentresOfExcellence from '../components/home/CentresOfExcellence'
-import InfiniteTestimonials from '../components/home/Testimonials'
+// import InfiniteTestimonials from '../components/home/Testimonials'
 import ClinicalExcellence from '../components/home/Whychooseus'
 import CTABanner from '../components/CtaBanner'
 import PureImageBanner from '../components/home/ImageBanner'
@@ -19,7 +19,7 @@ const Home = () => {
       <CentresOfExcellence />
       <ClinicalExcellence />
       <CTABanner />
-      <InfiniteTestimonials />
+      {/* <InfiniteTestimonials /> */}
       <AppointmentSection />
 
     </div>

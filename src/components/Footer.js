@@ -68,7 +68,6 @@ const Footer = ({ variant = 'default' }) => {
     subsidiaries: [
       { name: 'Surgery Centre', path: '/surgery-center' },
       { name: 'Fertility Centre', path: '/fertility-center' },
-      { name: 'Nova Pharmacy', path: '/pharmacy' },
     ],
     legal: [
       { name: 'Privacy Policy', path: '/privacy' },

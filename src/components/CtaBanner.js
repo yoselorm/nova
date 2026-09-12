@@ -53,7 +53,7 @@ const CTABanner = () => {
             </a>
 
             {/* Book Now Button */}
-            <Link to="/book-appointment">
+            <Link to="/#book">
               <button className="bg-nova-sky text-nova-blue font-bold rounded-full pl-8 pr-2 py-2 flex items-center gap-4 shadow-xl transition-transform duration-300 hover:scale-105 active:scale-95 group">
                 <span className="uppercase tracking-widest text-xs sm:text-sm">Book Consultation Now</span>
                 <div className="bg-nova-blue/10 text-nova-blue p-3 rounded-full group-hover:translate-x-1 transition-transform">

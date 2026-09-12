@@ -7,14 +7,14 @@ const Services = () => {
   const [ctaRef, ctaVisible] = useReveal();
 
   const services = [
+    { title: "General Gynecology", detail: "Routine wellness exams, reproductive health counseling, and management of acute gynecological conditions." },
+    { title: "Fertility & Family Planning", detail: "Holistic reproductive support for couples, including ovulation induction and contraceptive counseling." },
+    { title: "Endometriosis Care", detail: "Specialized medical management and laparoscopic mapping for chronic pelvic pain and fertility preservation." },
+    { title: "Fibroid Management", detail: "Minimally invasive treatment options focusing on uterine preservation and rapid symptom relief." },
     { title: "Menopause Management", detail: "Comprehensive hormonal assessment, personalized therapy plans, and bone density monitoring for a seamless transition." },
     { title: "Breast & Cervical Screening", detail: "Advanced diagnostic imaging and cytology to ensure early detection and preventive oncology care." },
     { title: "Executive Physical", detail: "Tailored full-body diagnostics designed for busy professionals, including cardiac and metabolic stress testing." },
-    { title: "General Gynecology", detail: "Routine wellness exams, reproductive health counseling, and management of acute gynecological conditions." },
     { title: "Diagnostic Radiology", detail: "High-resolution X-ray and ultrasound scanning for precise internal visualization and rapid diagnosis." },
-    { title: "Endometriosis Care", detail: "Specialized medical management and laparoscopic mapping for chronic pelvic pain and fertility preservation." },
-    { title: "Fertility & Family Planning", detail: "Holistic reproductive support for couples, including ovulation induction and contraceptive counseling." },
-    { title: "Fibroid Management", detail: "Minimally invasive treatment options focusing on uterine preservation and rapid symptom relief." },
     { title: "General Medical Care", detail: "Expert management of chronic conditions such as Diabetes, Hypertension, and Kidney Disease." },
     { title: "Pharmacy Services", detail: "On-site prescription fulfillment with dedicated counseling and medication therapy management." },
     { title: "Wellness & Preventive", detail: "Proactive health strategies focusing on nutrition, lifestyle modification, and long-term vitality." },
@@ -100,7 +100,7 @@ const Services = () => {
             <h4 className="text-3xl font-black tracking-tight mb-2">Need a Specialized Consultation?</h4>
             <p className="text-white/60 font-medium">Our clinical experts are available for detailed sessions.</p>
           </div>
-        <Link to="/book-appointment">
+        <Link to="/#book">
           <button className="bg-nova-sky text-nova-blue px-12 py-5 rounded-2xl font-black uppercase tracking-widest text-xs whitespace-nowrap hover:scale-105 transition-transform">
             Book Appointment
           </button>

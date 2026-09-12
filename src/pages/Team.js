@@ -4,10 +4,8 @@ import useReveal from '../utils/useReveal';
 import FrancisImg from '../assets/images/francis.jpg';
 import CharleneImg from '../assets/images/Charlene.jpg';
 import EvelynImg from '../assets/images/DrEvelyn.jpeg';
-import IsaacImg from '../assets/images/Isaac.jpg';
 import VioletImg from '../assets/images/Violet.jpg';
 import AmadeaImg from '../assets/images/Amadea.jpg';
-import EmilyImg from '../assets/images/Emily.jpg';
 
 const featuredTeam = [
   {
@@ -44,7 +42,7 @@ const featuredTeam = [
   {
     name: 'Dr. Charlene Annor',
     credentials: '',
-    title: 'OBGYN, Medical Consultant',
+    title: 'Consultant Obstetrician and Gynaecologist',
     image: CharleneImg,
     shortBio: [
       'Dr Charlene Annor is a Consultant Obstetrician and Gynaecologist, who has recently moved to Accra, Ghana from South Africa. She was born and raised in South Africa to Ghanaian parents; medical doctors who had relocated to South Africa in the 1980s.',
@@ -75,7 +73,7 @@ const featuredTeam = [
   {
     name: 'Evelyn Kwofie',
     credentials: 'BSN, RN',
-    title: 'Head Nurse',
+    title: 'Hospital Manager',
     image: EvelynImg,
     shortBio: [
       'Evelyn Kwofie BSN, RN is a seasoned registered nurse with over 20 years of experience in clinical nursing, with expertise in medical-surgical nursing, emergency care, intensive care, gerontology, clinical leadership, and healthcare management.',
@@ -101,10 +99,8 @@ const featuredTeam = [
 
 // Team members whose full biography write-up is still pending
 const pendingProfiles = [
-  // { name: 'Dr. Isaac Baidoo', title: 'MD', image: IsaacImg },
   { name: 'Dr. Violet Habwe', title: 'MD', image: VioletImg },
   { name: 'Dr. Amadea Tetteh', title: 'MD', image: AmadeaImg },
-  { name: 'Emily M. Nwankwo', title: 'Business Development and Capacity Building', image: EmilyImg },
   { name: 'Dr. Barbara Fenyi', title: 'Medical Doctor', image: null }
 ];
 
@@ -229,7 +225,7 @@ const Team = () => {
           </div>
           <h1 className="text-4xl md:text-6xl font-black text-slate-950 tracking-tighter uppercase leading-none">
             The People Behind <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-nova-blue via-nova-sky to-slate-400 font-light lowercase italic">Nova Healthcare.</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-nova-blue via-nova-sky to-slate-400 font-light italic">Nova Healthcare.</span>
           </h1>
           <p className="text-slate-400 text-xs md:text-sm font-medium leading-relaxed max-w-2xl mx-auto">
             A multidisciplinary team of surgeons, consultants, and support staff dedicated to delivering ambulatory medical and surgical excellence.

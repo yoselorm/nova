@@ -38,7 +38,7 @@ const About = () => {
               <span className="text-nova-blue font-black uppercase tracking-[0.4em] text-[10px]">Founded September 2015</span>
               <h2 className="text-4xl md:text-5xl font-black tracking-tighter mt-4">West Africa's First Free-Standing Surgery Center.</h2>
               <p className="text-slate-500 font-medium leading-relaxed mt-6">
-                Nova Surgery Center was founded on the principle that "The satisfaction of the patient is our number one priority." Since 2015, we have evolved into a household name for laparoscopic surgery in the Greater Accra Region.
+                Nova Surgery Center was founded on the principle that "The satisfaction of the patient is our number one priority." Since 2015, we have evolved into the leading provider of minimally invasive gynecological care, fertility treatment, and maternity services here in Ghana.
               </p>
             </div>
 

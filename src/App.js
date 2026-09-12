@@ -19,7 +19,6 @@ import DonatePage from './pages/Donate';
 // Admin System Pages
 import AdminLayout from './admin/pages/AdminLayout';
 import AdminLogin from './admin/pages/Login';
-import BookAppointment from './pages/BookAppointement';
 import AdminDashboard from './admin/pages/Dashboard';
 import ManageAppointments from './admin/pages/ManageAppointments';
 import ManageBlogs from './admin/pages/ManageBlogs';
@@ -32,14 +31,6 @@ import JobDetailView from './pages/JobDetailView';
 import ManageJobs from './admin/pages/ManageJobs';
 import JobApplicants from './admin/pages/JobApplicants';
 // Note: Import your OverviewBoard, ManageAppointments, and ManageBlogs here when ready!
-
-const ScrollToTop = () => {
-  const { pathname } = window.location;
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
-  return null;
-};
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -61,9 +52,8 @@ function App() {
 
   return (
     <Router>
-      <ScrollToTop />
       <ScrollReset/>
-      
+
       <Routes>
         {/* ==========================================================
             1. PUBLIC WEBSITE CLIENT PORTAL (Has Public Navbar/Footer)
@@ -76,12 +66,11 @@ function App() {
           <Route path="/services" element={<Services />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/donate" element={<DonatePage />} />
-          {/* <Route path='/book-appointment' element={<Navigate to="/#book" replace />} />  */}
+          <Route path='/book-appointment' element={<Navigate to="/#book" replace />} />
           <Route path="/blog" element={<BlogShowcase />} />
           <Route path="/blogs/:slug" element={<BlogDetailView isAdmin={false} />} />
           <Route path="/careers" element={<Careers />} />
           <Route path="/careers/:slug" element={<JobDetailView />} />
-          <Route path='/book-appointment' element={<BookAppointment />} />
           
           {/* Subsidiary Focus Pages */}
           <Route path="/surgery-center" element={<SurgeryCenter />} />

@@ -8,7 +8,7 @@ const ListAccess = () => {
   const items = [
     { name: 'Laparoscopy GYN & General Surgery Procedures', icon: <Stethoscope />, count: '01' },
     { name: 'Breast and Cervical Cancer Screening', icon: <FlaskConical />, count: '02' },
-    { name: 'Diagnostic Radiology (X-ray & Scan)', icon: <Scan />, count: '03' },
+    { name: 'Diagnostic Radiology (Ultrasound Scan)', icon: <Scan />, count: '03' },
     { name: 'Private Medical Ambulance', icon: <Ambulance />, count: '04' },
     { name: 'Pharmacy', icon: <Pill />, count: '05' },
     { name: 'Fertility & Family Planning', icon: <HeartHandshake />, count: '06' },

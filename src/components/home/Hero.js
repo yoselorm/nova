@@ -31,7 +31,7 @@ const Hero = () => {
           <div className="inline-flex items-center gap-3 bg-white/5 backdrop-blur-2xl border border-white/10 px-5 py-2.5 rounded-full mb-10">
             <span className="w-1.5 h-1.5 bg-nova-sky rounded-full animate-ping" />
             <span className="text-nova-sky text-[9px] font-black uppercase tracking-[0.4em]">
-              Architects of Health // Est. 2015
+              Ultra Modern Healthcare Facility // Est. 2015
             </span>
           </div>
 
@@ -45,12 +45,11 @@ const Hero = () => {
 
           {/* 3. PARAGRAPH + CTA */}
           <p className="text-white/50 text-lg md:text-xl mb-12 leading-relaxed max-w-xl font-medium border-l border-nova-sky/30 pl-8">
-            Nova Surgery Center is a specialist primary hospital dedicated to the
-            principle that patient satisfaction is our <span className="text-white">number one priority.</span>
+            The leading provider of minimally invasive gynecological care, fertility treatment, and maternity services here in Ghana.
           </p>
 
           <div className="flex flex-wrap gap-8 items-center">
-            <Link to="/book-appointment">
+            <Link to="/#book">
               <button className="bg-nova-sky text-nova-blue px-12 py-6 rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-[0_20px_50px_rgba(0,229,255,0.2)] transition-all duration-300 hover:scale-105 hover:bg-[#00E5FF] active:scale-95 flex items-center gap-4 group">
                 Inquire Now
                 <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
@@ -70,8 +69,7 @@ const Hero = () => {
         <div className="hidden xl:flex flex-col gap-16 border-l border-white/10 pl-12 animate-fade-in-up [animation-delay:200ms]">
           {[
             { id: '01', title: 'Surgery', active: true },
-            { id: '02', title: 'Fertility', active: false },
-            { id: '03', title: 'Pharmacy', active: false }
+            { id: '02', title: 'Fertility', active: false }
           ].map((item) => (
             <div key={item.id} className="group cursor-pointer">
               <p className={`text-4xl font-black transition-all duration-300 ${item.active ? 'text-nova-sky scale-110' : 'text-white/10 group-hover:text-white/40'}`}>

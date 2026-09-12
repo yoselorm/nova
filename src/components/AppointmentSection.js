@@ -18,15 +18,9 @@ const AppointmentSection = () => {
     email: '',
     phone: '',
     date: '',
-    timeSlot: '', // Added back
     service: 'Select Service',
-    notes: '' // Added back
+    notes: ''
   });
-
-  const timeSlots = [
-    '08:00 AM', '09:30 AM', '11:00 AM',
-    '01:00 PM', '02:30 PM', '04:00 PM'
-  ];
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -42,10 +36,6 @@ const AppointmentSection = () => {
       setError('Please select an appointment date.');
       return;
     }
-    if (!formData.timeSlot) {
-      setError('Please choose a time.');
-      return;
-    }
 
     setLoading(true);
     setError('');
@@ -56,7 +46,6 @@ const AppointmentSection = () => {
         email: formData.email,
         phone: formData.phone,
         date: formData.date,
-        timeSlot: formData.timeSlot,
         subsidiary: formData.service || 'general', // Maps cleanly to your controller's naming schemas, with fallback
         notes: formData.notes || 'No notes provided.'
       });
@@ -155,30 +144,10 @@ const AppointmentSection = () => {
                     className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white/80 focus:outline-none focus:border-nova-sky transition-all appearance-none cursor-pointer text-sm"
                   >
                     <option className="bg-slate-900" disabled>Select Service</option>
-                    <option className="bg-slate-900 text-white" value='surgery'>General Surgery</option>
+                    <option className="bg-slate-900 text-white" value='wellness'>Wellness Check</option>
+                    <option className="bg-slate-900 text-white" value='gynecology'>Gynecology Consultation</option>
                     <option className="bg-slate-900 text-white" value='fertility'>Fertility Consultation</option>
                   </select>
-                </div>
-
-                {/* TIME WINDOW SELECTOR ARRAY */}
-                <div className="space-y-2">
-                  <label className="text-[10px] font-black text-white/40 uppercase tracking-widest block px-1">Available Times</label>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                    {timeSlots.map((slot) => (
-                      <button
-                        key={slot}
-                        type="button"
-                        onClick={() => handleInputChange('timeSlot', slot)}
-                        className={`h-11 text-[11px] font-black rounded-xl border transition-all ${
-                          formData.timeSlot === slot 
-                            ? 'border-nova-sky text-nova-sky bg-white/10 shadow-lg shadow-nova-sky/5'
-                            : 'border-white/10 text-white/60 bg-white/5 hover:border-white/20'
-                        }`}
-                      >
-                        {slot}
-                      </button>
-                    ))}
-                  </div>
                 </div>
 
                 {/* CASE NOTES TEXTAREA CONTROLLER */}
