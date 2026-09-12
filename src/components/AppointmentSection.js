@@ -41,7 +41,7 @@ const AppointmentSection = () => {
     setError('');
 
     try {
-      const response = await axios.post(`${process.env.REACT_APP_SERVICE_API}/appointments`, {
+      const response = await axios.post(`${process.env.REACT_APP_SERVICE_API}/api/appointments`, {
         fullName: `${formData.firstName} ${formData.lastName}`.trim(),
         email: formData.email,
         phone: formData.phone,
