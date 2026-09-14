@@ -1,20 +1,53 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ArrowRight, MousePointer2 } from 'lucide-react';
 import homeherobg from '../../assets/images/herobg.jpg';
+import homehero02 from '../../assets/images/homhero02.jpg';
 import { Link } from 'react-router-dom';
 
+const SLIDES = [homeherobg, homehero02];
+const SLIDE_DURATION = 6000;
+
 const Hero = () => {
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveSlide(prev => (prev + 1) % SLIDES.length);
+    }, SLIDE_DURATION);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section className="relative h-screen w-full flex items-center overflow-hidden font-nova bg-slate-950">
 
-      {/* --- BACKGROUND LAYER --- */}
-      <div
-        className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat animate-fade-in"
-        style={{ backgroundImage: `url(${homeherobg})` }}
-      >
+      {/* --- BACKGROUND CAROUSEL LAYER --- */}
+      <div className="absolute inset-0 z-0">
+        {SLIDES.map((slide, index) => (
+          <div
+            key={slide}
+            className={`absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-[1500ms] ease-in-out ${
+              index === activeSlide ? 'opacity-100' : 'opacity-0'
+            }`}
+            style={{ backgroundImage: `url(${slide})` }}
+          />
+        ))}
         {/* Cinematic Gradient Overlays */}
         <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/60 to-transparent z-10" />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent z-10" />
+      </div>
+
+      {/* --- CAROUSEL DOTS --- */}
+      <div className="absolute bottom-32 right-6 md:right-12 z-30 flex flex-col gap-3">
+        {SLIDES.map((slide, index) => (
+          <button
+            key={slide}
+            onClick={() => setActiveSlide(index)}
+            aria-label={`Show slide ${index + 1}`}
+            className={`w-2 rounded-full transition-all duration-300 ${
+              index === activeSlide ? 'h-8 bg-nova-sky' : 'h-2 bg-white/30 hover:bg-white/50'
+            }`}
+          />
+        ))}
       </div>
 
       {/* --- ARCHITECTURAL GRID OVERLAY --- */}
