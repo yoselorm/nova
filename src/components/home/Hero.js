@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ArrowRight, MousePointer2 } from 'lucide-react';
-import homeherobg from '../../assets/images/herobg.jpg';
+import homeherobg from '../../assets/images/herobg.webp';
 import homehero02 from '../../assets/images/homhero02.jpg';
 import { Link } from 'react-router-dom';
 

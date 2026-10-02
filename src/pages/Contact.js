@@ -5,6 +5,14 @@ import axios from 'axios';
 import useReveal from '../utils/useReveal';
 import toast from '../components/Toast';
 
+// lucide-react ships no brand glyphs, so the WhatsApp mark is a raw inline SVG
+const WhatsAppIcon = ({ size = 20 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.472-.148-.67.15-.198.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+    <path d="M12.001 2C6.478 2 2 6.478 2 12c0 1.876.52 3.63 1.42 5.13L2.05 22l4.99-1.31A9.94 9.94 0 0012.001 22C17.523 22 22 17.522 22 12S17.523 2 12.001 2zm0 18.06c-1.66 0-3.2-.49-4.494-1.33l-.322-.19-2.965.778.79-2.888-.21-.297A8.06 8.06 0 013.94 12c0-4.446 3.616-8.06 8.061-8.06 4.446 0 8.06 3.614 8.06 8.06 0 4.446-3.614 8.06-8.06 8.06z" />
+  </svg>
+);
+
 const Contact = () => {
   const [isRobotChecked, setIsRobotChecked] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -75,14 +83,15 @@ const Contact = () => {
                   lines={["info@novasurgerycenter.com"]}
                 />
                 <ContactCard
-                  icon={<MessageSquare icon={<Phone size={18}/>} />} // Reusing icon logic
+                  icon={<WhatsAppIcon size={20} />}
                   title="WhatsApp"
                   lines={["(+233)-544-030-436"]}
+                  href="https://wa.me/233544030436"
                 />
                 <ContactCard
                   icon={<Clock size={20} />}
                   title="Opening Hours"
-                  lines={["Mon, Wed & Fri", "By Appointment Only"]}
+                  lines={["Appointments: Mon – Fri", "Walk-ins: Every Day, 8AM – 5PM", "(Booking an appointment is advised)"]}
                 />
               </div>
             </div>
@@ -185,15 +194,19 @@ const MapOverlayCard = () => {
   );
 };
 
-const ContactCard = ({ icon, title, lines }) => (
-  <div className="bg-white/5 backdrop-blur-xl p-6 rounded-[2.5rem] border border-white/10 group hover:bg-white/10 transition-all">
-    <div className="text-nova-sky mb-4 group-hover:scale-110 transition-transform origin-left">{icon}</div>
-    <h4 className="text-[10px] font-black uppercase tracking-widest text-white/40 mb-2">{title}</h4>
-    {lines.map((line, i) => (
-      <p key={i} className="text-white text-sm font-bold leading-tight">{line}</p>
-    ))}
-  </div>
-);
+const ContactCard = ({ icon, title, lines, href }) => {
+  const Wrapper = href ? 'a' : 'div';
+  const wrapperProps = href ? { href, target: '_blank', rel: 'noopener noreferrer' } : {};
+  return (
+    <Wrapper {...wrapperProps} className="bg-white/5 backdrop-blur-xl p-6 rounded-[2.5rem] border border-white/10 group hover:bg-white/10 transition-all block">
+      <div className="text-nova-sky mb-4 group-hover:scale-110 transition-transform origin-left">{icon}</div>
+      <h4 className="text-[10px] font-black uppercase tracking-widest text-white/40 mb-2">{title}</h4>
+      {lines.map((line, i) => (
+        <p key={i} className="text-white text-sm font-bold leading-tight">{line}</p>
+      ))}
+    </Wrapper>
+  );
+};
 
 const GlassInput = ({ ...props }) => (
   <input
@@ -201,7 +214,5 @@ const GlassInput = ({ ...props }) => (
     className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-white/20 focus:outline-none focus:border-nova-sky transition-all"
   />
 );
-
-const MessageSquare = ({icon}) => icon; // Helper for Lucide consistency
 
 export default Contact

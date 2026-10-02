@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowRight, Play } from 'lucide-react';
-import aboutHeroBg from '../../assets/images/AboutHero.jpg';
+import aboutHeroBg from '../../assets/images/AboutHero.webp';
 import { Link } from 'react-router-dom';
 
 const CinematicHero = () => {

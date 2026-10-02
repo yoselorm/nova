@@ -1,7 +1,7 @@
 import React from 'react';
 import { Target, Eye, ShieldCheck, Zap } from 'lucide-react';
 import CinematicHero from '../components/About/AboutHero';
-import NovaHistoryImg from '../assets/images/Novahistory02.jpg';
+import VisionMissionImg from '../assets/images/visionmission.webp';
 import facilityImg from '../assets/images/facility.jpg';
 import useReveal from '../utils/useReveal';
 
@@ -29,7 +29,7 @@ const About = () => {
               imgVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'
             }`}
           >
-            <img src={NovaHistoryImg} className="w-full h-full object-cover" alt="Nova History" />
+            <img src={VisionMissionImg} className="w-full h-full object-cover" alt="Nova History" />
             <div className="absolute inset-0 bg-gradient-to-t from-nova-blue/40 to-transparent" />
           </div>
 

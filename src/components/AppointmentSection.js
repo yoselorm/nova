@@ -4,6 +4,14 @@ import axios from 'axios';
 import useReveal from '../utils/useReveal';
 import AppointmentDatePicker from './AppointmentDatePicker';
 
+// lucide-react ships no brand glyphs, so the WhatsApp mark is a raw inline SVG
+const WhatsAppIcon = ({ size = 16 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.472-.148-.67.15-.198.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+    <path d="M12.001 2C6.478 2 2 6.478 2 12c0 1.876.52 3.63 1.42 5.13L2.05 22l4.99-1.31A9.94 9.94 0 0012.001 22C17.523 22 22 17.522 22 12S17.523 2 12.001 2zm0 18.06c-1.66 0-3.2-.49-4.494-1.33l-.322-.19-2.965.778.79-2.888-.21-.297A8.06 8.06 0 013.94 12c0-4.446 3.616-8.06 8.061-8.06 4.446 0 8.06 3.614 8.06 8.06 0 4.446-3.614 8.06-8.06 8.06z" />
+  </svg>
+);
+
 const AppointmentSection = () => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -88,11 +96,15 @@ const AppointmentSection = () => {
               <h4 className="flex items-center gap-3 text-nova-sky font-bold text-xs uppercase tracking-widest"><Phone size={16} /> Quick Contact</h4>
               <p className="text-xl font-medium">+233 (0) 302 751 290</p>
               <p className="text-white/60 text-sm">info@novasurgerycenter.com</p>
+              <a href="https://wa.me/233544030436" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-[#25D366] text-sm font-bold hover:text-white transition-colors">
+                <WhatsAppIcon size={16} /> +233 (0) 544 030 436
+              </a>
             </div>
             <div className="space-y-4">
               <h4 className="flex items-center gap-3 text-nova-sky font-bold text-xs uppercase tracking-widest"><Calendar size={16} /> Schedule</h4>
-              <p className="text-xl font-medium">Mon, Wed & Fri</p>
-              <p className="text-white/60 text-sm">By Appointment Only</p>
+              <p className="text-xl font-medium">Mon – Fri</p>
+              <p className="text-white/60 text-sm">By Appointment</p>
+              <p className="text-white/60 text-sm">Walk-ins Welcome Daily, 8AM – 5PM<br />(Appointments still advised)</p>
             </div>
           </div>
 

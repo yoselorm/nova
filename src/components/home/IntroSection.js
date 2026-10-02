@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowRight, ShieldCheck, Target } from 'lucide-react';
-import IntroImage from '../../assets/images/IntroImage.jpg';
+import IntroImage from '../../assets/images/centerofexcellence.jpeg';
 import { Link } from 'react-router-dom';
 import useReveal from '../../utils/useReveal';
 
@@ -39,7 +39,7 @@ const IntroSection = () => {
               />
 
               {/* Floating Live Badge */}
-              <div className="absolute top-8 left-8 bg-white/95 backdrop-blur-md px-6 py-4 rounded-2xl shadow-xl flex items-center gap-3">
+              <div className="hidden sm:flex absolute top-8 left-8 bg-white/95 backdrop-blur-md px-6 py-4 rounded-2xl shadow-xl items-center gap-3">
                 <span className="relative flex h-3 w-3">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-nova-sky opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-3 w-3 bg-nova-sky"></span>

@@ -3,7 +3,7 @@ import { Users, GraduationCap, Briefcase, Award, UserCircle2 } from 'lucide-reac
 import useReveal from '../utils/useReveal';
 import FrancisImg from '../assets/images/francis.jpg';
 import CharleneImg from '../assets/images/Charlene.jpg';
-import EvelynImg from '../assets/images/DrEvelyn.jpeg';
+import EvelynImg from '../assets/images/evelyn-kwofie.jpg';
 import VioletImg from '../assets/images/Violet.jpg';
 import AmadeaImg from '../assets/images/Amadea.jpg';
 

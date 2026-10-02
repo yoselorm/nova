@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight, Calendar } from 'lucide-react';
 
-// Clinic only accepts appointments on Monday (1), Wednesday (3), and Friday (5)
-const ALLOWED_DAYS = [1, 3, 5];
+// Clinic accepts booked appointments Monday (1) through Friday (5)
+const ALLOWED_DAYS = [1, 2, 3, 4, 5];
 
 const pad = (n) => String(n).padStart(2, '0');
 const toDateString = (date) => `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
@@ -20,7 +20,7 @@ const isSelectable = (date) => {
 
 const WEEKDAY_LABELS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
-// A trigger button + popover calendar where only Mon/Wed/Fri dates can be clicked at all —
+// A trigger button + popover calendar where only weekday (Mon–Fri) dates can be clicked at all —
 // unlike a native <input type="date">, invalid days simply aren't selectable in the UI.
 const AppointmentDatePicker = ({ value, onChange, triggerClassName, placeholder = 'Select a date' }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -129,7 +129,7 @@ const AppointmentDatePicker = ({ value, onChange, triggerClassName, placeholder 
           </div>
 
           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wide text-center mt-3 pt-3 border-t border-slate-50">
-            Mon, Wed & Fri only
+            Mon – Fri only
           </p>
         </div>
       )}

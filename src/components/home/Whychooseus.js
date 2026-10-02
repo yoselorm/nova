@@ -1,7 +1,6 @@
 import React from 'react';
 import { ShieldCheck, Zap, Monitor, Home } from 'lucide-react';
-import ChooseImage from '../../assets/images/ChooseImage.jpg';
-import ChooseImage02 from '../../assets/images/ChooseImage02.png';
+import IntroImage from '../../assets/images/IntroImage.jpg';
 import useReveal from '../../utils/useReveal';
 
 const ClinicalExcellence = () => {
@@ -24,29 +23,19 @@ const ClinicalExcellence = () => {
 
             <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 lg:gap-20 items-center relative z-10">
 
-                {/* LEFT SIDE: RESPONSIVE IMAGE STACK */}
+                {/* LEFT SIDE: SINGLE WIDE IMAGE */}
                 <div ref={imgRef} className="relative flex items-center justify-center min-h-[500px] lg:min-h-[600px]">
 
                     {/* Background Decorative Element */}
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-sm aspect-square border-2 border-dashed border-nova-sky/20 rounded-full animate-[spin_20s_linear_infinite] -z-10" />
 
-                    {/* Image 1: Smaller/Back */}
+                    {/* Main Image */}
                     <div
-                        className={`absolute left-0 lg:left-4 top-10 w-48 md:w-60 lg:w-64 h-[350px] lg:h-[420px] rounded-[2.5rem] overflow-hidden shadow-2xl border-8 border-white z-10 transition-all duration-700 ease-out ${
-                          imgVisible ? 'opacity-100 translate-x-0 -rotate-[8deg]' : 'opacity-0 -translate-x-12 -rotate-[3deg]'
+                        className={`relative w-full max-w-xl h-[450px] lg:h-[560px] rounded-[3rem] overflow-hidden shadow-2xl border-[12px] border-white z-20 transition-all duration-700 ease-out ${
+                          imgVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'
                         }`}
                     >
-                        <img src={ChooseImage02} alt="Lab" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" />
-                    </div>
-
-                    {/* Image 2: Main/Front */}
-                    <div
-                        style={{ transitionDelay: imgVisible ? '200ms' : '0ms' }}
-                        className={`relative w-56 md:w-72 lg:w-80 h-[450px] lg:h-[520px] rounded-[3rem] overflow-hidden shadow-2xl border-[12px] border-white z-20 transition-all duration-700 ease-out ${
-                          imgVisible ? 'opacity-100 translate-x-0 rotate-[4deg]' : 'opacity-0 translate-x-12 rotate-[2deg]'
-                        }`}
-                    >
-                        <img src={ChooseImage} alt="Excellence" className="w-full h-full object-cover" />
+                        <img src={IntroImage} alt="Nova Clinical Excellence" className="w-full h-full object-cover" />
 
                         {/* Blueprint overlay on image */}
                         <div className="absolute inset-0 bg-nova-blue/5 pointer-events-none" />

@@ -1,9 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import imageBanner from '../../assets/images/ImageBanner.png'
+import buildingImage from '../../assets/images/building.webp'
 import useReveal from '../../utils/useReveal';
+
+const SLIDES = [
+  { src: imageBanner, caption: 'Nova Facility Exterior' },
+  { src: buildingImage, caption: 'Nova Healthcare Building', tint: true }
+];
+const SLIDE_DURATION = 6000;
 
 const PureImageBanner = () => {
   const [ref, isVisible] = useReveal();
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveSlide(prev => (prev + 1) % SLIDES.length);
+    }, SLIDE_DURATION);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <section className="relative w-full py-16 bg-[#FAFBFF] overflow-hidden font-nova">
@@ -26,19 +41,46 @@ const PureImageBanner = () => {
         {/* MAIN IMAGE CONTAINER */}
         <div
           ref={ref}
-          className={`relative h-[400px] md:h-[500px] w-full rounded-[4rem] overflow-hidden shadow-[0_40px_80px_-15px_rgba(0,0,0,0.1)] border-[12px] border-white group transition-all duration-700 ease-out ${
+          className={`relative h-[460px] md:h-[560px] w-full rounded-[4rem] overflow-hidden shadow-[0_40px_80px_-15px_rgba(0,0,0,0.1)] border-[12px] border-white group transition-all duration-700 ease-out ${
             isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-[0.98]'
           }`}
         >
-          {/* The Image */}
-          <img
-            src={imageBanner}
-            alt="Nova Healthcare Facility"
-            className="w-full h-full object-contain sm:object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-105"
-          />
+          {/* The Slides */}
+          {SLIDES.map((slide, index) => (
+            <React.Fragment key={slide.src}>
+              <img
+                src={slide.src}
+                alt={slide.caption}
+                className={`absolute inset-0 w-full h-full object-contain sm:object-cover transition-[opacity,transform] duration-[1.5s] ease-out group-hover:scale-105 ${
+                  index === activeSlide ? 'opacity-100' : 'opacity-0'
+                }`}
+              />
+              {slide.tint && (
+                <div
+                  className={`absolute inset-0 bg-nova-blue/30 mix-blend-multiply pointer-events-none transition-opacity duration-[1.5s] ease-out ${
+                    index === activeSlide ? 'opacity-100' : 'opacity-0'
+                  }`}
+                />
+              )}
+            </React.Fragment>
+          ))}
 
           {/* GRADIENT OVERLAY - Subtle dark fade to match the Hero section depth */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-700" />
+
+          {/* SLIDER DOTS */}
+          <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex items-center gap-3">
+            {SLIDES.map((slide, index) => (
+              <button
+                key={slide.src}
+                onClick={() => setActiveSlide(index)}
+                aria-label={`Show slide ${index + 1}`}
+                className={`rounded-full transition-all duration-300 ${
+                  index === activeSlide ? 'w-8 h-2 bg-nova-sky' : 'w-2 h-2 bg-white/40 hover:bg-white/70'
+                }`}
+              />
+            ))}
+          </div>
 
           {/* FLOATING DESIGN DETAIL (Bottom Right) */}
           <div className="absolute bottom-10 right-10 flex items-center gap-4">
@@ -49,7 +91,7 @@ const PureImageBanner = () => {
 
         {/* BOTTOM CAPTION BAR (Floating architectural element) */}
         <div className="mt-8 flex justify-between items-center px-10 text-[10px] font-black uppercase tracking-[0.5em] text-slate-300">
-           <span>Nova Facility Exterior</span>
+           <span>{SLIDES[activeSlide].caption}</span>
            <span>East Legon, Ghana</span>
         </div>
       </div>
