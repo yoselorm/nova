@@ -5,7 +5,9 @@ import FrancisImg from '../assets/images/francis.jpg';
 import CharleneImg from '../assets/images/Charlene.jpg';
 import EvelynImg from '../assets/images/evelyn-kwofie.jpg';
 import VioletImg from '../assets/images/Violet.jpg';
-import AmadeaImg from '../assets/images/Amadea.jpg';
+import BarbaraImg from '../assets/images/barbara-fenyi.jpg';
+import ReginaldImg from '../assets/images/DrReginald.jpg';
+import BrownImg from '../assets/images/DrBrown.jpg';
 
 const featuredTeam = [
   {
@@ -97,11 +99,12 @@ const featuredTeam = [
   }
 ];
 
-// Team members whose full biography write-up is still pending
-const pendingProfiles = [
+// Rest of the team — listed without individual bios
+const restOfTeam = [
   { name: 'Dr. Violet Habwe', title: 'MD', image: VioletImg },
-  { name: 'Dr. Amadea Tetteh', title: 'MD', image: AmadeaImg },
-  { name: 'Dr. Barbara Fenyi', title: 'Medical Doctor', image: null }
+  { name: 'Dr. Barbara Fenyi', title: 'Medical Doctor', image: BarbaraImg },
+  { name: 'Dr. Reginald Nsiah-Kusi', title: 'Medical Doctor', image: BrownImg },
+  { name: 'Dr. Nana Kwame D. Brown', title: 'Medical Doctor', image: ReginaldImg }
 ];
 
 const BioSection = ({ icon, title, children }) => (
@@ -182,36 +185,44 @@ const FeaturedProfile = ({ doc, shaded }) => {
   );
 };
 
-const PendingProfilesGrid = ({ people }) => {
+const TeamRow = ({ person, idx }) => {
   const [ref, isVisible] = useReveal();
 
   return (
-    <div ref={ref} className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-      {people.map((person, idx) => (
-        <div
-          key={person.name}
-          style={{ transitionDelay: isVisible ? `${idx * 80}ms` : '0ms' }}
-          className={`flex items-center gap-5 bg-[#FAF9FF] rounded-3xl border border-slate-100 p-5 transition-all duration-700 ease-out ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-        >
-          <div className="w-20 h-20 rounded-2xl overflow-hidden shrink-0 bg-slate-100 flex items-center justify-center">
-            {person.image ? (
-              <img src={person.image} alt={person.name} className="w-full h-full object-cover" />
-            ) : (
-              <UserCircle2 size={36} className="text-slate-300" />
-            )}
+    <div
+      ref={ref}
+      style={{ transitionDelay: isVisible ? `${idx * 100}ms` : '0ms' }}
+      className={`flex flex-col items-center text-center transition-all duration-700 ease-out ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+      }`}
+    >
+      <div className="w-full rounded-[2.5rem] overflow-hidden shadow-xl border-[8px] border-white aspect-[4/5] bg-slate-100 mb-6">
+        {person.image ? (
+          <img src={person.image} alt={person.name} className="w-full h-full object-cover brightness-95 contrast-[1.03] saturate-[0.97]" />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center">
+            <UserCircle2 size={48} className="text-slate-300" />
           </div>
-          <div>
-            <h4 className="text-sm font-black text-slate-950 uppercase tracking-tight">{person.name}</h4>
-            <p className="text-nova-sky text-[10px] font-black uppercase tracking-widest mt-1">{person.title}</p>
-            <p className="text-slate-400 text-[11px] font-medium italic mt-2">Full biography coming soon.</p>
-          </div>
-        </div>
-      ))}
+        )}
+      </div>
+
+      <h3 className="text-xl md:text-2xl font-black text-slate-950 tracking-tight uppercase leading-tight">
+        {person.name}
+      </h3>
+      <p className="text-nova-sky font-black text-[10px] md:text-xs uppercase tracking-[0.3em] mt-2">{person.title}</p>
     </div>
   );
 };
+
+const TeamList = ({ people }) => (
+  <div className="flex flex-nowrap justify-center gap-6 md:gap-10 overflow-x-auto pb-2">
+    {people.map((person, idx) => (
+      <div key={person.name} className="w-40 sm:w-48 md:w-56 shrink-0">
+        <TeamRow person={person} idx={idx} />
+      </div>
+    ))}
+  </div>
+);
 
 const Team = () => {
   return (
@@ -238,16 +249,16 @@ const Team = () => {
         <FeaturedProfile key={doc.name} doc={doc} shaded={idx % 2 === 1} />
       ))}
 
-      {/* REST OF THE TEAM — COMPACT PROFILES, BIOS PENDING */}
+      {/* REST OF THE TEAM — COMPACT PROFILES, NO INDIVIDUAL BIOS */}
       <section className="py-24 px-6 bg-white border-t border-slate-50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center max-w-xl mx-auto space-y-3 mb-14">
             <span className="text-nova-blue font-black uppercase tracking-[0.4em] text-[10px]">Growing Every Day</span>
             <h2 className="text-3xl md:text-4xl font-black text-slate-950 tracking-tighter uppercase">Rest of the Team</h2>
-            <p className="text-slate-400 text-xs font-medium leading-relaxed">Full biographies for the team members below are on the way.</p>
+            <p className="text-slate-400 text-xs font-medium leading-relaxed">The wider team of doctors supporting Nova Healthcare's mission.</p>
           </div>
 
-          <PendingProfilesGrid people={pendingProfiles} />
+          <TeamList people={restOfTeam} />
         </div>
       </section>
     </div>
