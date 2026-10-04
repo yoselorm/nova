@@ -35,7 +35,7 @@ const ClinicalExcellence = () => {
                           imgVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'
                         }`}
                     >
-                        <img src={IntroImage} alt="Nova Clinical Excellence" className="w-full h-full object-cover" />
+                        <img src={IntroImage} alt="Nova Clinical Excellence" className="w-full h-full object-cover brightness-95 contrast-[1.05] saturate-[0.97]" />
 
                         {/* Blueprint overlay on image */}
                         <div className="absolute inset-0 bg-nova-blue/5 pointer-events-none" />
