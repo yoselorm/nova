@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import imageBanner from '../../assets/images/ImageBanner.png'
-import buildingImage from '../../assets/images/building.webp'
+import buildingImage from '../../assets/images/building-new.jpg'
 import useReveal from '../../utils/useReveal';
 
 const SLIDES = [

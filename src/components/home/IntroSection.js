@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowRight, ShieldCheck, Target } from 'lucide-react';
-import IntroImage from '../../assets/images/centerofexcellence.jpeg';
+import IntroImage from '../../assets/images/centerofexcellence.webp';
 import { Link } from 'react-router-dom';
 import useReveal from '../../utils/useReveal';
 

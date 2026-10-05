@@ -101,8 +101,8 @@ const featuredTeam = [
 
 // Rest of the team — listed without individual bios
 const restOfTeam = [
-  { name: 'Dr. Violet Habwe', title: 'MD', image: VioletImg },
-  { name: 'Dr. Barbara Fenyi', title: 'Medical Doctor', image: BarbaraImg },
+  { name: 'Dr. Violet Habwe', title: 'COO', image: VioletImg },
+  { name: 'Dr. Barbara Fenyi', title: 'Specialist Obstetrician Gynaecologist', image: BarbaraImg },
   { name: 'Dr. Reginald Nsiah-Kusi', title: 'Medical Doctor', image: BrownImg },
   { name: 'Dr. Nana Kwame D. Brown', title: 'Medical Doctor', image: ReginaldImg }
 ];

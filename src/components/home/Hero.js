@@ -69,11 +69,14 @@ const Hero = () => {
           </div>
 
           {/* 2. HEADLINE */}
-          <h1 className="text-white text-7xl md:text-[8rem] font-black leading-[0.85] tracking-tighter mb-4">
-            WE PROVIDE
+          <h1 className="text-white text-5xl md:text-7xl font-black leading-[0.95] tracking-tighter mb-3">
+            Advanced Fertility Care.
           </h1>
-          <h1 className="text-6xl md:text-[6rem] font-light italic tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-nova-sky via-white to-white/20 mb-12">
-            Exceptional Care.
+          <h1 className="text-5xl md:text-7xl font-light italic tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-nova-sky via-white to-white/20 mb-3">
+            Precision Surgery.
+          </h1>
+          <h1 className="text-white text-3xl md:text-4xl font-black uppercase tracking-tight mb-12">
+            Real <span className="text-nova-sky">Outcomes.</span>
           </h1>
 
           {/* 3. PARAGRAPH + CTA */}
