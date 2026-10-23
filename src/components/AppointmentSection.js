@@ -12,6 +12,16 @@ const WhatsAppIcon = ({ size = 16 }) => (
   </svg>
 );
 
+const PATIENT_STATUS_OPTIONS = [
+  { value: 'new', label: 'New Patient' },
+  { value: 'existing', label: 'Existing Patient' }
+];
+
+const pad = (n) => String(n).padStart(2, '0');
+const now = new Date();
+// Caps the date-of-birth picker so nobody can pick a future birthday
+const todayString = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+
 const AppointmentSection = () => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -25,6 +35,9 @@ const AppointmentSection = () => {
     lastName: '',
     email: '',
     phone: '',
+    dateOfBirth: '',
+    address: '',
+    patientStatus: '',
     date: '',
     service: 'Select Service',
     notes: ''
@@ -44,6 +57,10 @@ const AppointmentSection = () => {
       setError('Please select an appointment date.');
       return;
     }
+    if (!formData.patientStatus) {
+      setError('Please tell us if you are a new or existing patient.');
+      return;
+    }
 
     setLoading(true);
     setError('');
@@ -53,9 +70,12 @@ const AppointmentSection = () => {
         fullName: `${formData.firstName} ${formData.lastName}`.trim(),
         email: formData.email,
         phone: formData.phone,
+        dateOfBirth: formData.dateOfBirth,
+        address: formData.address,
+        patientStatus: formData.patientStatus,
         date: formData.date,
         subsidiary: formData.service || 'general', // Maps cleanly to your controller's naming schemas, with fallback
-        notes: formData.notes || 'No notes provided.'
+        notes: formData.notes
       });
 
       if (response.data.success) {
@@ -145,6 +165,38 @@ const AppointmentSection = () => {
                 </div>
                 
                 <div className="grid md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-black text-white/40 uppercase tracking-widest block px-1">Date of Birth</label>
+                    <Input type="date" required max={todayString} value={formData.dateOfBirth} onChange={(e) => handleInputChange('dateOfBirth', e.target.value)} />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-black text-white/40 uppercase tracking-widest block px-1">Address</label>
+                    <Input placeholder="Residential Address" required value={formData.address} onChange={(e) => handleInputChange('address', e.target.value)} />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black text-white/40 uppercase tracking-widest block px-1">Patient Status</label>
+                  <div className="grid grid-cols-2 gap-4">
+                    {PATIENT_STATUS_OPTIONS.map(option => (
+                      <button
+                        key={option.value}
+                        type="button"
+                        aria-pressed={formData.patientStatus === option.value}
+                        onClick={() => handleInputChange('patientStatus', option.value)}
+                        className={`w-full rounded-2xl px-4 py-4 text-sm font-bold border transition-all ${
+                          formData.patientStatus === option.value
+                            ? 'bg-nova-sky text-nova-blue border-nova-sky'
+                            : 'bg-white/5 text-white/70 border-white/10 hover:border-nova-sky'
+                        }`}
+                      >
+                        {option.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-4">
                   <AppointmentDatePicker
                     value={formData.date}
                     onChange={(value) => handleInputChange('date', value)}
@@ -162,12 +214,13 @@ const AppointmentSection = () => {
                   </select>
                 </div>
 
-                {/* CASE NOTES TEXTAREA CONTROLLER */}
+                {/* REASON FOR APPOINTMENT TEXTAREA CONTROLLER */}
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black text-white/40 uppercase tracking-widest block px-1">Notes (Optional)</label>
+                  <label className="text-[10px] font-black text-white/40 uppercase tracking-widest block px-1">Reason for Appointment</label>
                   <textarea 
                     rows={3} 
-                    placeholder="Brief description of clinical requirements..." 
+                    required
+                    placeholder="Symptoms, reason for your visit, or any comments..." 
                     value={formData.notes} 
                     onChange={(e) => handleInputChange('notes', e.target.value)} 
                     className="w-full bg-white/5 border border-white/10 rounded-2xl p-5 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-nova-sky focus:bg-white/10 transition-all outline-none resize-none" 
@@ -198,7 +251,7 @@ const AppointmentSection = () => {
 const Input = ({ ...props }) => (
   <input 
     {...props}
-    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white text-sm placeholder:text-white/30 focus:outline-none focus:border-nova-sky focus:bg-white/10 transition-all outline-none"
+    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white text-sm [color-scheme:dark] placeholder:text-white/30 focus:outline-none focus:border-nova-sky focus:bg-white/10 transition-all outline-none"
   />
 );
 

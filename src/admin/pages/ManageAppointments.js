@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Filter, Check, X, AlertCircle, Calendar, RefreshCw, Clock } from 'lucide-react';
+import { Filter, Check, X, AlertCircle, Calendar, RefreshCw, Clock, Eye } from 'lucide-react';
 import axios from 'axios';
 
 // The hospital assigns the actual time slot — these are the only windows it offers
@@ -13,6 +13,74 @@ const SERVICE_LABELS = {
   pharmacy: 'Nova Pharmacy'
 };
 
+const PATIENT_STATUS_LABELS = {
+  new: 'New Patient',
+  existing: 'Existing Patient'
+};
+
+// Booking dates are stored at UTC midnight, so format in UTC to keep the day the patient picked
+const formatDate = (value) => new Date(value).toLocaleDateString('en-US', {
+  month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC'
+});
+
+// Full booking card — same fields and order as the booking email the front desk receives
+const AppointmentDetails = ({ appointment, onClose }) => {
+  useEffect(() => {
+    const handleKey = (e) => e.key === 'Escape' && onClose();
+    document.addEventListener('keydown', handleKey);
+    return () => document.removeEventListener('keydown', handleKey);
+  }, [onClose]);
+
+  const rows = [
+    { label: 'Full Name', value: appointment.fullName },
+    { label: 'Contact Number', value: appointment.phone, href: `tel:${appointment.phone}` },
+    { label: 'Date Of Birth', value: appointment.dateOfBirth ? formatDate(appointment.dateOfBirth) : '—' },
+    { label: 'Appointment', value: `${formatDate(appointment.date)} — ${appointment.timeSlot || 'time not set'}` },
+    { label: 'Service', value: SERVICE_LABELS[appointment.subsidiary] || appointment.subsidiary },
+    { label: 'Email', value: appointment.email, href: `mailto:${appointment.email}` },
+    { label: 'Address', value: appointment.address || '—' },
+    { label: 'Reason For Appointment', value: appointment.notes || '—' },
+    { label: 'Patient Status', value: PATIENT_STATUS_LABELS[appointment.patientStatus] || '—' }
+  ];
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/50" onClick={onClose}>
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label={`Appointment details for ${appointment.fullName}`}
+        onClick={(e) => e.stopPropagation()}
+        className="bg-white w-full max-w-xl max-h-[90vh] overflow-y-auto rounded-3xl shadow-2xl animate-fade-in"
+      >
+        <div className="sticky top-0 bg-white flex items-center justify-between px-8 py-5 border-b border-slate-100">
+          <div>
+            <span className="text-[10px] font-black text-nova-sky uppercase tracking-[0.3em] block">Appointment</span>
+            <span className="font-mono font-black text-xs text-slate-900">{appointment.trackingId}</span>
+          </div>
+          <button
+            onClick={onClose}
+            className="w-9 h-9 rounded-lg bg-slate-50 text-slate-500 hover:bg-slate-100 flex items-center justify-center transition-all"
+            title="Close"
+          >
+            <X size={16} />
+          </button>
+        </div>
+
+        <dl className="px-8 divide-y divide-slate-200">
+          {rows.map(row => (
+            <div key={row.label} className="py-5">
+              <dt className="text-sm font-bold text-slate-900 mb-2">{row.label}</dt>
+              <dd className="text-sm text-slate-600 leading-relaxed whitespace-pre-line break-words">
+                {row.href ? <a href={row.href} className="text-blue-700 underline">{row.value}</a> : row.value}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </div>
+  );
+};
+
 const ManageAppointments = () => {
   const [appointments, setAppointments] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
@@ -20,6 +88,8 @@ const ManageAppointments = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [actionLoadingId, setActionLoadingId] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
+  const selectedAppointment = appointments.find(item => item._id === selectedId);
 
  const fetchAppointments = async () => {
     setLoading(true);
@@ -197,7 +267,8 @@ const ManageAppointments = () => {
                     filteredData.map((item) => (
                       <tr
                         key={item._id}
-                        className="hover:bg-slate-50/40 transition-colors animate-fade-in"
+                        onClick={() => setSelectedId(item._id)}
+                        className="hover:bg-slate-50/40 transition-colors animate-fade-in cursor-pointer"
                       >
                         {/* ID */}
                         <td className="p-6 font-mono font-black text-xs text-slate-900">{item.trackingId}</td>
@@ -206,6 +277,11 @@ const ManageAppointments = () => {
                         <td className="p-6">
                           <div className="font-bold text-slate-900">{item.fullName}</div>
                           <div className="text-xs text-slate-400 font-medium mt-0.5">{item.phone} • {item.email}</div>
+                          {item.patientStatus && (
+                            <span className="inline-block mt-1 text-[10px] font-black uppercase tracking-wider text-slate-500">
+                              {PATIENT_STATUS_LABELS[item.patientStatus]}
+                            </span>
+                          )}
                           {item.notes && (
                             <p className="text-[11px] font-medium text-slate-400 italic max-w-xs truncate mt-1 bg-slate-50 p-1.5 rounded-lg border border-slate-100">
                               "{item.notes}"
@@ -226,7 +302,7 @@ const ManageAppointments = () => {
                             <Calendar size={12} className="text-slate-400" />
                             {new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                           </div>
-                          <div className="relative w-fit">
+                          <div className="relative w-fit" onClick={(e) => e.stopPropagation()}>
                             <select
                               value={item.timeSlot || ''}
                               disabled={actionLoadingId === item._id}
@@ -253,7 +329,14 @@ const ManageAppointments = () => {
 
                         {/* Action Operations */}
                         <td className="p-6 text-right">
-                          <div className="flex items-center justify-end gap-1.5">
+                          <div className="flex items-center justify-end gap-1.5" onClick={(e) => e.stopPropagation()}>
+                            <button
+                              onClick={() => setSelectedId(item._id)}
+                              className="w-8 h-8 rounded-lg bg-slate-50 text-slate-600 hover:bg-slate-900 hover:text-white flex items-center justify-center transition-all border border-slate-100"
+                              title="View Details"
+                            >
+                              <Eye size={14} />
+                            </button>
                             {item.status === 'pending' && (
                               <>
                                 <button
@@ -290,6 +373,10 @@ const ManageAppointments = () => {
         </div>
 
       </div>
+
+      {selectedAppointment && (
+        <AppointmentDetails appointment={selectedAppointment} onClose={() => setSelectedId(null)} />
+      )}
     </div>
   );
 };
