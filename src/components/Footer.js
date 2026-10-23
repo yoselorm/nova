@@ -171,7 +171,7 @@ const Footer = ({ variant = 'default' }) => {
               </div>
               <div className="flex items-center gap-4">
                 <Phone className={`${activeTheme.iconColor} transition-colors duration-500`} size={20} />
-                <span className="text-slate-400 text-sm font-bold">+233 (0) 302 751 290</span>
+                <span className="text-slate-400 text-sm font-bold">+233 (0) 302 751 290<br />+233 (0) 303 931 960</span>
               </div>
               <a href="https://wa.me/233544030436" target="_blank" rel="noopener noreferrer" className={`flex items-center gap-4 w-fit text-slate-400 ${activeTheme.hoverText} transition-colors`}>
                 <WhatsAppIcon size={20} className={`${activeTheme.iconColor} transition-colors duration-500`} />

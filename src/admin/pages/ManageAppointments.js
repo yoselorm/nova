@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Filter, Check, X, AlertCircle, Calendar, RefreshCw, Clock, Eye } from 'lucide-react';
 import axios from 'axios';
-
-// The hospital assigns the actual time slot — these are the only windows it offers
-const TIME_SLOTS = ['08:00 AM', '09:30 AM', '11:00 AM', '01:00 PM', '02:30 PM', '04:00 PM'];
+import TIME_SLOTS from '../../utils/timeSlots';
 
 const SERVICE_LABELS = {
   wellness: 'Wellness Check',
@@ -44,13 +42,14 @@ const AppointmentDetails = ({ appointment, onClose }) => {
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/50" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div onClick={onClose} className="absolute inset-0 bg-slate-950/40 animate-fade-in" />
+
       <div
         role="dialog"
         aria-modal="true"
         aria-label={`Appointment details for ${appointment.fullName}`}
-        onClick={(e) => e.stopPropagation()}
-        className="bg-white w-full max-w-xl max-h-[90vh] overflow-y-auto rounded-3xl shadow-2xl animate-fade-in"
+        className="bg-white w-full max-w-xl max-h-[90vh] overflow-y-auto rounded-3xl relative z-10 shadow-2xl border border-slate-100 animate-scale-in"
       >
         <div className="sticky top-0 bg-white flex items-center justify-between px-8 py-5 border-b border-slate-100">
           <div>
@@ -153,7 +152,7 @@ const ManageAppointments = () => {
     }
   };
 
-  // The hospital, not the patient, decides the actual appointment time
+  // Patients pick a preferred time; the hospital can move it to another slot here
   const updateTimeSlot = async (id, targetTimeSlot) => {
     setActionLoadingId(id);
     const token = sessionStorage.getItem('admin_token');
@@ -248,12 +247,12 @@ const ManageAppointments = () => {
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-slate-50/70 border-b border-slate-100 text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                  <th className="p-6">Tracking ID</th>
-                  <th className="p-6">Patient</th>
-                  <th className="p-6">Center</th>
-                  <th className="p-6">Date & Time</th>
-                  <th className="p-6">Status</th>
-                  <th className="p-6 text-right">Actions</th>
+                  <th className="px-4 py-5">Tracking ID</th>
+                  <th className="px-4 py-5">Patient</th>
+                  <th className="px-4 py-5">Center</th>
+                  <th className="px-4 py-5">Date & Time</th>
+                  <th className="px-4 py-5">Status</th>
+                  <th className="px-4 py-5 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 text-sm">
@@ -271,10 +270,10 @@ const ManageAppointments = () => {
                         className="hover:bg-slate-50/40 transition-colors animate-fade-in cursor-pointer"
                       >
                         {/* ID */}
-                        <td className="p-6 font-mono font-black text-xs text-slate-900">{item.trackingId}</td>
+                        <td className="px-4 py-5 font-mono font-black text-xs text-slate-900">{item.trackingId}</td>
                         
                         {/* Patient Detail */}
-                        <td className="p-6">
+                        <td className="px-4 py-5">
                           <div className="font-bold text-slate-900">{item.fullName}</div>
                           <div className="text-xs text-slate-400 font-medium mt-0.5">{item.phone} • {item.email}</div>
                           {item.patientStatus && (
@@ -283,21 +282,21 @@ const ManageAppointments = () => {
                             </span>
                           )}
                           {item.notes && (
-                            <p className="text-[11px] font-medium text-slate-400 italic max-w-xs truncate mt-1 bg-slate-50 p-1.5 rounded-lg border border-slate-100">
+                            <p className="text-[11px] font-medium text-slate-400 italic max-w-[15rem] truncate mt-1 bg-slate-50 p-1.5 rounded-lg border border-slate-100">
                               "{item.notes}"
                             </p>
                           )}
                         </td>
 
                         {/* Subsidiary Wing */}
-                        <td className="p-6">
+                        <td className="px-4 py-5">
                           <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border ${getSubsidiaryBadge(item.subsidiary)}`}>
                             {SERVICE_LABELS[item.subsidiary] || item.subsidiary}
                           </span>
                         </td>
 
                         {/* Date and Window */}
-                        <td className="p-6 font-medium text-slate-700">
+                        <td className="px-4 py-5 font-medium text-slate-700">
                           <div className="flex items-center gap-1.5 text-xs font-bold text-slate-900 mb-1.5">
                             <Calendar size={12} className="text-slate-400" />
                             {new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
@@ -321,14 +320,14 @@ const ManageAppointments = () => {
                         </td>
 
                         {/* Status Label */}
-                        <td className="p-6">
+                        <td className="px-4 py-5">
                           <span className={`px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider ${getStatusBadge(item.status)}`}>
                             {item.status}
                           </span>
                         </td>
 
                         {/* Action Operations */}
-                        <td className="p-6 text-right">
+                        <td className="px-4 py-5 text-right">
                           <div className="flex items-center justify-end gap-1.5" onClick={(e) => e.stopPropagation()}>
                             <button
                               onClick={() => setSelectedId(item._id)}
@@ -356,11 +355,6 @@ const ManageAppointments = () => {
                                   <X size={14} />
                                 </button>
                               </>
-                            )}
-                            {item.status !== 'pending' && (
-                              <span className="text-[10px] font-bold text-slate-300 uppercase tracking-widest pointer-events-none select-none">
-                                No Action Needed
-                              </span>
                             )}
                           </div>
                         </td>

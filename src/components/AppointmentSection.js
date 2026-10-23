@@ -3,6 +3,7 @@ import { Phone, Calendar, MapPin, Send, CheckCircle2, AlertCircle } from 'lucide
 import axios from 'axios';
 import useReveal from '../utils/useReveal';
 import AppointmentDatePicker from './AppointmentDatePicker';
+import TIME_SLOTS from '../utils/timeSlots';
 
 // lucide-react ships no brand glyphs, so the WhatsApp mark is a raw inline SVG
 const WhatsAppIcon = ({ size = 16 }) => (
@@ -39,6 +40,7 @@ const AppointmentSection = () => {
     address: '',
     patientStatus: '',
     date: '',
+    timeSlot: '',
     service: 'Select Service',
     notes: ''
   });
@@ -55,6 +57,10 @@ const AppointmentSection = () => {
     }
     if (!formData.date) {
       setError('Please select an appointment date.');
+      return;
+    }
+    if (!formData.timeSlot) {
+      setError('Please choose an appointment time.');
       return;
     }
     if (!formData.patientStatus) {
@@ -74,6 +80,7 @@ const AppointmentSection = () => {
         address: formData.address,
         patientStatus: formData.patientStatus,
         date: formData.date,
+        timeSlot: formData.timeSlot,
         subsidiary: formData.service || 'general', // Maps cleanly to your controller's naming schemas, with fallback
         notes: formData.notes
       });
@@ -115,6 +122,7 @@ const AppointmentSection = () => {
             <div className="space-y-4">
               <h4 className="flex items-center gap-3 text-nova-sky font-bold text-xs uppercase tracking-widest"><Phone size={16} /> Quick Contact</h4>
               <p className="text-xl font-medium">+233 (0) 302 751 290</p>
+              <p className="text-xl font-medium">+233 (0) 303 931 960</p>
               <p className="text-white/60 text-sm">info@novasurgerycenter.com</p>
               <a href="https://wa.me/233544030436" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-[#25D366] text-sm font-bold hover:text-white transition-colors">
                 <WhatsAppIcon size={16} /> +233 (0) 544 030 436
@@ -202,6 +210,20 @@ const AppointmentSection = () => {
                     onChange={(value) => handleInputChange('date', value)}
                     triggerClassName="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white text-sm focus:outline-none focus:border-nova-sky transition-all flex items-center justify-between"
                   />
+                  <select
+                    required
+                    value={formData.timeSlot}
+                    onChange={(e) => handleInputChange('timeSlot', e.target.value)}
+                    className={`w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-nova-sky transition-all appearance-none cursor-pointer text-sm ${formData.timeSlot ? 'text-white' : 'text-white/30'}`}
+                  >
+                    <option className="bg-slate-900" value="" disabled>Select a time</option>
+                    {TIME_SLOTS.map(slot => (
+                      <option key={slot} className="bg-slate-900 text-white" value={slot}>{slot}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
                   <select
                     value={formData.service}
                     onChange={(e) => handleInputChange('service', e.target.value)}
